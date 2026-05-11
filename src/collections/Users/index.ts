@@ -1,19 +1,18 @@
 import type { CollectionConfig } from 'payload'
 
-import { admin } from '@/access/roles/admin'
-import { adminOrEditor } from '@/access/roles/adminOrEditor'
-import { adminField } from '@/access/roles/adminField'
 import { authenticated } from '@/access/authenticated'
+import { admin, adminField } from '@/access/roles/admin'
+import { adminOrEditor } from '@/access/roles/adminOrEditor'
 
 export const Users: CollectionConfig = {
   slug: 'users',
   auth: true,
   access: {
     admin: authenticated,
-    read: adminOrEditor, // beide dürfen User-Liste sehen
-    create: adminOrEditor, // beide dürfen User anlegen (s.u.)
-    update: admin, // nur Admin darf User bearbeiten
-    delete: admin, // nur Admin darf User löschen
+    read: adminOrEditor,
+    create: adminOrEditor,
+    update: admin,
+    delete: admin,
   },
   admin: {
     defaultColumns: ['name', 'email', 'role'],

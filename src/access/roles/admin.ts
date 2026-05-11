@@ -1,5 +1,8 @@
-import type { Access } from 'payload'
+import type { FieldAccess, Access } from 'payload'
 
-export const admin: Access = ({ req: { user } }): boolean => {
+const isAdmin = ({ req: { user } }: any): boolean => {
   return Boolean(user?.role === 'admin')
 }
+
+export const admin: Access = isAdmin
+export const adminField: FieldAccess = isAdmin
