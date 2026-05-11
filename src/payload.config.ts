@@ -8,6 +8,9 @@ import sharp from 'sharp'
 import { de } from '@payloadcms/translations/languages/de'
 import { en } from '@payloadcms/translations/languages/en'
 
+import { de as deTranslations } from '@/i18n/de'
+import { en as enTranslations } from '@/i18n/en'
+
 import { Pages } from '@/collections/Pages'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -25,6 +28,10 @@ export default buildConfig({
   i18n: {
     supportedLanguages: { en, de },
     fallbackLanguage: 'en',
+    translations: {
+      de: deTranslations,
+      en: enTranslations,
+    },
   },
   localization: {
     locales: [

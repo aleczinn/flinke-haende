@@ -29,6 +29,9 @@ export const Pages: CollectionConfig = {
       localized: true,
       admin: {
         description: 'z.B. malerarbeiten (ohne Schrägstrich)',
+        components: {
+          Field: '@/components/SlugField#SlugField',
+        },
       },
       hooks: {
         beforeValidate: [

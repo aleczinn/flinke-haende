@@ -37,7 +37,7 @@ plugin-<name>/
 ├── README.md                 # Plugin documentation
 ├── LICENSE.md                # License file
 └── src/
-    ├── index.ts              # Entry point, re-exports plugin and config types
+    ├── index.tsx              # Entry point, re-exports plugin and config types
     ├── plugin.ts             # Plugin implementation
     ├── types.ts              # TypeScript type definitions
     └── exports/              # Additional entry points (optional)
@@ -57,7 +57,7 @@ plugin-<name>/
 ├── vitest.config.js          # Vitest test configuration (optional)
 ├── playwright.config.js      # Playwright e2e tests (optional)
 └── src/
-    ├── index.ts              # Entry point, re-exports plugin and config types
+    ├── index.tsx              # Entry point, re-exports plugin and config types
     ├── plugin.ts             # Plugin implementation
     ├── types.ts              # TypeScript type definitions
     ├── defaults.ts           # Default configuration values (optional)
@@ -68,7 +68,7 @@ plugin-<name>/
     │   └── ServerComponent.tsx    # RSC components
     ├── fields/               # Custom field components (optional)
     │   ├── FieldName/
-    │   │   ├── index.ts      # Field config
+    │   │   ├── index.tsx      # Field config
     │   │   └── Component.tsx # Client component
     ├── exports/              # Additional entry points
     │   ├── types.ts          # Type-only exports
@@ -76,7 +76,7 @@ plugin-<name>/
     │   ├── client.ts         # Re-export client components
     │   └── rsc.ts            # Re-export server components (RSC)
     ├── translations/         # i18n translations (optional)
-    │   └── index.ts
+    │   └── index.tsx
     └── ui/                   # Admin UI components (optional)
         └── Component.tsx
 ```
@@ -551,7 +551,7 @@ export { BeforeDashboardServer } from '../components/BeforeDashboardServer.js'
 ### Translations (i18n)
 
 ```ts
-// src/translations/index.ts
+// src/translations/index.tsx
 export const translations = {
   en: {
     'plugin-name:fieldLabel': 'Field Label',
@@ -677,7 +677,7 @@ export const CustomFieldComponent: TextFieldClientComponent = ({ field, path }) 
 ```
 
 ```ts
-// src/fields/CustomField/index.ts
+// src/fields/CustomField/index.tsx
 import type { Field } from 'payload'
 
 export const CustomField = (overrides?: Partial<Field>): Field => ({

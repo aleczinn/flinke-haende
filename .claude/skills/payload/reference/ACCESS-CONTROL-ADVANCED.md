@@ -460,7 +460,7 @@ export const PublicAuthCollection: CollectionConfig = {
 }
 ```
 
-**Source**: `templates/website/src/collections/Posts/index.ts`
+**Source**: `templates/website/src/collections/Posts/index.tsx`
 
 ### Multi-User/Self-Service Collection
 
@@ -505,7 +505,7 @@ export const SelfServiceCollection: CollectionConfig = {
 }
 ```
 
-**Source**: `templates/website/src/collections/Users/index.ts`
+**Source**: `templates/website/src/collections/Users/index.tsx`
 
 ## Debugging Tips
 
