@@ -5,6 +5,9 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+import { de } from '@payloadcms/translations/languages/de'
+import { en } from '@payloadcms/translations/languages/en'
+
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 
@@ -12,6 +15,10 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  i18n: {
+    supportedLanguages: { en, de },
+    fallbackLanguage: 'en',
+  },
   admin: {
     user: Users.slug,
     importMap: {
