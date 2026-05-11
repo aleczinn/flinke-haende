@@ -8,6 +8,7 @@ import sharp from 'sharp'
 import { de } from '@payloadcms/translations/languages/de'
 import { en } from '@payloadcms/translations/languages/en'
 
+import { Pages } from '@/collections/Pages'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 
@@ -15,17 +16,25 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  i18n: {
-    supportedLanguages: { en, de },
-    fallbackLanguage: 'en',
-  },
   admin: {
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  i18n: {
+    supportedLanguages: { en, de },
+    fallbackLanguage: 'en',
+  },
+  localization: {
+    locales: [
+      { label: 'Deutsch', code: 'de' },
+      { label: 'English', code: 'en' },
+    ],
+    defaultLocale: 'de',
+    fallback: true,
+  },
+  collections: [Pages, Users, Media],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
