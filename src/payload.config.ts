@@ -2,6 +2,7 @@ import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
+import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
@@ -14,6 +15,7 @@ import { en as enTranslations } from '@/i18n/en'
 import { Pages } from '@/collections/Pages'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { DEFAULT_LOCALE, LOCALES } from '@/i18n/locales'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -40,6 +42,7 @@ export default buildConfig({
     ],
     defaultLocale: 'de',
     fallback: true,
+    defaultLocalePublishOption: 'active',
   },
   collections: [Pages, Users, Media],
   editor: lexicalEditor(),
@@ -53,5 +56,11 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [],
+  plugins: [
+    nestedDocsPlugin({
+      collections: ['pages'],
+      generateLabel: (_, doc) => doc.title as string,
+      generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
+    }),
+  ],
 })
