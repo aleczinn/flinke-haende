@@ -14,6 +14,10 @@ export const Users: CollectionConfig = {
     update: admin,
     delete: admin,
   },
+  labels: {
+    singular: { de: 'Benutzer', en: 'User' },
+    plural: { de: 'Benutzer', en: 'Users' },
+  },
   admin: {
     defaultColumns: ['name', 'email', 'role'],
     useAsTitle: 'name',

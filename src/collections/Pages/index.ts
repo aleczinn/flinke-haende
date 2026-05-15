@@ -7,12 +7,20 @@ export const Pages: CollectionConfig = {
     defaultColumns: ['title', 'slug', 'parent', 'updatedAt'],
   },
   versions: { drafts: true },
+  labels: {
+    singular: { de: 'Seite', en: 'Page' },
+    plural: { de: 'Seiten', en: 'Pages' },
+  },
   fields: [
     {
       name: 'title',
       type: 'text',
       required: true,
       localized: true,
+      label: {
+        de: 'Titel',
+        en: 'Title',
+      },
     },
     {
       name: 'slug',
@@ -20,8 +28,10 @@ export const Pages: CollectionConfig = {
       required: true,
       localized: true,
       index: true,
+      label: {
+        de: 'Slug',
+        en: 'Slug',
+      },
     },
-    // parent + breadcrumbs werden vom Plugin injiziert
-    // SEO / layout etc. folgen später
   ],
 }
