@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { availableLanguages, DEFAULT_LOCALE, getLocaleFromLang } from '@/lib/locale'
+import { jakartaSans } from '@/app/(frontend)/fonts'
 import '../styles.css'
 
 interface LangLayoutProps {
@@ -16,7 +17,11 @@ export default async function LangLayout({ children, params }: LangLayoutProps) 
   const locale = getLocaleFromLang(lang) ?? DEFAULT_LOCALE
 
   return (
-    <html lang={locale.language} className="" data-scroll-behavior="smooth">
+    <html
+      lang={locale.language}
+      className={`${jakartaSans.variable}`}
+      data-scroll-behavior="smooth"
+    >
       <body className="font-display bg-gray-90 text-gray-90 text-pretty subpixel-antialiased flex flex-col w-full">
         {children}
       </body>

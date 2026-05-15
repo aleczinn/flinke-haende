@@ -36,7 +36,12 @@ export const Media: CollectionConfig = {
       },
     },
     imageSizes: [
-      { name: 'thumbnail', width: 300 }, // Für Admin Panel Vorschau
+      // Für Admin Panel Vorschau
+      {
+        name: 'thumbnail',
+        width: 300,
+        formatOptions: { format: 'avif', options: { quality: 60 } },
+      },
       {
         name: 'square',
         width: 1000,

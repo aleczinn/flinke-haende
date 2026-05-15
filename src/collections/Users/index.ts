@@ -22,12 +22,19 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      required: true,
     },
     {
       name: 'role',
       type: 'select',
       required: true,
-      defaultValue: 'editor',
+      defaultValue: async ({ req }) => {
+        if (!req?.payload) return 'editor'
+        const { totalDocs } = await req.payload.count({
+          collection: 'users',
+        })
+        return totalDocs === 0 ? 'admin' : 'editor'
+      },
       options: [
         { label: 'Admin', value: 'admin' },
         { label: 'Redakteur', value: 'editor' },
@@ -43,9 +50,21 @@ export const Users: CollectionConfig = {
   hooks: {
     // Verhindert, dass ein Editor einen Admin anlegt
     beforeChange: [
-      ({ data, req }) => {
+      async ({ data, req, operation }) => {
+        // Editor darf nie einen anderen Editor zum Admin machen
         if (req.user?.role === 'editor') {
-          data.role = 'editor' // Rolle wird hart auf editor gesetzt
+          data.role = 'editor'
+          return data
+        }
+
+        // Backend-Garantie: Erster User wird immer Admin, selbst wenn jemand den UI-Default manuell auf 'editor' setzt
+        if (operation === 'create') {
+          const { totalDocs } = await req.payload.count({
+            collection: 'users',
+          })
+          if (totalDocs === 0) {
+            data.role = 'admin'
+          }
         }
         return data
       },
