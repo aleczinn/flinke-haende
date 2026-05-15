@@ -8,6 +8,7 @@ const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
   images: {
+    deviceSizes: [640, 750, 828, 1080, 1200, 1366, 1536, 1920, 2048, 3840],
     localPatterns: [
       {
         pathname: '/api/media/file/**',
@@ -25,6 +26,9 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     root: path.resolve(dirname),
+  },
+  experimental: {
+    inlineCss: true,
   },
 }
 

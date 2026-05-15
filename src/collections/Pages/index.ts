@@ -1,20 +1,12 @@
 import type { CollectionConfig } from 'payload'
-import { anyone } from '@/access/anyone'
-import { adminOrEditor } from '@/access/roles/adminOrEditor'
-import { admin } from '@/access/roles/admin'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
-  access: {
-    read: anyone,
-    create: adminOrEditor,
-    update: adminOrEditor,
-    delete: admin,
-  },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', 'updatedAt'],
+    defaultColumns: ['title', 'slug', 'parent', 'updatedAt'],
   },
+  versions: { drafts: true },
   fields: [
     {
       name: 'title',
@@ -27,21 +19,9 @@ export const Pages: CollectionConfig = {
       type: 'text',
       required: true,
       localized: true,
-      admin: {
-        description: 'z.B. malerarbeiten (ohne Schrägstrich)',
-        components: {
-          Field: '@/components/SlugField#SlugField',
-        },
-      },
-      hooks: {
-        beforeValidate: [
-          ({ value }) =>
-            value
-              ?.toLowerCase()
-              .replace(/\s+/g, '-')
-              .replace(/[^\w-]/g, ''),
-        ],
-      },
+      index: true,
     },
+    // parent + breadcrumbs werden vom Plugin injiziert
+    // SEO / layout etc. folgen später
   ],
 }
