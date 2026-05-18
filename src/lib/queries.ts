@@ -30,7 +30,7 @@ export const getCompanyConfig = cache(async (locale: Locale): Promise<CompanyCon
     const c = await payload.findGlobal({
         slug: 'company',
         locale: toLocaleTag(locale),
-        depth: 0,
+        depth: 1,
     })
 
     return {

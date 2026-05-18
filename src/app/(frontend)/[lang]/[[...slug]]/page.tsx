@@ -7,13 +7,12 @@ import {
     availableLanguages,
     DEFAULT_LOCALE,
     getLocaleFromLang,
-    Locale,
-    locales,
     toLocaleTag,
     getOgLocale,
     getAlternateOgLocales,
     getDefaultForLanguage,
     PayloadLocale,
+    Localized,
 } from '@/lib/locale'
 import { BASE_URL } from '@/lib/site'
 import { getCompanyConfig } from '@/lib/queries'
@@ -65,31 +64,40 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
 
     const company = await getCompanyConfig(locale)
-    const allLocales = await fetchAllLocales(page.id)
-    const allBreadcrumbs = allLocales.breadcrumbs as Record<string, { url: string }[]>
 
-    const buildHref = (l: Locale): string => {
-        if (page.slug === HOME_SLUG) return `${BASE_URL}/${l.language}`
-        const tag = toLocaleTag(l)
+    const isHome = page.slug === HOME_SLUG
+    const allLocales = isHome ? null : await fetchAllLocales(page.id)
+    const allBreadcrumbs = (allLocales?.breadcrumbs ?? {}) as unknown as Localized<{ url?: string | null }[]>
+    const allSlugs = (allLocales?.slug ?? {}) as unknown as Localized<string>
+
+    const buildHref = (lang: string): string => {
+        const localeForLang = getDefaultForLanguage(lang)
+        if (!localeForLang) return `${BASE_URL}/${lang}`
+        if (page.slug === HOME_SLUG) return `${BASE_URL}/${lang}`
+
+        const tag = toLocaleTag(localeForLang)
         const crumbs = allBreadcrumbs?.[tag] ?? []
-        const url = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
-        return `${BASE_URL}/${l.language}${url}`
+        const fallbackSlug = allSlugs?.[tag] ?? page.slug
+        const url = crumbs[crumbs.length - 1]?.url ?? `/${fallbackSlug}`
+        return `${BASE_URL}/${lang}${url}`
     }
 
-    const defaultCanonical = buildHref(locale)
+    const defaultCanonical = buildHref(locale.language)
     const languages: Record<string, string> = {
-        'x-default': buildHref(DEFAULT_LOCALE),
-        ...Object.fromEntries(locales.map((l) => [toLocaleTag(l), buildHref(l)])),
+        'x-default': buildHref(DEFAULT_LOCALE.language),
+        ...Object.fromEntries(availableLanguages.map((lang) => [lang, buildHref(lang)])),
     }
 
     const resolvedTitle = page.meta?.title || page.title;
-    const companyName = company.company_name.replace('GmbH', '')
+    const companyName = company.company_name.replace('GmbH', '').trim()
     const title = `${resolvedTitle} | ${companyName}`
     const description = page.meta?.description || company.site_description;
 
-    const ogImage =
-        (typeof page.meta?.image === 'object' && page.meta.image?.url) ||
-        company.defaultOgImage?.url ||
+    const metaImage = typeof page.meta?.image === 'object' ? page.meta.image : null
+    const ogImageUrl =
+        metaImage?.sizes?.og?.url ||
+        company.defaultOgImage?.sizes?.og?.url ||
+        metaImage?.url ||
         `${BASE_URL}/og-default.jpg`
 
     const canonical = page.meta?.canonical?.trim() || defaultCanonical
@@ -107,26 +115,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             siteName: companyName,
             url: canonical,
             type: 'website',
-            images: [{ url: ogImage, width: 1200, height: 630 }],
+            images: [{ url: ogImageUrl, width: 1200, height: 630 }],
         },
         twitter: {
             card: 'summary_large_image',
             title: resolvedTitle,
             description: description,
-            images: [ogImage],
+            images: [ogImageUrl],
         },
     }
 }
 
-
 export async function generateStaticParams() {
     const params: { lang: string; slug: string[] }[] = []
+    const payload = await getPayload({ config })
 
     for (const lang of availableLanguages) {
         const locale = getDefaultForLanguage(lang)
         if (!locale) continue
 
-        const payload = await getPayload({ config })
         const { docs } = await payload.find({
             collection: 'pages',
             locale: toLocaleTag(locale),

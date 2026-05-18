@@ -15,6 +15,9 @@ interface LangLayoutProps {
     params: Promise<{ lang: string }>
 }
 
+// Stündlich neu generieren, sonst werden neue Pages bis zum nächsten Build nicht sichtbar
+export const revalidate = 3600
+
 export const metadata: Metadata = {
     metadataBase: new URL(BASE_URL),
 }

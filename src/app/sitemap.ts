@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { BASE_URL } from '@/lib/site'
-import { availableLanguages, DEFAULT_LOCALE, getDefaultForLanguage, toLocaleTag } from '@/lib/locale'
+import { availableLanguages, DEFAULT_LOCALE, getDefaultForLanguage, Localized, toLocaleTag } from '@/lib/locale'
 
 const HOME_SLUG = 'home'
 const EXCLUDED_SLUGS = new Set(['impressum', 'datenschutz'])
@@ -10,7 +10,9 @@ const EXCLUDED_SLUGS = new Set(['impressum', 'datenschutz'])
 // Stündlich neu generieren, sonst werden neue Pages bis zum nächsten Build nicht sichtbar
 export const revalidate = 3600
 
-type Localized<T> = Record<string, T>
+// Nicht vorgerenderte Pfade on-demand erzeugen statt 404 — neue CMS-Seiten
+// erscheinen ohne Rebuild und werden danach gecacht
+export const dynamicParams = true
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const payload = await getPayload({ config })
