@@ -1,0 +1,85 @@
+{
+    "home": "Startseite",
+    "generic": {
+        "search": "Suche",
+        "menu": "Menü",
+        "telephone": {
+            "short": "Telefon",
+            "long": "Jetzt anrufen: {0}"
+        },
+        "email": {
+            "short": "E-Mail",
+            "long": "E-Mail schreiben: {0}"
+        },
+        "opening_hours": "Öffnungszeiten",
+        "closed": "Geschlossen",
+        "first_name": "Vorname",
+        "last_name": "Nachname",
+        "address": "Adresse"
+    },
+    "skiplinks": {
+        "label": "Sprunglinks",
+        "to_main": "Zum Hauptinhalt",
+        "to_navigation": "Zur Navigation"
+    },
+    "header": {
+        "breadcrumbs": "Brotkrumen-Navigation",
+        "service_bar": "Servicenavigation",
+        "navigation": "Hauptnavigation",
+        "change_language_to": "Sprache wechseln zu {0}",
+        "submenu_for": "Untermenü {0}",
+        "open_submenu_for": "Untermenü für {0} öffnen",
+        "open_menu": "Menü öffnen",
+        "close_menu": "Menü schließen"
+    },
+    "footer": {
+        "copyright": "© Copyright {0} {1}. Alle Rechte vorbehalten.",
+        "impressum": "Impressum",
+        "datenschutz": "Datenschutz",
+        "contact": {
+            "label": "Kontakt",
+            "contact_us": "Kontaktiere uns!"
+        },
+        "navigation": {
+            "label": "Navigation"
+        },
+        "hours_of_operation": {
+            "label": "Öffnungszeiten"
+        }
+    },
+    "contact_form": {
+        "service": {
+            "label": "Service",
+            "placeholder": "Thema auswählen"
+        },
+        "request": {
+            "label": "Beschreiben Sie kurz Ihr Anliegen"
+        },
+        "documents": {
+            "label": "Dokumente",
+            "description": "Gerne können Sie uns ergänzende Dokumente oder Bilder zusenden – so können wir Ihre Anfrage schneller und gezielter bearbeiten.",
+            "field_description": "Klicken oder ziehen Sie eine Datei in diesen Bereich, um sie hochzuladen."
+        },
+        "validation": {
+            "required": "Pflichtfeld",
+            "topic": "Bitte ein Thema wählen",
+            "message": "Bitte beschreiben Sie Ihr Anliegen",
+            "character": "Bitte keine ungültigen Zeichen eingeben",
+            "email": "Bitte gebe eine gültige E-Mail-Adresse ein"
+        },
+        "next": "Weiter",
+        "submit": "Anfrage senden"
+    },
+    "before_after": {
+        "before": "Vorher",
+        "after": "Nachher",
+        "compare": "{0} und {1} vergleichen",
+        "value": "{0} % {1} sichtbar"
+    },
+    "back_to_top": "Zurück nach oben",
+    "404": {
+        "title": "Diese Seite existiert nicht",
+        "description": "Wir konnten leider nichts finden, nachdem du suchst.",
+        "backhome": "Zurück zur Startseite"
+    }
+}

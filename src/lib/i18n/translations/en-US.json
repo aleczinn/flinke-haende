@@ -1,0 +1,84 @@
+{
+    "home": "Homepage",
+    "generic": {
+        "search": "Search",
+        "menu": "Menu",
+        "telephone": {
+            "short": "Telefone",
+            "long": "Call us: {0}"
+        },
+        "email": {
+            "short": "Email",
+            "long": "Send email: {0}"
+        },
+        "opening_hours": "Opening hours",
+        "closed": "Closed",
+        "first_name": "First name",
+        "last_name": "Last name",
+        "address": "Address"
+    },
+    "skiplinks": {
+        "label": "Skiplinks",
+        "to_main": "Skip to main content",
+        "to_navigation": "Skip to navigation"
+    },
+    "header": {
+        "breadcrumbs": "Breadcrumb navigation",
+        "service_bar": "Service bar",
+        "navigation": "Main navigation",
+        "change_language_to": "Change language to {0}",
+        "submenu_for": "Sub-menu {0}",
+        "open_submenu_for": "Open sub-menu for {0}",
+        "open_menu": "Open menu",
+        "close_menu": "Close menu"
+    },
+    "footer": {
+        "copyright": "© Copyright {0} {1}. All rights reserved.",
+        "impressum": "Legal notice",
+        "datenschutz": "Privacy Policy",
+        "contact": {
+            "label": "Contact",
+            "contact_us": "Contact us!"
+        },
+        "navigation": {
+            "label": "Navigation"
+        },
+        "hours_of_operation": {
+            "label": "Opening hours"
+        }
+    },
+    "contact_form": {
+        "service": {
+            "label": "Service",
+            "placeholder": "Choose topic"
+        },
+        "request": {
+            "label": "Please briefly describe your request"
+        },
+        "documents": {
+            "label": "Documents",
+            "description": "Please feel free to send us any additional documents or images—this will allow us to process your request more quickly and efficiently.",
+            "field_description": "Click or drag a file into this area to upload it."
+        },
+        "validation": {
+            "required": "Required",
+            "topic": "Please choose your topic",
+            "message": "Please describe your request",
+            "character": "Please do not enter any invalid characters",
+            "email": "Please enter a valid email address"
+        },
+        "next": "Next",
+        "submit": "Submit"
+    },
+    "before_after": {
+        "before": "Before",
+        "after": "After",
+        "compare": "Compare {0} and {1}",
+        "value": "{0} % {1} visible"
+    },
+    "back_to_top": "Back to top",
+    "404": {
+        "title": "Page not found",
+        "backhome": "Back to homepage"
+    }
+}
