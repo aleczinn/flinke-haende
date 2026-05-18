@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/Button";
 import { Tagline } from "@/components/ui/Tagline";
 import { UILink } from '@/components/ui/UILink'
 import { Locale } from '@/lib/locale';
-import { getCompanyConfig } from '@/lib/queries'
+import { getCompanyConfig, getFooterConfig } from '@/lib/queries'
 import OpeningHours from '@/components/module/OpeningHours'
 
 interface FooterProps {
@@ -19,6 +19,7 @@ interface FooterProps {
 }
 
 export default async function Footer({ locale }: FooterProps) {
+    const footer = await getFooterConfig(locale)
     const company = await getCompanyConfig(locale)
 
 	// const config = await getConfig(locale);
@@ -105,22 +106,20 @@ export default async function Footer({ locale }: FooterProps) {
                         />
 
                         <ul className="flex flex-col gap-2">
-                            {/*{navigation.map((item) => {*/}
-                            {/*    if (!item.href) return null*/}
-
-                            {/*    return (*/}
-                            {/*        <li key={item.uid} {...item.editable}>*/}
-                            {/*            <Link*/}
-                            {/*                href={item.href}*/}
-                            {/*                title={`${item.label}`}*/}
-                            {/*                className="group flex flex-row items-center gap-2 w-fit text-gray-10 transition-colors duration-200 hover:text-primary focus-element"*/}
-                            {/*            >*/}
-                            {/*                <IconChevronRight className="w-4 h-auto" />*/}
-                            {/*                <span className="">{item.label}</span>*/}
-                            {/*            </Link>*/}
-                            {/*        </li>*/}
-                            {/*    )*/}
-                            {/*})}*/}
+                            {footer.navigation.map((item) => (
+                                <li key={item.href}>
+                                    <Link
+                                        href={item.href}
+                                        title={item.label}
+                                        target={item.newTab ? '_blank' : undefined}
+                                        rel={item.newTab ? 'noopener noreferrer' : undefined}
+                                        className="group flex flex-row items-center gap-2 w-fit text-gray-10 transition-colors duration-200 hover:text-primary focus-element"
+                                    >
+                                        <IconChevronRight className="w-4 h-auto" />
+                                        <span>{item.label}</span>
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 

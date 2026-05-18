@@ -15,11 +15,9 @@ import {
     Localized,
 } from '@/lib/locale'
 import { BASE_URL } from '@/lib/site'
-import { getCompanyConfig } from '@/lib/queries'
+import { getCompanyConfig, HOME_SLUG } from '@/lib/queries'
 import { cache } from 'react'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
-
-const HOME_SLUG = 'home'
 
 interface PageProps {
     params: Promise<{ lang: string; slug?: string[] }>

@@ -26,6 +26,25 @@ export interface CompanyConfig {
     opening_hours: OpeningHoursItem[]
 }
 
+export interface NavigationLink {
+    href: string
+    label: string
+    newTab: boolean
+    description?: string
+}
+
+export interface NavigationItem extends NavigationLink {
+    children: NavigationLink[]
+}
+
+export interface HeaderConfig {
+    navigation: NavigationItem[]
+}
+
+export interface FooterConfig {
+    navigation: NavigationLink[]
+}
+
 export const getCompanyConfig = cache(async (locale: Locale): Promise<CompanyConfig> => {
     const payload = await getPayload({ config })
     const c = await payload.findGlobal({
@@ -56,24 +75,60 @@ export const getCompanyConfig = cache(async (locale: Locale): Promise<CompanyCon
     }
 })
 
-export const getHeaderConfig = cache(async (locale: Locale): Promise<any> => {
+export const HOME_SLUG = 'home'
+
+export const getHeaderConfig = cache(async (locale: Locale): Promise<HeaderConfig> => {
     const payload = await getPayload({ config })
-    const h = await payload.findGlobal({
+    const header = await payload.findGlobal({
         slug: 'header',
         locale: toLocaleTag(locale),
-        depth: 2,
+        depth: 1,
     })
 
-    return {}
+    return {
+        navigation: (header.navigation ?? [])
+            .map((item: any) => {
+                const link = resolveLink(item, locale)
+                if (!link) return null
+                const children = (item.children ?? [])
+                    .map((c: any) => resolveLink(c, locale))
+                    .filter(Boolean) as NavigationLink[]
+                return { ...link, children }
+            })
+            .filter(Boolean) as NavigationItem[],
+    }
 })
 
-export const getFooterConfig = cache(async (locale: Locale): Promise<any> => {
+export const getFooterConfig = cache(async (locale: Locale): Promise<FooterConfig> => {
     const payload = await getPayload({ config })
-    const h = await payload.findGlobal({
+    const footer = await payload.findGlobal({
         slug: 'footer',
         locale: toLocaleTag(locale),
-        depth: 2,
+        depth: 1,
     })
 
-    return {}
+    return {
+        navigation: (footer.navigation ?? [])
+            .map((item: any) => resolveLink(item, locale))
+            .filter(Boolean) as NavigationLink[],
+    }
 })
+
+function resolveLink(item: any, locale: Locale): NavigationLink | null {
+    const lang = locale.language
+    const description = item?.description || undefined
+
+    if (item?.type === 'external') {
+        if (!item.url) return null
+        return { href: item.url, label: item.label || item.url, newTab: !!item.newTab }
+    }
+
+    const page = item?.page
+    if (!page || typeof page !== 'object') return null
+
+    const crumbs = page.breadcrumbs ?? []
+    const path = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
+    const href = page.slug === HOME_SLUG ? `/${lang}` : `/${lang}${path}`
+
+    return { href, label: item.label || page.title, newTab: false, description }
+}

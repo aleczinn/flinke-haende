@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { navigationLinkField } from '@/fields/navigation-link'
 
 export const Footer: GlobalConfig = {
     slug: 'footer',
@@ -9,5 +10,23 @@ export const Footer: GlobalConfig = {
     access: {
         read: () => true,
     },
-    fields: [],
+    fields: [
+        {
+            name: 'navigation',
+            type: 'array',
+            label: { de: 'Footer-Navigation', en: 'Footer navigation' },
+            labels: {
+                singular: {
+                    de: 'Link',
+                    en: 'Link'
+                },
+                plural: {
+                    de: 'Links',
+                    en: 'Links'
+                }
+            },
+            maxRows: 8,
+            fields: navigationLinkField(),
+        },
+    ],
 }

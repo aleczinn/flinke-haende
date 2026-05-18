@@ -572,6 +572,18 @@ export interface Company {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Full profile URLs. Used for footer icons and Schema.org "sameAs". Empty fields are ignored.
+   */
+  social?: {
+    facebook?: string | null;
+    instagram?: string | null;
+    twitter?: string | null;
+    linkedin?: string | null;
+    youtube?: string | null;
+    xing?: string | null;
+    pinterest?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -581,6 +593,36 @@ export interface Company {
  */
 export interface Header {
   id: number;
+  navigation?:
+    | {
+        type?: ('internal' | 'external') | null;
+        page?: (number | null) | Page;
+        url?: string | null;
+        /**
+         * Optional for internal pages — page title is used otherwise. Required for external links.
+         */
+        label?: string | null;
+        newTab?: boolean | null;
+        /**
+         * Optional supporting text shown in the dropdown.
+         */
+        description?: string | null;
+        children?:
+          | {
+              type?: ('internal' | 'external') | null;
+              page?: (number | null) | Page;
+              url?: string | null;
+              /**
+               * Optional for internal pages — page title is used otherwise. Required for external links.
+               */
+              label?: string | null;
+              newTab?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -590,6 +632,19 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  navigation?:
+    | {
+        type?: ('internal' | 'external') | null;
+        page?: (number | null) | Page;
+        url?: string | null;
+        /**
+         * Optional for internal pages — page title is used otherwise. Required for external links.
+         */
+        label?: string | null;
+        newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -620,6 +675,17 @@ export interface CompanySelect<T extends boolean = true> {
         note?: T;
         id?: T;
       };
+  social?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+        twitter?: T;
+        linkedin?: T;
+        youtube?: T;
+        xing?: T;
+        pinterest?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -629,6 +695,27 @@ export interface CompanySelect<T extends boolean = true> {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  navigation?:
+    | T
+    | {
+        type?: T;
+        page?: T;
+        url?: T;
+        label?: T;
+        newTab?: T;
+        description?: T;
+        children?:
+          | T
+          | {
+              type?: T;
+              page?: T;
+              url?: T;
+              label?: T;
+              newTab?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -638,6 +725,16 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  navigation?:
+    | T
+    | {
+        type?: T;
+        page?: T;
+        url?: T;
+        label?: T;
+        newTab?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
