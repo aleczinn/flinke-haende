@@ -17,6 +17,7 @@ import {
 import { BASE_URL } from '@/lib/site'
 import { getCompanyConfig } from '@/lib/queries'
 import { cache } from 'react'
+import Breadcrumbs from '@/components/layout/Breadcrumbs'
 
 const HOME_SLUG = 'home'
 
@@ -173,7 +174,7 @@ export default async function Page({ params }: PageProps) {
 
     return (
         <main id="main" className="grow flex flex-col bg-gray-10 min-h-[50svh]">
-            {/*{!isHome && <Breadcrumbs locale={locale} page={page} includeSchema />}*/}
+            {!isHome && <Breadcrumbs locale={locale} page={page} includeSchema />}
             <p>render page</p>
         </main>
     )
