@@ -10,6 +10,8 @@ export interface Locale {
   label: string
 }
 
+export type Localized<T> = Partial<Record<PayloadLocale, T>>
+
 export const locales: Locale[] = [
   { language: 'de', country: 'DE', label: 'Deutsch' },
   { language: 'en', country: 'US', label: 'English' },

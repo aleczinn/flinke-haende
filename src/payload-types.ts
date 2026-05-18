@@ -95,8 +95,16 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('de-DE' | 'en-US') | ('de-DE' | 'en-US')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    company: Company;
+    header: Header;
+    footer: Footer;
+  };
+  globalsSelect: {
+    company: CompanySelect<false> | CompanySelect<true>;
+    header: HeaderSelect<false> | HeaderSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
+  };
   locale: 'de-DE' | 'en-US';
   widgets: {
     collections: CollectionsWidget;
@@ -240,6 +248,20 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
+  text?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Leave empty for the automatic URL. Only set if this page should point elsewhere.
+     */
+    canonical?: string | null;
+    noIndex?: boolean | null;
+  };
   parent?: (number | null) | Page;
   breadcrumbs?:
     | {
@@ -429,6 +451,16 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  text?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        canonical?: T;
+        noIndex?: T;
+      };
   parent?: T;
   breadcrumbs?:
     | T
@@ -493,6 +525,122 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "company".
+ */
+export interface Company {
+  id: number;
+  companyName: string;
+  /**
+   * The company name (without legal form) for the page title
+   */
+  companyNameShorthand?: string | null;
+  /**
+   * For the legal notice
+   */
+  owner: string;
+  /**
+   * SEO fallback when a page has no own description.
+   */
+  siteDescription: string;
+  /**
+   * Used when a page has no own SEO image. (Optimal: 1200x630px)
+   */
+  defaultOgImage: number | Media;
+  telephone: string;
+  email: string;
+  street: string;
+  houseNumber: string;
+  postalCode: string;
+  city: string;
+  /**
+   * ISO code, e.g. DE — for Schema.org
+   */
+  country?: string | null;
+  openingHours?:
+    | {
+        days: ('Mo' | 'Di' | 'Mi' | 'Do' | 'Fr' | 'Sa' | 'So')[];
+        closed?: boolean | null;
+        open?: string | null;
+        close?: string | null;
+        /**
+         * Optional, e.g. "By appointment". Replaces the times in display.
+         */
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: number;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "company_select".
+ */
+export interface CompanySelect<T extends boolean = true> {
+  companyName?: T;
+  companyNameShorthand?: T;
+  owner?: T;
+  siteDescription?: T;
+  defaultOgImage?: T;
+  telephone?: T;
+  email?: T;
+  street?: T;
+  houseNumber?: T;
+  postalCode?: T;
+  city?: T;
+  country?: T;
+  openingHours?:
+    | T
+    | {
+        days?: T;
+        closed?: T;
+        open?: T;
+        close?: T;
+        note?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -12,9 +12,9 @@
 @theme {
     /* Colors */
     --color-primary-lightest: #FEEADB;
-    --color-primary-light:   #F0A030;
-    --color-primary:         #E08818;
-    --color-primary-darker:  #C07010;
+    --color-primary-light: #F0A030;
+    --color-primary: #E08818;
+    --color-primary-darker: #C07010;
     --color-primary-darkest: #9A5A0A;
 
     --color-primary-darker-rgb: 224 136 24;
@@ -121,12 +121,12 @@ input, textarea, select {
 
     /* Font Sizes - Small */
     .text-2xs {
-        font-size: 0.625rem;  /* 10px */
+        font-size: 0.625rem; /* 10px */
         line-height: 1.5;
     }
 
     .text-3xs {
-        font-size: 0.5rem;  /* 8px */
+        font-size: 0.5rem; /* 8px */
         line-height: 1.5;
     }
 
@@ -159,6 +159,7 @@ input, textarea, select {
         }
 
         /* Trigger: Element selbst ODER ein Kind hat sichtbaren Fokus */
+
         &:focus-visible {
             outline: none;
 
@@ -173,6 +174,10 @@ input, textarea, select {
 }
 
 @keyframes skeleton-pulse {
-    0% { background-position: 100% 100%; }
-    100% { background-position: 0% 0%; }
+    0% {
+        background-position: 100% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
 }
