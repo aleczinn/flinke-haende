@@ -25,6 +25,7 @@ export const Company: GlobalConfig = {
                         {
                             name: 'owner',
                             type: 'text',
+                            required: true,
                             label: { de: 'Geschäftsführer', en: 'Owner' },
                             admin: {
                                 description: { de: 'Für das Impressum', en: 'For the legal notice' },
@@ -33,6 +34,7 @@ export const Company: GlobalConfig = {
                         {
                             name: 'siteDescription',
                             type: 'textarea',
+                            required: true,
                             localized: true,
                             label: { de: 'Seitenbeschreibung', en: 'Site description' },
                             admin: {

@@ -1,35 +1,22 @@
-import Section from "@/components/layout/Section";
-import Link from "next/link";
-import config from '@payload-config'
-import { t } from "@/lib/i18n";
-import { IconFullLogo } from "@/components/icons";
-import { Button } from "@/components/ui/Button";
-import { Locale, toLocaleTag } from '@/lib/locale'
-import { getPayload } from 'payload'
+import Section from '@/components/layout/Section'
+import Link from 'next/link'
+import { t } from '@/lib/i18n'
+import { IconFullLogo } from '@/components/icons'
+import { Locale } from '@/lib/locale'
+import { getHeaderConfig } from '@/lib/queries'
+import ServiceBar from '@/components/layout/header/ServiceBar'
 
 interface HeaderProps {
-    locale: Locale;
+    locale: Locale
 }
 
 export default async function Header({ locale }: HeaderProps) {
-    // const config = await getConfig(locale);
+    const header = await getHeaderConfig(locale)
     const language = locale.language
-    // const navigation = await Promise.all(
-    //     (config.header_navigation ?? []).map((item) => resolveNavigationItem(item, language)),
-    // );
-
-    const payload = await getPayload({ config })
-    const header = await payload.findGlobal({
-        slug: 'header',
-        locale: toLocaleTag(locale),
-        depth: 2,
-    })
-
-    console.log(header);
 
     return (
         <header className="sticky top-0 bg-gray-90 shadow-xl shadow-gray-90/5 z-50 shrink-0">
-            {/*<ServiceBar locale={locale}/>*/}
+            <ServiceBar locale={locale}/>
 
             <Section
                 as="div"

@@ -512,11 +512,11 @@ export interface Company {
   /**
    * For the legal notice
    */
-  owner?: string | null;
+  owner: string;
   /**
    * SEO fallback when a page has no own description.
    */
-  siteDescription?: string | null;
+  siteDescription: string;
   telephone: string;
   email: string;
   street: string;

@@ -2,6 +2,11 @@ import { ReactNode } from 'react'
 import { availableLanguages, DEFAULT_LOCALE, getLocaleFromLang } from '@/lib/locale'
 import { jakartaSans } from '@/app/(frontend)/fonts'
 import '../styles.css'
+import SkipLinks from '@/components/layout/SkipLinks'
+import ScrollToTop from '@/components/layout/ScrollToTop'
+import BackToTop from '@/components/layout/BackToTop'
+import Header from '@/components/layout/header/Header'
+import Footer from '@/components/layout/Footer'
 
 interface LangLayoutProps {
     children: ReactNode
@@ -19,7 +24,12 @@ export default async function LangLayout({ children, params }: LangLayoutProps) 
     return (
         <html lang={locale.language} className={`${jakartaSans.variable}`} data-scroll-behavior="smooth">
             <body className="font-display bg-gray-90 text-gray-90 text-pretty subpixel-antialiased flex flex-col w-full">
+                <SkipLinks locale={locale} />
+                <ScrollToTop />
+                <BackToTop locale={locale} />
+                <Header locale={locale} />
                 {children}
+                <Footer locale={locale} />
             </body>
         </html>
     )
