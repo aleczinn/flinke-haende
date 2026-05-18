@@ -534,6 +534,10 @@ export interface Company {
   id: number;
   companyName: string;
   /**
+   * The company name (without legal form) for the page title
+   */
+  companyNameShorthand?: string | null;
+  /**
    * For the legal notice
    */
   owner: string;
@@ -595,6 +599,7 @@ export interface Footer {
  */
 export interface CompanySelect<T extends boolean = true> {
   companyName?: T;
+  companyNameShorthand?: T;
   owner?: T;
   siteDescription?: T;
   defaultOgImage?: T;

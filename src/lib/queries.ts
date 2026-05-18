@@ -14,6 +14,7 @@ export interface OpeningHoursItem {
 
 export interface CompanyConfig {
     company_name: string
+    company_name_shorthand: string
     owner: string
     site_description: string
     defaultOgImage: any
@@ -35,6 +36,7 @@ export const getCompanyConfig = cache(async (locale: Locale): Promise<CompanyCon
 
     return {
         company_name: c.companyName,
+        company_name_shorthand: c.companyNameShorthand || c.companyName,
         owner: c.owner,
         site_description: c.siteDescription,
         defaultOgImage: c.defaultOgImage,

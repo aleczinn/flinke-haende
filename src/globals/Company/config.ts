@@ -23,6 +23,17 @@ export const Company: GlobalConfig = {
                             label: { de: 'Unternehmensname', en: 'Company name' },
                         },
                         {
+                            name: 'companyNameShorthand',
+                            type: 'text',
+                            label: { de: 'Unternehmenskürzel', en: 'Company name shorthand' },
+                            admin: {
+                                description: {
+                                    de: 'Der Unternehmensname ohne Rechtsform für den Seitentitel',
+                                    en: 'The company name (without legal form) for the page title',
+                                },
+                            },
+                        },
+                        {
                             name: 'owner',
                             type: 'text',
                             required: true,
@@ -51,7 +62,7 @@ export const Company: GlobalConfig = {
                             relationTo: 'media',
                             label: {
                                 de: 'Standard OG-Bild',
-                                en: 'Default OG image'
+                                en: 'Default OG image',
                             },
                             admin: {
                                 description: {

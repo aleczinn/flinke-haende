@@ -88,10 +88,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         ...Object.fromEntries(availableLanguages.map((lang) => [lang, buildHref(lang)])),
     }
 
-    const resolvedTitle = page.meta?.title || page.title;
-    const companyName = company.company_name.replace('GmbH', '').trim()
+    const resolvedTitle = (page.meta?.title || page.title).trim();
+    const companyName = company.company_name_shorthand.trim()
     const title = `${resolvedTitle} | ${companyName}`
-    const description = page.meta?.description || company.site_description;
+    const description = (page.meta?.description || company.site_description).trim()
 
     const metaImage = typeof page.meta?.image === 'object' ? page.meta.image : null
     const ogImageUrl =
