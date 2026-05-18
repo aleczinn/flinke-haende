@@ -4,11 +4,15 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { plugins } from '@/plugins'
+
+import { Company } from '@/globals/Company/config'
+import { Header } from '@/globals/Header/config'
+import { Footer } from '@/globals/Footer/config'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
-import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { DEFAULT_LOCALE, locales, toLocaleTag } from '@/lib/locale'
 
 import { de } from '@payloadcms/translations/languages/de'
@@ -53,10 +57,6 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [
-    nestedDocsPlugin({
-      collections: ['pages'],
-      generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
-    }),
-  ],
+    globals: [Company, Header, Footer],
+  plugins,
 })

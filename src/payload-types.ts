@@ -95,8 +95,16 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('de-DE' | 'en-US') | ('de-DE' | 'en-US')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    company: Company;
+    header: Header;
+    footer: Footer;
+  };
+  globalsSelect: {
+    company: CompanySelect<false> | CompanySelect<true>;
+    header: HeaderSelect<false> | HeaderSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
+  };
   locale: 'de-DE' | 'en-US';
   widgets: {
     collections: CollectionsWidget;
@@ -493,6 +501,112 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "company".
+ */
+export interface Company {
+  id: number;
+  companyName: string;
+  /**
+   * For the legal notice
+   */
+  owner?: string | null;
+  /**
+   * SEO fallback when a page has no own description.
+   */
+  siteDescription?: string | null;
+  telephone: string;
+  email: string;
+  street: string;
+  houseNumber: string;
+  postalCode: string;
+  city: string;
+  /**
+   * ISO code, e.g. DE — for Schema.org
+   */
+  country?: string | null;
+  openingHours?:
+    | {
+        days: ('Mo' | 'Di' | 'Mi' | 'Do' | 'Fr' | 'Sa' | 'So')[];
+        closed?: boolean | null;
+        open?: string | null;
+        close?: string | null;
+        /**
+         * Optional, e.g. "By appointment". Replaces the times in display.
+         */
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: number;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "company_select".
+ */
+export interface CompanySelect<T extends boolean = true> {
+  companyName?: T;
+  owner?: T;
+  siteDescription?: T;
+  telephone?: T;
+  email?: T;
+  street?: T;
+  houseNumber?: T;
+  postalCode?: T;
+  city?: T;
+  country?: T;
+  openingHours?:
+    | T
+    | {
+        days?: T;
+        closed?: T;
+        open?: T;
+        close?: T;
+        note?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
