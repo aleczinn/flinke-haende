@@ -13,54 +13,120 @@ import {
     getOgLocale,
     getAlternateOgLocales,
     getDefaultForLanguage,
+    PayloadLocale,
 } from '@/lib/locale'
 import { BASE_URL } from '@/lib/site'
+import { getCompanyConfig } from '@/lib/queries'
+import { cache } from 'react'
 
 const HOME_SLUG = 'home'
-
-// ISR: Seiten werden alle 60s frisch geholt, sonst aus dem statischen Build
-export const revalidate = 60
 
 interface PageProps {
     params: Promise<{ lang: string; slug?: string[] }>
 }
 
-// ---------- Data Fetching ----------
-
-async function fetchPage(locale: Locale, slug: string[]): Promise<PageDoc | null> {
+const fetchPage = cache(async (localeTag: PayloadLocale, slugPath: string): Promise<PageDoc | null> => {
     const payload = await getPayload({ config })
-    const isHome = slug.length === 0
+    const isHome = slugPath === ''
 
     const where: Where = isHome
         ? { slug: { equals: HOME_SLUG } }
         : {
               and: [
-                  { 'breadcrumbs.url': { equals: `/${slug.join('/')}` } },
-                  { slug: { equals: slug[slug.length - 1] } },
+                  { 'breadcrumbs.url': { equals: `/${slugPath}` } },
+                  { slug: { equals: slugPath.split('/').pop()! } },
               ],
           }
 
     const { docs } = await payload.find({
         collection: 'pages',
-        locale: toLocaleTag(locale),
+        locale: localeTag,
         limit: 1,
         depth: 2,
         where,
     })
 
     return (docs[0] as PageDoc) ?? null
+})
+
+const fetchAllLocales = cache(async (id: string | number) => {
+    const payload = await getPayload({ config })
+    return payload.findByID({ collection: 'pages', id, locale: 'all', depth: 0 })
+})
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const { lang, slug } = await params
+    const locale = getLocaleFromLang(lang) ?? DEFAULT_LOCALE
+    const slugPath = (slug ?? []).join('/')
+
+    const page = await fetchPage(toLocaleTag(locale), slugPath)
+    if (!page) {
+        return { title: '404', robots: { index: false, follow: false } }
+    }
+
+    const company = await getCompanyConfig(locale)
+    const allLocales = await fetchAllLocales(page.id)
+    const allBreadcrumbs = allLocales.breadcrumbs as Record<string, { url: string }[]>
+
+    const buildHref = (l: Locale): string => {
+        if (page.slug === HOME_SLUG) return `${BASE_URL}/${l.language}`
+        const tag = toLocaleTag(l)
+        const crumbs = allBreadcrumbs?.[tag] ?? []
+        const url = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
+        return `${BASE_URL}/${l.language}${url}`
+    }
+
+    const defaultCanonical = buildHref(locale)
+    const languages: Record<string, string> = {
+        'x-default': buildHref(DEFAULT_LOCALE),
+        ...Object.fromEntries(locales.map((l) => [toLocaleTag(l), buildHref(l)])),
+    }
+
+    const resolvedTitle = page.meta?.title || page.title;
+    const companyName = company.company_name.replace('GmbH', '')
+    const title = `${resolvedTitle} | ${companyName}`
+    const description = page.meta?.description || company.site_description;
+
+    const ogImage =
+        (typeof page.meta?.image === 'object' && page.meta.image?.url) ||
+        company.defaultOgImage?.url ||
+        `${BASE_URL}/og-default.jpg`
+
+    const canonical = page.meta?.canonical?.trim() || defaultCanonical
+
+    return {
+        title: title,
+        description: description,
+        alternates: { canonical, languages },
+        robots: page.meta?.noIndex ? { index: false, follow: false } : { index: true, follow: true },
+        openGraph: {
+            locale: getOgLocale(locale),
+            alternateLocale: getAlternateOgLocales(locale),
+            title: resolvedTitle,
+            description: description,
+            siteName: companyName,
+            url: canonical,
+            type: 'website',
+            images: [{ url: ogImage, width: 1200, height: 630 }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: resolvedTitle,
+            description: description,
+            images: [ogImage],
+        },
+    }
 }
 
-// ---------- SSG: Pfade für alle Sprachen vorrendern ----------
 
 export async function generateStaticParams() {
-    const payload = await getPayload({ config })
     const params: { lang: string; slug: string[] }[] = []
 
     for (const lang of availableLanguages) {
         const locale = getDefaultForLanguage(lang)
         if (!locale) continue
 
+        const payload = await getPayload({ config })
         const { docs } = await payload.find({
             collection: 'pages',
             locale: toLocaleTag(locale),
@@ -74,71 +140,14 @@ export async function generateStaticParams() {
                 params.push({ lang, slug: [] })
                 continue
             }
-
             const lastCrumb = doc.breadcrumbs?.[doc.breadcrumbs.length - 1]
-            const fullUrl = lastCrumb?.url ?? `/${doc.slug}`
-            const segments = fullUrl.split('/').filter(Boolean)
-
+            const segments = (lastCrumb?.url ?? `/${doc.slug}`).split('/').filter(Boolean)
             params.push({ lang, slug: segments })
         }
     }
     return params
 }
 
-// ---------- Metadata ----------
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { lang, slug } = await params
-    const locale = getLocaleFromLang(lang) ?? DEFAULT_LOCALE
-    const page = await fetchPage(locale, slug ?? [])
-
-    if (!page) {
-        return { title: '404', robots: { index: false, follow: false } }
-    }
-
-    // Aktuellen Pfad in jeder Sprache für hreflang berechnen
-    // Wir laden das Doc mit locale: 'all' nochmal, um alle Übersetzungen zu bekommen
-    const payload = await getPayload({ config })
-    const allLocales = await payload.findByID({
-        collection: 'pages',
-        id: page.id,
-        locale: 'all',
-        depth: 0,
-    })
-    const allBreadcrumbs = allLocales.breadcrumbs as Record<string, any[]> | any[]
-
-    const buildHref = (l: Locale) => {
-        if (page.slug === HOME_SLUG) return `${BASE_URL}/${l.language}`
-        // Bei locale:'all' sind localized fields als Object pro Sprache zurück
-        const crumbs = Array.isArray(allBreadcrumbs) ? allBreadcrumbs : (allBreadcrumbs?.[l.language] ?? [])
-        const url = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
-        return `${BASE_URL}/${l.language}${url}`
-    }
-
-    const canonical = buildHref(locale)
-    const languages: Record<string, string> = {
-        'x-default': buildHref(DEFAULT_LOCALE),
-        ...Object.fromEntries(locales.map((l) => [toLocaleTag(l), buildHref(l)])),
-    }
-
-    return {
-        title: page.title,
-        // title: page.seo?.title || page.title,
-        // description: page.seo?.description ?? undefined,
-        // alternates: { canonical, languages },
-        // robots: page.seo?.noIndex ? { index: false, follow: false } : { index: true, follow: true },
-        openGraph: {
-            locale: getOgLocale(locale),
-            alternateLocale: getAlternateOgLocales(locale),
-            // title: page.seo?.title || page.title,
-            // description: page.seo?.description ?? undefined,
-            url: canonical,
-            type: 'website',
-        },
-    }
-}
-
-// ---------- Page ----------
 
 export default async function Page({ params }: PageProps) {
     const { lang, slug } = await params
@@ -147,8 +156,8 @@ export default async function Page({ params }: PageProps) {
         return notFound()
     }
 
-    const segments = slug ?? []
-    const page = await fetchPage(locale, segments)
+    const slugPath = (slug ?? []).join('/')
+    const page = await fetchPage(toLocaleTag(locale), slugPath)
     if (!page) {
         return notFound()
     }

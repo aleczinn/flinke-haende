@@ -44,6 +44,22 @@ export const Company: GlobalConfig = {
                                 },
                             },
                         },
+                        {
+                            name: 'defaultOgImage',
+                            type: 'upload',
+                            required: true,
+                            relationTo: 'media',
+                            label: {
+                                de: 'Standard OG-Bild',
+                                en: 'Default OG image'
+                            },
+                            admin: {
+                                description: {
+                                    de: 'Wird verwendet, wenn eine Seite kein eigenes SEO-Bild hat. (Optimal: 1200x630px)',
+                                    en: 'Used when a page has no own SEO image. (Optimal: 1200x630px)',
+                                },
+                            },
+                        },
                     ],
                 },
                 {

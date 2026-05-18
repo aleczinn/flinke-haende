@@ -248,6 +248,20 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
+  text?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Leave empty for the automatic URL. Only set if this page should point elsewhere.
+     */
+    canonical?: string | null;
+    noIndex?: boolean | null;
+  };
   parent?: (number | null) | Page;
   breadcrumbs?:
     | {
@@ -437,6 +451,16 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  text?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        canonical?: T;
+        noIndex?: T;
+      };
   parent?: T;
   breadcrumbs?:
     | T
@@ -517,6 +541,10 @@ export interface Company {
    * SEO fallback when a page has no own description.
    */
   siteDescription: string;
+  /**
+   * Used when a page has no own SEO image. (Optimal: 1200x630px)
+   */
+  defaultOgImage: number | Media;
   telephone: string;
   email: string;
   street: string;
@@ -569,6 +597,7 @@ export interface CompanySelect<T extends boolean = true> {
   companyName?: T;
   owner?: T;
   siteDescription?: T;
+  defaultOgImage?: T;
   telephone?: T;
   email?: T;
   street?: T;

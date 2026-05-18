@@ -16,6 +16,7 @@ export interface CompanyConfig {
     company_name: string
     owner: string
     site_description: string
+    defaultOgImage: any
     telephone: string
     email: string
     address_street_house_number: string
@@ -36,6 +37,7 @@ export const getCompanyConfig = cache(async (locale: Locale): Promise<CompanyCon
         company_name: c.companyName,
         owner: c.owner,
         site_description: c.siteDescription,
+        defaultOgImage: c.defaultOgImage,
         telephone: c.telephone,
         email: c.email,
         address_street_house_number: `${c.street} ${c.houseNumber}`,
