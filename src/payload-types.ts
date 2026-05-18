@@ -546,7 +546,7 @@ export interface Company {
    */
   siteDescription: string;
   /**
-   * Used when a page has no own SEO image. (Optimal: 1200x630px)
+   * SEO fallback when a page has no own og image. (Optimal: 1200x630px)
    */
   defaultOgImage: number | Media;
   telephone: string;

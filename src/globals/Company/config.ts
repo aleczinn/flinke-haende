@@ -66,8 +66,8 @@ export const Company: GlobalConfig = {
                             },
                             admin: {
                                 description: {
-                                    de: 'Wird verwendet, wenn eine Seite kein eigenes SEO-Bild hat. (Optimal: 1200x630px)',
-                                    en: 'Used when a page has no own SEO image. (Optimal: 1200x630px)',
+                                    de: 'SEO-Fallback: Wird verwendet, wenn eine Seite kein eigenes OG-Bild hat. (Optimal: 1200x630px)',
+                                    en: 'SEO fallback when a page has no own og image. (Optimal: 1200x630px)',
                                 },
                             },
                         },
