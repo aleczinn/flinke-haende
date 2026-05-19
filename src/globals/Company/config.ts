@@ -26,21 +26,6 @@ const generalFields = (): Field[] => [
         },
     },
     {
-        name: 'owner',
-        type: 'text',
-        required: true,
-        label: {
-            de: 'Geschäftsführer',
-            en: 'Owner',
-        },
-        admin: {
-            description: {
-                de: 'Für das Impressum',
-                en: 'For the legal notice',
-            },
-        },
-    },
-    {
         name: 'siteDescription',
         type: 'textarea',
         required: true,
@@ -69,6 +54,21 @@ const generalFields = (): Field[] => [
             description: {
                 de: 'SEO-Fallback: Wird verwendet, wenn eine Seite kein eigenes OG-Bild hat. (Optimal: 1200x630px)',
                 en: 'SEO fallback when a page has no own og image. (Optimal: 1200x630px)',
+            },
+        },
+    },
+    {
+        name: 'owner',
+        type: 'text',
+        required: true,
+        label: {
+            de: 'Geschäftsführer',
+            en: 'Owner',
+        },
+        admin: {
+            description: {
+                de: 'z. B. für das Impressum',
+                en: 'e.g., for the legal notice',
             },
         },
     },

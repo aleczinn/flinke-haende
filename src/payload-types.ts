@@ -538,10 +538,6 @@ export interface Company {
    */
   companyNameShorthand?: string | null;
   /**
-   * For the legal notice
-   */
-  owner: string;
-  /**
    * SEO fallback when a page has no own description.
    */
   siteDescription: string;
@@ -549,6 +545,10 @@ export interface Company {
    * SEO fallback when a page has no own og image. (Optimal: 1200x630px)
    */
   defaultOgImage: number | Media;
+  /**
+   * e.g., for the legal notice
+   */
+  owner: string;
   telephone: string;
   email: string;
   /**
@@ -669,9 +669,9 @@ export interface Footer {
 export interface CompanySelect<T extends boolean = true> {
   companyName?: T;
   companyNameShorthand?: T;
-  owner?: T;
   siteDescription?: T;
   defaultOgImage?: T;
+  owner?: T;
   telephone?: T;
   email?: T;
   address?:
