@@ -551,14 +551,26 @@ export interface Company {
   defaultOgImage: number | Media;
   telephone: string;
   email: string;
-  street: string;
-  houseNumber: string;
-  postalCode: string;
-  city: string;
   /**
-   * ISO code, e.g. DE — for Schema.org
+   * The address listed as the company's registered office.
    */
-  country?: string | null;
+  address: {
+    street: string;
+    houseNumber: string;
+    postalCode: string;
+    city: string;
+    /**
+     * ISO code, e.g. DE — for Schema.org
+     */
+    country?: string | null;
+  };
+  /**
+   * Optional. Right-click in Google Maps → "What's here?".
+   */
+  geo?: {
+    latitude?: number | null;
+    longitude?: number | null;
+  };
   openingHours?:
     | {
         days: ('Mo' | 'Di' | 'Mi' | 'Do' | 'Fr' | 'Sa' | 'So')[];
@@ -576,6 +588,7 @@ export interface Company {
    * Full profile URLs. Used for footer icons and Schema.org "sameAs". Empty fields are ignored.
    */
   social?: {
+    google_business?: string | null;
     facebook?: string | null;
     instagram?: string | null;
     twitter?: string | null;
@@ -583,6 +596,7 @@ export interface Company {
     youtube?: string | null;
     xing?: string | null;
     pinterest?: string | null;
+    tiktok?: string | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -660,11 +674,21 @@ export interface CompanySelect<T extends boolean = true> {
   defaultOgImage?: T;
   telephone?: T;
   email?: T;
-  street?: T;
-  houseNumber?: T;
-  postalCode?: T;
-  city?: T;
-  country?: T;
+  address?:
+    | T
+    | {
+        street?: T;
+        houseNumber?: T;
+        postalCode?: T;
+        city?: T;
+        country?: T;
+      };
+  geo?:
+    | T
+    | {
+        latitude?: T;
+        longitude?: T;
+      };
   openingHours?:
     | T
     | {
@@ -678,6 +702,7 @@ export interface CompanySelect<T extends boolean = true> {
   social?:
     | T
     | {
+        google_business?: T;
         facebook?: T;
         instagram?: T;
         twitter?: T;
@@ -685,6 +710,7 @@ export interface CompanySelect<T extends boolean = true> {
         youtube?: T;
         xing?: T;
         pinterest?: T;
+        tiktok?: T;
       };
   updatedAt?: T;
   createdAt?: T;

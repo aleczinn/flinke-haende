@@ -97,71 +97,117 @@ const contactFields = (): Field[] => [
 
 const addressFields = (): Field[] => [
     {
-        type: 'row',
-        fields: [
-            {
-                name: 'street',
-                type: 'text',
-                required: true,
-                label: {
-                    de: 'Straße',
-                    en: 'Street',
-                },
-                admin: {
-                    width: '70%',
-                },
-            },
-            {
-                name: 'houseNumber',
-                type: 'text',
-                required: true,
-                label: {
-                    de: 'Hausnr.',
-                    en: 'No.',
-                },
-                admin: {
-                    width: '30%',
-                },
-            },
-        ],
-    },
-    {
-        type: 'row',
-        fields: [
-            {
-                name: 'postalCode',
-                type: 'text',
-                required: true,
-                label: {
-                    de: 'PLZ',
-                    en: 'Postal code',
-                },
-                admin: {
-                    width: '30%',
-                },
-            },
-            {
-                name: 'city',
-                type: 'text',
-                required: true,
-                label: {
-                    de: 'Ort',
-                    en: 'City',
-                },
-                admin: {
-                    width: '70%',
-                },
-            },
-        ],
-    },
-    {
-        name: 'country',
-        type: 'text',
-        defaultValue: 'DE',
-        label: { de: 'Land (ISO)', en: 'Country (ISO)' },
+        name: 'address',
+        type: 'group',
+        label: { de: 'Adresse', en: 'Address' },
         admin: {
-            description: { de: 'ISO-Code, z. B. DE — für Schema.org', en: 'ISO code, e.g. DE — for Schema.org' },
+            description: {
+                de: 'Die Adresse, welche als Firmensitz eingetragen ist.',
+                en: 'The address listed as the company\'s registered office.',
+            },
         },
+        fields: [
+            {
+                type: 'row',
+                fields: [
+                    {
+                        name: 'street',
+                        type: 'text',
+                        required: true,
+                        label: {
+                            de: 'Straße',
+                            en: 'Street',
+                        },
+                        admin: {
+                            width: '70%',
+                        },
+                    },
+                    {
+                        name: 'houseNumber',
+                        type: 'text',
+                        required: true,
+                        label: {
+                            de: 'Hausnr.',
+                            en: 'No.',
+                        },
+                        admin: {
+                            width: '30%',
+                        },
+                    },
+                ],
+            },
+            {
+                type: 'row',
+                fields: [
+                    {
+                        name: 'postalCode',
+                        type: 'text',
+                        required: true,
+                        label: {
+                            de: 'PLZ',
+                            en: 'Postal code',
+                        },
+                        admin: {
+                            width: '30%',
+                        },
+                    },
+                    {
+                        name: 'city',
+                        type: 'text',
+                        required: true,
+                        label: {
+                            de: 'Ort',
+                            en: 'City',
+                        },
+                        admin: {
+                            width: '70%',
+                        },
+                    },
+                ],
+            },
+            {
+                name: 'country',
+                type: 'text',
+                defaultValue: 'DE',
+                label: { de: 'Land (ISO)', en: 'Country (ISO)' },
+                admin: {
+                    description: {
+                        de: 'ISO-Code, z. B. DE — für Schema.org',
+                        en: 'ISO code, e.g. DE — for Schema.org',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        name: 'geo',
+        type: 'group',
+        label: { de: 'Koordinaten (optional)', en: 'Coordinates (optional)' },
+        admin: {
+            description: {
+                de: 'Optional. In Google Maps per Rechtsklick „Was ist hier?" ablesbar.',
+                en: 'Optional. Right-click in Google Maps → "What\'s here?".',
+            },
+        },
+        fields: [
+            {
+                type: 'row',
+                fields: [
+                    {
+                        name: 'latitude',
+                        type: 'number',
+                        label: { de: 'Breitengrad', en: 'Latitude' },
+                        admin: { width: '50%', step: 0.000001 },
+                    },
+                    {
+                        name: 'longitude',
+                        type: 'number',
+                        label: { de: 'Längengrad', en: 'Longitude' },
+                        admin: { width: '50%', step: 0.000001 },
+                    },
+                ],
+            },
+        ],
     },
 ]
 
@@ -277,6 +323,14 @@ const socialFields = (): Field[] => [
             },
         },
         fields: [
+            urlField(
+                'google_business',
+                {
+                    de: 'Google Business Profil',
+                    en: 'Google Business Profile',
+                },
+                'https://g.co/kgs/… OR https://maps.app.goo.gl/…',
+            ),
             urlField('facebook', { de: 'Facebook', en: 'Facebook' }, 'https://www.facebook.com/…'),
             urlField('instagram', { de: 'Instagram', en: 'Instagram' }, 'https://www.instagram.com/…'),
             urlField('twitter', { de: 'X / Twitter', en: 'X / Twitter' }, 'https://x.com/…'),
@@ -284,6 +338,7 @@ const socialFields = (): Field[] => [
             urlField('youtube', { de: 'YouTube', en: 'YouTube' }, 'https://www.youtube.com/@…'),
             urlField('xing', { de: 'Xing', en: 'Xing' }, 'https://www.xing.com/pages/…'),
             urlField('pinterest', { de: 'Pinterest', en: 'Pinterest' }, 'https://de.pinterest.com/…'),
+            urlField('tiktok', { de: 'TikTok', en: 'TikTok' }, 'https://www.tiktok.com/…'),
         ],
     },
 ]

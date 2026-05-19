@@ -2,6 +2,7 @@ import { cache } from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Locale, toLocaleTag } from '@/lib/locale'
+import { Company } from '@/payload-types'
 
 export interface OpeningHoursItem {
     id?: string
@@ -20,10 +21,16 @@ export interface CompanyConfig {
     defaultOgImage: any
     telephone: string
     email: string
-    address_street_house_number: string
-    address_plz_town: string
-    address_country: string
+    address: {
+        street: string
+        house_number: string
+        city: string
+        postal_code: string
+        country_iso: string
+    }
+    geo?: Company['geo']
     opening_hours: OpeningHoursItem[]
+    social: Company['social']
 }
 
 export interface NavigationLink {
@@ -61,9 +68,17 @@ export const getCompanyConfig = cache(async (locale: Locale): Promise<CompanyCon
         defaultOgImage: c.defaultOgImage,
         telephone: c.telephone,
         email: c.email,
-        address_street_house_number: `${c.street} ${c.houseNumber}`,
-        address_plz_town: `${c.postalCode} ${c.city}`,
-        address_country: c.country ?? 'DE',
+        address: {
+            street: c.address.street,
+            house_number: c.address.houseNumber,
+            postal_code: c.address.postalCode,
+            city: c.address.city,
+            country_iso: c.address.country ?? 'DE',
+        },
+        geo: {
+            latitude: c.geo?.latitude,
+            longitude: c.geo?.longitude,
+        },
         opening_hours: (c.openingHours ?? []).map((o) => ({
             id: o.id ?? undefined,
             days: o.days ?? [],
@@ -72,6 +87,7 @@ export const getCompanyConfig = cache(async (locale: Locale): Promise<CompanyCon
             close: o.close ?? undefined,
             note: o.note ?? undefined,
         })),
+        social: c.social,
     }
 })
 
