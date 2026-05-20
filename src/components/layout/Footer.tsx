@@ -72,8 +72,8 @@ export default async function Footer({ locale }: FooterProps) {
 
                         <div className="flex flex-col">
                             <span className="font-semibold">{company.company_name.toUpperCase()}</span>
-                            <span className="">{company.address_street_house_number}</span>
-                            <span className="">{company.address_plz_town}</span>
+                            <span className="">{company.address.street} + {company.address.house_number}</span>
+                            <span className="">{company.address.postal_code} {company.address.city}</span>
                         </div>
 
                         <div className="flex-1 min-h-8"></div>
@@ -107,7 +107,7 @@ export default async function Footer({ locale }: FooterProps) {
 
                         <ul className="flex flex-col gap-2">
                             {footer.navigation.map((item) => (
-                                <li key={item.href}>
+                                <li key={item.id}>
                                     <Link
                                         href={item.href}
                                         title={item.label}

@@ -203,7 +203,7 @@ export default function MobileNavigation({ locale, items }: MobileNavigationProp
                         <nav aria-label={labels.mainNav} className="pb-14">
                             <ul key={resetKey} className="flex flex-col border-b-2 border-gray-20">
                                 {items.map((item) => (
-                                    <MobileMenuItem key={item.href} item={item} onNavigate={close} />
+                                    <MobileMenuItem key={item.id} item={item} onNavigate={close} />
                                 ))}
                             </ul>
                         </nav>
@@ -306,7 +306,7 @@ function Submenu({ id, isOpen, items, onNavigate }: {
                     if (!child.href) return null;
 
                     return (
-                        <li key={child.href}>
+                        <li key={child.id}>
                             <Link href={child.href}
                                   onClick={onNavigate}
                                   className="block pl-6 pr-4 py-3 text-sm text-gray-90 transition-colors hover:text-primary focus-element"

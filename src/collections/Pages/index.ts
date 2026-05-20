@@ -50,10 +50,13 @@ export const Pages: CollectionConfig = {
                     },
                     fields: [
                         {
-                            name: 'text',
+                            name: 'layout',
                             type: 'text',
                             localized: false,
                             label: { de: 'Seiteninhalt', en: 'Page content' },
+                            admin: {
+                                // initCollapsed: true,
+                            },
                         },
                     ],
                 },

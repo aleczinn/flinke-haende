@@ -19,7 +19,7 @@ export default function DesktopNavigation({ locale, items }: HeaderNavigationPro
         <nav className="hidden lg:block" aria-label={label}>
             <ul className="flex flex-row items-center gap-2">
                 {items.map((item) => (
-                    <HeaderNavigationItem key={item.href} locale={locale} item={item} />
+                    <HeaderNavigationItem key={item.id} locale={locale} item={item} />
                 ))}
             </ul>
         </nav>
@@ -236,7 +236,7 @@ function HeaderNavigationDropdown({ locale, item }: { locale: Locale; item: Navi
 
                             return (
                                 <li
-                                    key={child.label}
+                                    key={child.id}
                                     className="not-last:border-b-1 w-full border-gray-20 px-4 h-fit"
                                 >
                                     <Link
