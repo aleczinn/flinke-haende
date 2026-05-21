@@ -6,12 +6,29 @@ import {
     OverviewField,
     PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { generatePreviewPath } from '@/lib/utilities/generatePreviewPath'
 
 export const Pages: CollectionConfig = {
     slug: 'pages',
     admin: {
         useAsTitle: 'title',
         defaultColumns: ['title', 'slug', 'parent', 'updatedAt'],
+        livePreview: {
+            url: ({ data, req }) =>
+                generatePreviewPath({
+                    slug: typeof data?.slug === 'string' ? data.slug : '',
+                    collection: 'pages',
+                    data,
+                    req,
+                }),
+        },
+        preview: (data, { req }) =>
+            generatePreviewPath({
+                slug: typeof data?.slug === 'string' ? data.slug : '',
+                collection: 'pages',
+                data,
+                req,
+            }),
     },
     versions: { drafts: true },
     labels: {

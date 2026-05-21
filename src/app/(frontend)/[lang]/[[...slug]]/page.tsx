@@ -18,12 +18,15 @@ import { BASE_URL } from '@/lib/site'
 import { getCompanyConfig, HOME_SLUG } from '@/lib/queries'
 import { cache } from 'react'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
+import { draftMode } from 'next/headers'
+import { LivePreviewListener } from '@/components/preview/LivePreviewListener'
 
 interface PageProps {
     params: Promise<{ lang: string; slug?: string[] }>
 }
 
 const fetchPage = cache(async (localeTag: PayloadLocale, slugPath: string): Promise<PageDoc | null> => {
+    const { isEnabled: draft } = await draftMode()
     const payload = await getPayload({ config })
     const isHome = slugPath === ''
 
@@ -41,6 +44,7 @@ const fetchPage = cache(async (localeTag: PayloadLocale, slugPath: string): Prom
         locale: localeTag,
         limit: 1,
         depth: 2,
+        draft,
         where,
     })
 
@@ -168,10 +172,12 @@ export default async function Page({ params }: PageProps) {
         return notFound()
     }
 
+    const { isEnabled: draft } = await draftMode()
     const isHome = page.slug === HOME_SLUG
 
     return (
         <main id="main" className="grow flex flex-col bg-gray-10 min-h-[50svh]">
+            {draft && <LivePreviewListener />}
             {!isHome && <Breadcrumbs locale={locale} page={page} includeSchema />}
             <p>render page</p>
         </main>
