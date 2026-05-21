@@ -248,7 +248,7 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
-  text?: string | null;
+  layout?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -451,7 +451,7 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  text?: T;
+  layout?: T;
   meta?:
     | T
     | {

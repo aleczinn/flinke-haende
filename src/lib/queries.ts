@@ -34,6 +34,7 @@ export interface CompanyConfig {
 }
 
 export interface NavigationLink {
+    id: string
     href: string
     label: string
     newTab: boolean
@@ -131,12 +132,22 @@ export const getFooterConfig = cache(async (locale: Locale): Promise<FooterConfi
 })
 
 function resolveLink(item: any, locale: Locale): NavigationLink | null {
+    if (!item?.id) {
+        return null
+    }
+
     const lang = locale.language
     const description = item?.description || undefined
 
-    if (item?.type === 'external') {
+    if (item.type === 'external') {
         if (!item.url) return null
-        return { href: item.url, label: item.label || item.url, newTab: !!item.newTab }
+        return {
+            id: item.id,
+            href: item.url,
+            label: item.label || item.url,
+            newTab: !!item.newTab,
+            description,
+        }
     }
 
     const page = item?.page
@@ -146,5 +157,5 @@ function resolveLink(item: any, locale: Locale): NavigationLink | null {
     const path = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
     const href = page.slug === HOME_SLUG ? `/${lang}` : `/${lang}${path}`
 
-    return { href, label: item.label || page.title, newTab: false, description }
+    return { id: item.id, href, label: item.label || page.title, newTab: false, description }
 }
