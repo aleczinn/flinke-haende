@@ -14,7 +14,7 @@ export async function GET(req: Request): Promise<Response> {
     const previewSecret = searchParams.get('previewSecret')
 
     if (previewSecret !== process.env.PREVIEW_SECRET) {
-        return new Response('You are not allowed to preview this page', { status: 403 })
+        return new Response('You are not allowed to admin this page', { status: 403 })
     }
 
     if (!path || !collection || !slug) {
@@ -32,15 +32,15 @@ export async function GET(req: Request): Promise<Response> {
             headers: req.headers,
         })
     } catch (error) {
-        payload.logger.error({ err: error }, 'Error verifying token for live preview')
-        return new Response('You are not allowed to preview this page', { status: 403 })
+        payload.logger.error({ err: error }, 'Error verifying token for live admin')
+        return new Response('You are not allowed to admin this page', { status: 403 })
     }
 
     const draft = await draftMode()
 
     if (!user) {
         draft.disable()
-        return new Response('You are not allowed to preview this page', { status: 403 })
+        return new Response('You are not allowed to admin this page', { status: 403 })
     }
 
     draft.enable()

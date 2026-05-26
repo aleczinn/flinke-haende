@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Locale, toLocaleTag } from '@/lib/locale'
 import { Company } from '@/payload-types'
+import { unstable_cache } from 'next/cache'
 
 export interface OpeningHoursItem {
     id?: string
@@ -130,6 +131,22 @@ export const getFooterConfig = cache(async (locale: Locale): Promise<FooterConfi
             .filter(Boolean) as NavigationLink[],
     }
 })
+
+export const getCachedRedirects = () =>
+    unstable_cache(
+        async () => {
+            const payload = await getPayload({ config })
+            const { docs } = await payload.find({
+                collection: 'redirects',
+                limit: 0,
+                pagination: false,
+                depth: 1,
+            })
+            return docs
+        },
+        ['redirects'],
+        { tags: ['redirects'] },
+    )
 
 function resolveLink(item: any, locale: Locale): NavigationLink | null {
     if (!item?.id) {

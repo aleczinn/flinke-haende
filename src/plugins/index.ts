@@ -4,6 +4,8 @@ import { seoPlugin } from '@payloadcms/plugin-seo'
 import type { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import type { Page } from '@/payload-types'
 import { BASE_URL } from '@/lib/site'
+import { redirectsPlugin } from '@payloadcms/plugin-redirects'
+import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 
 const generateTitle: GenerateTitle<Page> = ({ doc }) => doc?.title ?? ''
 
@@ -24,6 +26,79 @@ export const plugins: Plugin[] = [
         tabbedUI: false,
         generateTitle,
         generateURL,
+    }),
+    redirectsPlugin({
+        collections: ['pages'],
+        overrides: {
+            labels: {
+                singular: { de: 'Weiterleitung', en: 'Redirect' },
+                plural: { de: 'Weiterleitungen', en: 'Redirects' },
+            },
+
+            // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
+            fields: ({ defaultFields }) => {
+                return defaultFields.map((field) => {
+                    if (!('name' in field)) {
+                        return field
+                    }
+
+                    if (field.name === 'from') {
+                        return {
+                            ...field,
+                            label: { de: 'Von (Quell-URL)', en: 'From (Source URL)' },
+                            admin: {
+                                description: {
+                                    de: 'Pfad der alten URL, z. B. /de/alte-seite',
+                                    en: 'Path of the old URL, e.g. /en/old-page',
+                                },
+                            },
+                        }
+                    }
+
+                    if (field.name === 'to') {
+                        const groupField = field as typeof field & { fields?: any[] }
+                        return {
+                            ...field,
+                            label: { de: 'Zu (Ziel)', en: 'To (Destination)' },
+                            ...(groupField.fields && {
+                                fields: groupField.fields.map((subField: any) => {
+                                    if (!('name' in subField)) return subField
+
+                                    if (subField.name === 'type') {
+                                        return {
+                                            ...subField,
+                                            label: { de: 'Typ', en: 'Type' },
+                                            options: subField.options?.map((option: any) => {
+                                                const optionLabels: Record<string, { de: string; en: string }> = {
+                                                    internalLink: { de: 'Interne Seite', en: 'Internal page' },
+                                                    customUrl: { de: 'Externe URL', en: 'External URL' },
+                                                }
+                                                return optionLabels[option.value]
+                                                    ? { ...option, label: optionLabels[option.value] }
+                                                    : option
+                                            }),
+                                        }
+                                    }
+
+                                    const labels: Record<string, { de: string; en: string }> = {
+                                        reference: { de: 'Interne Seite', en: 'Internal page' },
+                                        url: { de: 'Externe URL', en: 'External URL' },
+                                    }
+                                    return labels[subField.name]
+                                        ? { ...subField, label: labels[subField.name] }
+                                        : subField
+                                }),
+                            }),
+                        }
+                    }
+
+                    return field
+                })
+            },
+            hooks: {
+                afterChange: [revalidateRedirects],
+            },
+        },
     }),
 ]
 

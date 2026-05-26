@@ -20,6 +20,9 @@ importers:
       '@payloadcms/plugin-nested-docs':
         specifier: ^3.84.1
         version: 3.84.1(payload@3.84.1(graphql@16.14.0)(typescript@5.7.3))
+      '@payloadcms/plugin-redirects':
+        specifier: ^3.84.1
+        version: 3.85.0(payload@3.84.1(graphql@16.14.0)(typescript@5.7.3))
       '@payloadcms/plugin-seo':
         specifier: ^3.84.1
         version: 3.84.1(@types/react@19.2.14)(monaco-editor@0.55.1)(next@16.2.6(@babel/core@7.29.0)(@playwright/test@1.58.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.84.1(graphql@16.14.0)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3)
@@ -1433,6 +1436,11 @@ packages:
     peerDependencies:
       payload: 3.84.1
 
+  '@payloadcms/plugin-redirects@3.85.0':
+    resolution: {integrity: sha512-3TNEY/NYHuGS83beVX/+XmjRadxSdHd96B9D1qin5Hg9zMeXeWhJ+1eQmWjxobzzZcAC6CVx+Nl0ghWA4QPofg==}
+    peerDependencies:
+      payload: 3.85.0
+
   '@payloadcms/plugin-seo@3.84.1':
     resolution: {integrity: sha512-9FYs5ML/eWR/A/rQfHt2NhPzkJWbUx5SN/+lEQ90r3c3Z8CQUVpt4vETXSI9Gxi764lTutIGemuZAJK9WRy3Lw==}
     peerDependencies:
@@ -1453,6 +1461,9 @@ packages:
 
   '@payloadcms/translations@3.84.1':
     resolution: {integrity: sha512-1g4IsXvRfeQCn8YmPweaj8MMAFK9oSxYWKJG15j+Ah9Nra+f35/ZdOt/k80+vfoJmdKsOK/AnuzVdSTWy2GQpg==}
+
+  '@payloadcms/translations@3.85.0':
+    resolution: {integrity: sha512-dZQc3OfVtp7IkL9R3e4t1n7MbDaKfhF6C6ewISOzJgkgrcdoCfrqXonwMYE4Ue6IDEqAtJuyEkOvFWew5tBHKw==}
 
   '@payloadcms/ui@3.84.1':
     resolution: {integrity: sha512-L9trD3/LcK1fiGg4AFexy9AQm4upMzRbicZFTNU/ac+x5o6Pwyr7FzrvbtfCr0l2t6QhawLBZmBCZJA8oBF2uA==}
@@ -5702,6 +5713,11 @@ snapshots:
     dependencies:
       payload: 3.84.1(graphql@16.14.0)(typescript@5.7.3)
 
+  '@payloadcms/plugin-redirects@3.85.0(payload@3.84.1(graphql@16.14.0)(typescript@5.7.3))':
+    dependencies:
+      '@payloadcms/translations': 3.85.0
+      payload: 3.84.1(graphql@16.14.0)(typescript@5.7.3)
+
   '@payloadcms/plugin-seo@3.84.1(@types/react@19.2.14)(monaco-editor@0.55.1)(next@16.2.6(@babel/core@7.29.0)(@playwright/test@1.58.2)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4))(payload@3.84.1(graphql@16.14.0)(typescript@5.7.3))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.7.3)':
     dependencies:
       '@payloadcms/translations': 3.84.1
@@ -5762,6 +5778,10 @@ snapshots:
       - yjs
 
   '@payloadcms/translations@3.84.1':
+    dependencies:
+      date-fns: 4.1.0
+
+  '@payloadcms/translations@3.85.0':
     dependencies:
       date-fns: 4.1.0
 

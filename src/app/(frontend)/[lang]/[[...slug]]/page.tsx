@@ -19,7 +19,8 @@ import { getCompanyConfig, HOME_SLUG } from '@/lib/queries'
 import { cache } from 'react'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import { draftMode } from 'next/headers'
-import { LivePreviewListener } from '@/components/preview/LivePreviewListener'
+import { LivePreviewListener } from '@/components/admin/LivePreviewListener'
+import { PayloadRedirects } from '@/components/admin/PayloadRedirects'
 
 interface PageProps {
     params: Promise<{ lang: string; slug?: string[] }>
@@ -168,6 +169,13 @@ export default async function Page({ params }: PageProps) {
 
     const slugPath = (slug ?? []).join('/')
     const page = await fetchPage(toLocaleTag(locale), slugPath)
+
+
+    if (!page) {
+        // Erst Redirects prüfen, dann 404
+        return <PayloadRedirects url={`/${lang}${slugPath ? `/${slugPath}` : ''}`} lang={lang} />
+    }
+
     if (!page) {
         return notFound()
     }
