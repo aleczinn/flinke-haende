@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import { CollectionConfig } from 'payload'
 import {
     MetaDescriptionField,
     MetaImageField,
@@ -7,6 +7,7 @@ import {
     PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { generatePreviewPath } from '@/lib/utilities/generatePreviewPath'
+import { slugField } from '@/fields/slug'
 
 export const Pages: CollectionConfig = {
     slug: 'pages',
@@ -46,17 +47,18 @@ export const Pages: CollectionConfig = {
                 en: 'Title',
             },
         },
-        {
-            name: 'slug',
-            type: 'text',
-            required: true,
-            localized: true,
-            index: true,
-            label: {
-                de: 'Slug',
-                en: 'Slug',
+        slugField('title', {
+            slug: {
+                required: true,
+                localized: true,
+                admin: {
+                    description: {
+                        de: 'Definiert den Namen des URL-Segments dieser Seite.',
+                        en: 'Defines the URL segment for this page.',
+                    },
+                },
             },
-        },
+        }),
         {
             type: 'tabs',
             tabs: [

@@ -1,0 +1,22 @@
+.f-slug {
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        gap: var(--base);
+    }
+
+    &__btn {
+        display: flex;
+        gap: calc(var(--base) * 0.75);
+        align-items: center;
+    }
+
+    &__description {
+        margin-top: calc(var(--base) * 0.5);
+        font-size: 14px;
+        color: var(--theme-elevation-500);
+        line-height: 1.4;
+    }
+}
