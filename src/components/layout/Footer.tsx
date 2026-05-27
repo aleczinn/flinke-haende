@@ -71,7 +71,7 @@ export default async function Footer({ locale }: FooterProps) {
                         />
 
                         <div className="flex flex-col">
-                            <span className="font-semibold">{company.company_name.toUpperCase()}</span>
+                            <span className="font-semibold">{company.company_name?.toUpperCase()}</span>
                             <span className="">{company.address.street} + {company.address.house_number}</span>
                             <span className="">{company.address.postal_code} {company.address.city}</span>
                         </div>

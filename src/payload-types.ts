@@ -250,7 +250,7 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
-  layout?: string | null;
+  layout?: MediaWithText[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -279,12 +279,21 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaWithText".
+ */
+export interface MediaWithText {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mwt';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
   id: number;
   /**
-   * Path of the old URL, e.g. /en/old-page
+   * Path without language prefix, e.g. /old-page
    */
   from: string;
   to?: {
@@ -478,7 +487,11 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  layout?: T;
+  layout?:
+    | T
+    | {
+        mwt?: T | MediaWithTextSelect<T>;
+      };
   meta?:
     | T
     | {
@@ -500,6 +513,14 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaWithText_select".
+ */
+export interface MediaWithTextSelect<T extends boolean = true> {
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

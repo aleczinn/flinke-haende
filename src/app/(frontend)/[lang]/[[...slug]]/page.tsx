@@ -19,8 +19,10 @@ import { getCompanyConfig, HOME_SLUG } from '@/lib/queries'
 import { cache } from 'react'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import { draftMode } from 'next/headers'
-import { LivePreviewListener } from '@/components/admin/LivePreviewListener'
-import { PayloadRedirects } from '@/components/admin/PayloadRedirects'
+import { LivePreviewListener } from '@/components/payload/LivePreviewListener'
+import { PayloadRedirects } from '@/components/payload/PayloadRedirects'
+import { PayloadBlockRenderer } from '@/components/payload/PayloadBlockRenderer'
+import layout from '@/app/(payload)/layout'
 
 interface PageProps {
     params: Promise<{ lang: string; slug?: string[] }>
@@ -172,8 +174,7 @@ export default async function Page({ params }: PageProps) {
 
 
     if (!page) {
-        // Erst Redirects prüfen, dann 404
-        return <PayloadRedirects url={`/${lang}${slugPath ? `/${slugPath}` : ''}`} lang={lang} />
+        return <PayloadRedirects disableNotFound url={`/${lang}${slugPath ? `/${slugPath}` : ''}`} lang={lang} />
     }
 
     if (!page) {
@@ -182,12 +183,14 @@ export default async function Page({ params }: PageProps) {
 
     const { isEnabled: draft } = await draftMode()
     const isHome = page.slug === HOME_SLUG
+    const { layout } = page
 
     return (
         <main id="main" className="grow flex flex-col bg-gray-10 min-h-[50svh]">
             {draft && <LivePreviewListener />}
             {!isHome && <Breadcrumbs locale={locale} page={page} includeSchema />}
-            <p>render page</p>
+
+            <PayloadBlockRenderer blocks={layout} />
         </main>
     )
 }

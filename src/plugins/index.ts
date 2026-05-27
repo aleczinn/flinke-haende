@@ -45,11 +45,12 @@ export const plugins: Plugin[] = [
                     if (field.name === 'from') {
                         return {
                             ...field,
+                            localized: true,
                             label: { de: 'Von (Quell-URL)', en: 'From (Source URL)' },
                             admin: {
                                 description: {
-                                    de: 'Pfad der alten URL, z. B. /de/alte-seite',
-                                    en: 'Path of the old URL, e.g. /en/old-page',
+                                    de: 'Pfad ohne Sprachpräfix, z. B. /alte-seite',
+                                    en: 'Path without language prefix, e.g. /old-page',
                                 },
                             },
                         }

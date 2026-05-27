@@ -3,7 +3,7 @@ import { BASE_URL } from '@/lib/site'
 
 export default function robots(): MetadataRoute.Robots {
     const disallow = [
-        '/admin', // Payload Admin Panel
+        '/payload', // Payload Admin Panel
         '/api/', // Payload REST API
         '/_next/',
     ]

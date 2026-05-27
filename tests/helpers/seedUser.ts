@@ -9,7 +9,7 @@ export const testUser = {
 } as const
 
 /**
- * Seeds a test user for e2e admin tests.
+ * Seeds a test user for e2e payload tests.
  */
 export async function seedTestUser(): Promise<void> {
     const payload = await getPayload({ config })

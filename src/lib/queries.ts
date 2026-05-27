@@ -1,7 +1,7 @@
 import { cache } from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { Locale, toLocaleTag } from '@/lib/locale'
+import { Locale, PayloadLocale, toLocaleTag } from '@/lib/locale'
 import { Company } from '@/payload-types'
 import { unstable_cache } from 'next/cache'
 
@@ -132,12 +132,13 @@ export const getFooterConfig = cache(async (locale: Locale): Promise<FooterConfi
     }
 })
 
-export const getCachedRedirects = () =>
+export const getCachedRedirects = (locale: PayloadLocale) =>
     unstable_cache(
         async () => {
             const payload = await getPayload({ config })
             const { docs } = await payload.find({
                 collection: 'redirects',
+                locale,
                 limit: 0,
                 pagination: false,
                 depth: 1,
