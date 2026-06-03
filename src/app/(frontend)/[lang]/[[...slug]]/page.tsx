@@ -22,8 +22,9 @@ import { draftMode } from 'next/headers'
 import { LivePreviewListener } from '@/components/payload/LivePreviewListener'
 import { PayloadRedirects } from '@/components/payload/PayloadRedirects'
 import { PayloadBlockRenderer } from '@/components/payload/PayloadBlockRenderer'
-import layout from '@/app/(payload)/layout'
 import { LocaleSwitcherUpdater } from '@/components/layout/locale/LocaleSwitcherUpdater'
+import Section from '@/components/layout/Section'
+import { Headline } from '@/components/ui/Headline'
 
 interface PageProps {
     params: Promise<{ lang: string; slug?: string[] }>
@@ -202,6 +203,15 @@ export default async function Page({ params }: PageProps) {
             <LocaleSwitcherUpdater alternates={switcherAlternates} />
             {draft && <LivePreviewListener />}
             {!isHome && <Breadcrumbs locale={locale} page={page} includeSchema />}
+
+            {!isHome && (
+                <Section variant="capped" innerClassName="mt-6">
+                    <Headline as="h1" variant="h2" alignment="left" design="line">
+                        {page.title}
+                    </Headline>
+                </Section>
+            )}
+
             <PayloadBlockRenderer blocks={layout} />
         </main>
     )

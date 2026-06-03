@@ -767,6 +767,9 @@ export interface Footer {
    * This is an optional primary action that appears as a button in the footer banner
    */
   cta?: (number | null) | Page;
+  /**
+   * Add the legal pages here, such as the Privacy Policy or Legal Notice
+   */
   legalNavigation?:
     | {
         page: number | Page;

@@ -57,6 +57,12 @@ export const Footer: GlobalConfig = {
                 singular: { de: 'Seite', en: 'Page' },
                 plural: { de: 'Seiten', en: 'Pages' },
             },
+            admin: {
+                description: {
+                    de: 'Füge hier die rechtlichen Seiten wie Datenschutz oder Impressum hinzu',
+                    en: 'Add the legal pages here, such as the Privacy Policy or Legal Notice',
+                },
+            },
             maxRows: 6,
             fields: [
                 {
