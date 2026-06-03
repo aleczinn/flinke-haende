@@ -2,10 +2,10 @@ import React from 'react'
 import { css } from '@/lib/utils'
 import Link from 'next/link'
 
-type Variant = 'primary' | 'secondary'
+export type ButtonVariant = 'primary' | 'secondary'
 
 type BaseProps = {
-  variant?: Variant
+  variant?: ButtonVariant
   fullWidth?: boolean
   iconLeft?: React.ReactNode
   iconRight?: React.ReactNode
@@ -42,7 +42,7 @@ const baseClasses = [
   'focus-element',
 ].join(' ')
 
-const variantClasses: Record<Variant, string> = {
+const variantClasses: Record<ButtonVariant, string> = {
   primary: css(
     'bg-primary text-white shadow-[var(--shadow-cta)]',
     'hover:bg-primary-darker',
@@ -60,7 +60,7 @@ const variantClasses: Record<Variant, string> = {
   ),
 }
 
-const variantClassesHollow: Record<Variant, string> = {
+const variantClassesHollow: Record<ButtonVariant, string> = {
   primary: css(
     'bg-transparent border-1 border-solid border-primary text-primary',
     'hover:border-primary-darker hover:text-primary-darker',

@@ -1,5 +1,5 @@
 import React, { useId } from 'react'
-import { MediaWithText } from '@/payload-types'
+import { MediaWithText, Page } from '@/payload-types'
 import type { Media } from '@/payload-types'
 import Section from '@/components/layout/Section'
 import { css } from '@/lib/utils'
@@ -9,6 +9,8 @@ import RichTextRenderer from '@/components/payload/RichTextRenderer'
 import { backgroundClass, backgroundColorClasses } from '@/fields/background-color'
 import { BeforeAfterImage } from '@/components/module/BeforeAfterImage'
 import { DEFAULT_LOCALE, Locale } from '@/lib/locale'
+import { Button, ButtonVariant } from '@/components/ui/Button'
+import { resolveButtonHref } from '@/lib/queries'
 
 type MediaWithTextBlockProps = MediaWithText & {
     locale: Locale
@@ -26,17 +28,18 @@ export const MediaWithTextBlock: React.FC<MediaWithTextBlockProps> = ({
     externalVideoUrl,
     comparisonBefore,
     comparisonAfter,
+    buttons,
     backgroundColor,
 }) => {
     const headingId = useId()
     const isMediaLeft = layout === 'left'
 
     // Payload liefert bei depth >= 1 Objekte, bei flachen Abfragen nur IDs
+    const imageMedia = typeof image === 'object' && image !== null ? (image as Media) : null
     const beforeMedia =
         typeof comparisonBefore === 'object' && comparisonBefore !== null ? (comparisonBefore as Media) : null
     const afterMedia =
         typeof comparisonAfter === 'object' && comparisonAfter !== null ? (comparisonAfter as Media) : null
-    const imageMedia = typeof image === 'object' && image !== null ? (image as Media) : null
 
     return (
         <Section
@@ -46,7 +49,7 @@ export const MediaWithTextBlock: React.FC<MediaWithTextBlockProps> = ({
             aria-labelledby={headline ? headingId : undefined}
         >
             <div className={css('flex flex-col justify-center', !isMediaLeft && 'lg:order-2')}>
-                {mediaType === 'image' && image && (
+                {mediaType === 'image' && imageMedia && (
                     <img className="rounded-2xl" src={(image as Media).url ?? ''} alt={(image as Media).alt} />
                 )}
 
@@ -70,6 +73,35 @@ export const MediaWithTextBlock: React.FC<MediaWithTextBlockProps> = ({
                 )}
 
                 {text && <RichTextRenderer data={text} />}
+
+                {buttons && (
+                    <div className="flex flex-row flex-wrap gap-4 mt-8">
+                        {buttons.map((btn) => {
+                            const href = resolveButtonHref(btn, locale)
+                            if (!href) {
+                                return null
+                            }
+
+                            const label =
+                                btn.label?.trim() ||
+                                (typeof btn.page === 'object' && btn.page ? (btn.page as Page).title : '')
+                            if (!label) {
+                                return null
+                            }
+
+                            return (
+                                <Button
+                                    key={btn.id}
+                                    variant={(btn.variant as ButtonVariant) ?? 'primary'}
+                                    href={href}
+                                    target={btn.newTab ? '_blank' : undefined}
+                                >
+                                    {label}
+                                </Button>
+                            )
+                        })}
+                    </div>
+                )}
             </div>
         </Section>
     )

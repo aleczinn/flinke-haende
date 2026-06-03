@@ -2,7 +2,7 @@ import { cache } from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Locale, PayloadLocale, toLocaleTag } from '@/lib/locale'
-import { Company } from '@/payload-types'
+import { Company, Page } from '@/payload-types'
 import { unstable_cache } from 'next/cache'
 
 export interface OpeningHoursItem {
@@ -206,4 +206,20 @@ function resolveNavigationLink(item: any, locale: Locale): NavigationLink | null
     }
 
     return { id: item.id, href, label: item.label || page.title, newTab: false, description }
+}
+
+export function resolveButtonHref(
+    btn: { type?: string | null; page?: (number | null) | Page; url?: string | null },
+    locale: Locale,
+): string | null {
+    if (btn.type === 'external') {
+        return btn.url ?? null
+    }
+
+    const page = typeof btn.page === 'object' && btn.page !== null ? (btn.page as Page) : null
+    if (!page) return null
+
+    const crumbs = page.breadcrumbs ?? []
+    const path = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
+    return page.slug === HOME_SLUG ? `/${locale.language}` : `/${locale.language}${path}`
 }

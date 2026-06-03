@@ -309,6 +309,20 @@ export interface MediaWithText {
   externalVideoUrl?: string | null;
   comparisonBefore?: (number | null) | Media;
   comparisonAfter?: (number | null) | Media;
+  buttons?:
+    | {
+        type?: ('internal' | 'external') | null;
+        page?: (number | null) | Page;
+        url?: string | null;
+        /**
+         * Optional for internal pages — page title is used as fallback.
+         */
+        label?: string | null;
+        variant?: ('primary' | 'secondary') | null;
+        newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Choose the background color for this component
    */
@@ -560,6 +574,17 @@ export interface MediaWithTextSelect<T extends boolean = true> {
   externalVideoUrl?: T;
   comparisonBefore?: T;
   comparisonAfter?: T;
+  buttons?:
+    | T
+    | {
+        type?: T;
+        page?: T;
+        url?: T;
+        label?: T;
+        variant?: T;
+        newTab?: T;
+        id?: T;
+      };
   backgroundColor?: T;
   id?: T;
   blockName?: T;

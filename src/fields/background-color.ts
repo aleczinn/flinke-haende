@@ -18,51 +18,49 @@ export const backgroundClass = (color: BackgroundColor | null | undefined) => {
     return ''
 }
 
-export const backgroundColorField = (): Field[] => [
-    {
-        name: 'backgroundColor',
-        type: 'select',
-        required: true,
-        defaultValue: 'automatic',
-        label: {
-            de: 'Hintergrundfarbe',
-            en: 'Background color',
-        },
-        admin: {
-            description: {
-                de: 'Wähle die Hintergrundfarbe für diese Komponente',
-                en: 'Choose the background color for this component',
-            },
-        },
-        options: [
-            {
-                value: 'automatic',
-                label: {
-                    de: 'Automatisch',
-                    en: 'Automatic',
-                },
-            },
-            {
-                value: 'primary',
-                label: {
-                    de: 'Primär',
-                    en: 'Primary',
-                },
-            },
-            {
-                value: 'white',
-                label: {
-                    de: 'Weiß',
-                    en: 'White',
-                },
-            },
-            {
-                value: 'gray',
-                label: {
-                    de: 'Grau',
-                    en: 'Gray',
-                },
-            },
-        ],
+export const backgroundColorField = (): Field => ({
+    name: 'backgroundColor',
+    type: 'select',
+    required: true,
+    defaultValue: 'automatic',
+    label: {
+        de: 'Hintergrundfarbe',
+        en: 'Background color',
     },
-]
+    admin: {
+        description: {
+            de: 'Wähle die Hintergrundfarbe für diese Komponente',
+            en: 'Choose the background color for this component',
+        },
+    },
+    options: [
+        {
+            value: 'automatic',
+            label: {
+                de: 'Automatisch',
+                en: 'Automatic',
+            },
+        },
+        {
+            value: 'primary',
+            label: {
+                de: 'Primär',
+                en: 'Primary',
+            },
+        },
+        {
+            value: 'white',
+            label: {
+                de: 'Weiß',
+                en: 'White',
+            },
+        },
+        {
+            value: 'gray',
+            label: {
+                de: 'Grau',
+                en: 'Gray',
+            },
+        }
+    ]
+})
