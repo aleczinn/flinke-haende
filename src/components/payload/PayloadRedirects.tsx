@@ -4,7 +4,6 @@ import { DEFAULT_LOCALE, getLocaleFromLang, toLocaleTag } from '@/lib/locale'
 import { notFound, redirect } from 'next/navigation'
 import { getCachedRedirects } from '@/lib/queries'
 
-
 interface Props {
     disableNotFound?: boolean
     url: string // kompletter Pfad inkl. Lang: /de/alte-seite
@@ -33,10 +32,15 @@ export const PayloadRedirects: React.FC<Props> = async ({ disableNotFound, url, 
             const path = crumbs[crumbs.length - 1]?.url ?? `/${page?.slug ?? ''}`
             const redirectUrl = `/${lang}${path}`
 
-            if (redirectUrl) redirect(redirectUrl)
+            if (redirectUrl) {
+                redirect(redirectUrl)
+            }
         }
     }
 
-    if (disableNotFound) return null
-    notFound()
+    if (disableNotFound) {
+        return null
+    }
+
+    return notFound()
 }

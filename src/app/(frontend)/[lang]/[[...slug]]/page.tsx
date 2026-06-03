@@ -161,7 +161,6 @@ export async function generateStaticParams() {
     return params
 }
 
-
 export default async function Page({ params }: PageProps) {
     const { lang, slug } = await params
     const locale = getLocaleFromLang(lang)
@@ -174,11 +173,7 @@ export default async function Page({ params }: PageProps) {
 
 
     if (!page) {
-        return <PayloadRedirects disableNotFound url={`/${lang}${slugPath ? `/${slugPath}` : ''}`} lang={lang} />
-    }
-
-    if (!page) {
-        return notFound()
+        return <PayloadRedirects url={`/${lang}${slugPath ? `/${slugPath}` : ''}`} lang={lang} />
     }
 
     const { isEnabled: draft } = await draftMode()
