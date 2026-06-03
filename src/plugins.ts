@@ -46,50 +46,12 @@ export const plugins: Plugin[] = [
                         return {
                             ...field,
                             localized: true,
-                            label: { de: 'Von (Quell-URL)', en: 'From (Source URL)' },
                             admin: {
                                 description: {
                                     de: 'Pfad ohne Sprachpräfix, z. B. /alte-seite',
                                     en: 'Path without language prefix, e.g. /old-page',
                                 },
                             },
-                        }
-                    }
-
-                    if (field.name === 'to') {
-                        const groupField = field as typeof field & { fields?: any[] }
-                        return {
-                            ...field,
-                            label: { de: 'Zu (Ziel)', en: 'To (Destination)' },
-                            ...(groupField.fields && {
-                                fields: groupField.fields.map((subField: any) => {
-                                    if (!('name' in subField)) return subField
-
-                                    if (subField.name === 'type') {
-                                        return {
-                                            ...subField,
-                                            label: { de: 'Typ', en: 'Type' },
-                                            options: subField.options?.map((option: any) => {
-                                                const optionLabels: Record<string, { de: string; en: string }> = {
-                                                    internalLink: { de: 'Interne Seite', en: 'Internal page' },
-                                                    customUrl: { de: 'Externe URL', en: 'External URL' },
-                                                }
-                                                return optionLabels[option.value]
-                                                    ? { ...option, label: optionLabels[option.value] }
-                                                    : option
-                                            }),
-                                        }
-                                    }
-
-                                    const labels: Record<string, { de: string; en: string }> = {
-                                        reference: { de: 'Interne Seite', en: 'Internal page' },
-                                        url: { de: 'Externe URL', en: 'External URL' },
-                                    }
-                                    return labels[subField.name]
-                                        ? { ...subField, label: labels[subField.name] }
-                                        : subField
-                                }),
-                            }),
                         }
                     }
 
