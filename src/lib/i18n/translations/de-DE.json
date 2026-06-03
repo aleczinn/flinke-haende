@@ -34,8 +34,6 @@
     },
     "footer": {
         "copyright": "© Copyright {0} {1}. Alle Rechte vorbehalten.",
-        "impressum": "Impressum",
-        "datenschutz": "Datenschutz",
         "contact": {
             "label": "Kontakt",
             "contact_us": "Kontaktiere uns!"
