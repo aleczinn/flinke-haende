@@ -747,6 +747,9 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  /**
+   * Add the links here that you want to display in the footer under "Navigation"
+   */
   navigation?:
     | {
         type?: ('internal' | 'external') | null;
@@ -757,6 +760,16 @@ export interface Footer {
          */
         label?: string | null;
         newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * This is an optional primary action that appears as a button in the footer banner
+   */
+  cta?: (number | null) | Page;
+  legalNavigation?:
+    | {
+        page: number | Page;
         id?: string | null;
       }[]
     | null;
@@ -860,6 +873,13 @@ export interface FooterSelect<T extends boolean = true> {
         url?: T;
         label?: T;
         newTab?: T;
+        id?: T;
+      };
+  cta?: T;
+  legalNavigation?:
+    | T
+    | {
+        page?: T;
         id?: T;
       };
   updatedAt?: T;
