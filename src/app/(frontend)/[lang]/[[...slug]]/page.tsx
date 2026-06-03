@@ -19,7 +19,12 @@ import { getCompanyConfig, HOME_SLUG } from '@/lib/queries'
 import { cache } from 'react'
 import Breadcrumbs from '@/components/layout/Breadcrumbs'
 import { draftMode } from 'next/headers'
-import { LivePreviewListener } from '@/components/preview/LivePreviewListener'
+import { LivePreviewListener } from '@/components/payload/LivePreviewListener'
+import { PayloadRedirects } from '@/components/payload/PayloadRedirects'
+import { PayloadBlockRenderer } from '@/components/payload/PayloadBlockRenderer'
+import { LocaleSwitcherUpdater } from '@/components/layout/locale/LocaleSwitcherUpdater'
+import Section from '@/components/layout/Section'
+import { Headline } from '@/components/ui/Headline'
 
 interface PageProps {
     params: Promise<{ lang: string; slug?: string[] }>
@@ -158,7 +163,6 @@ export async function generateStaticParams() {
     return params
 }
 
-
 export default async function Page({ params }: PageProps) {
     const { lang, slug } = await params
     const locale = getLocaleFromLang(lang)
@@ -168,18 +172,47 @@ export default async function Page({ params }: PageProps) {
 
     const slugPath = (slug ?? []).join('/')
     const page = await fetchPage(toLocaleTag(locale), slugPath)
+
     if (!page) {
-        return notFound()
+        return <PayloadRedirects url={`/${lang}${slugPath ? `/${slugPath}` : ''}`} lang={lang} />
     }
 
     const { isEnabled: draft } = await draftMode()
     const isHome = page.slug === HOME_SLUG
+    const { layout } = page
+
+    // Für den LocaleSwitcher: Alternates aus allLocales berechnen
+    const allLocales = isHome ? null : await fetchAllLocales(page.id)
+    const allBreadcrumbs = (allLocales?.breadcrumbs ?? {}) as unknown as Localized<{ url?: string | null }[]>
+    const allSlugs = (allLocales?.slug ?? {}) as unknown as Localized<string>
+
+    const buildLocalePath = (targetLang: string): string => {
+        const localeForLang = getDefaultForLanguage(targetLang)
+        if (!localeForLang || isHome) return `/${targetLang}`
+        const tag = toLocaleTag(localeForLang)
+        const crumbs = allBreadcrumbs?.[tag] ?? []
+        const fallbackSlug = allSlugs?.[tag] ?? page.slug
+        const url = crumbs[crumbs.length - 1]?.url ?? `/${fallbackSlug}`
+        return `/${targetLang}${url}`
+    }
+
+    const switcherAlternates = Object.fromEntries(availableLanguages.map((l) => [l, buildLocalePath(l)]))
 
     return (
         <main id="main" className="grow flex flex-col bg-gray-10 min-h-[50svh]">
+            <LocaleSwitcherUpdater alternates={switcherAlternates} />
             {draft && <LivePreviewListener />}
             {!isHome && <Breadcrumbs locale={locale} page={page} includeSchema />}
-            <p>render page</p>
+
+            {!isHome && (
+                <Section variant="capped" innerClassName="mt-6">
+                    <Headline as="h1" variant="h2" alignment="left" design="line">
+                        {page.title}
+                    </Headline>
+                </Section>
+            )}
+
+            <PayloadBlockRenderer blocks={layout} />
         </main>
     )
 }

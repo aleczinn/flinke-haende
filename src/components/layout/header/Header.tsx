@@ -8,6 +8,7 @@ import ServiceBar from '@/components/layout/header/ServiceBar'
 import DesktopNavigation from '@/components/layout/header/DesktopNavigation'
 import { Button } from '@/components/ui/Button'
 import MobileNavigation from '@/components/layout/header/MobileNavigation'
+import LocaleSwitcher from '@/components/layout/locale/LocaleSwitcher'
 
 interface HeaderProps {
     locale: Locale
@@ -50,7 +51,7 @@ export default async function Header({ locale }: HeaderProps) {
                         {t(locale, 'footer.contact.label')}
                     </Button>
 
-                    {/*<LocaleSwitcher locale={locale} alternates={{ byTranslated, pathsByReal }} />*/}
+                    <LocaleSwitcher locale={locale} />
 
                     <MobileNavigation locale={locale} items={header.navigation} />
                 </div>

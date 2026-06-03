@@ -66,6 +66,18 @@ export default buildConfig({
     i18n: {
         supportedLanguages: { de, en },
         fallbackLanguage: 'de',
+        translations: {
+            de: {
+                'plugin-redirects': {
+                    fromUrl: 'Von URL',
+                    toUrlType: 'Ziel-URL-Typ',
+                    internalLink: 'Interner Link',
+                    customUrl: 'Benutzerdefinierte URL',
+                    documentToRedirect: 'Dokument zum Weiterleiten',
+                    redirectType: 'Weiterleitungstyp',
+                },
+            }
+        },
     },
 
     editor: lexicalEditor(),

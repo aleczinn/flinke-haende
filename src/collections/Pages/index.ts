@@ -8,6 +8,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { generatePreviewPath } from '@/lib/utilities/generatePreviewPath'
 import { slugField } from '@/fields/slug'
+import { MediaWithText } from '@/blocks/MediaWithText/config'
 
 export const Pages: CollectionConfig = {
     slug: 'pages',
@@ -70,12 +71,13 @@ export const Pages: CollectionConfig = {
                     fields: [
                         {
                             name: 'layout',
-                            type: 'text',
+                            type: 'blocks',
                             localized: false,
                             label: { de: 'Seiteninhalt', en: 'Page content' },
                             admin: {
-                                // initCollapsed: true,
+                                initCollapsed: true,
                             },
+                            blocks: [MediaWithText],
                         },
                     ],
                 },

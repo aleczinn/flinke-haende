@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     pages: Page;
+    redirects: Redirect;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
@@ -85,6 +86,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -248,7 +250,7 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
-  layout?: string | null;
+  layout?: MediaWithText[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -274,6 +276,63 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaWithText".
+ */
+export interface MediaWithText {
+  layout: 'left' | 'right';
+  tagline?: string | null;
+  headline: string;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  mediaType: 'image' | 'video' | 'externalVideo' | 'comparison';
+  image?: (number | null) | Media;
+  video?: (number | null) | Media;
+  /**
+   * YouTube, Vimeo or other embeddable URLs.
+   */
+  externalVideoUrl?: string | null;
+  comparisonBefore?: (number | null) | Media;
+  comparisonAfter?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mwt';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects".
+ */
+export interface Redirect {
+  id: number;
+  /**
+   * Path without language prefix, e.g. /old-page
+   */
+  from: string;
+  to?: {
+    type?: ('reference' | 'custom') | null;
+    reference?: {
+      relationTo: 'pages';
+      value: number | Page;
+    } | null;
+    url?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -310,6 +369,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'redirects';
+        value: number | Redirect;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -451,7 +514,11 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  layout?: T;
+  layout?:
+    | T
+    | {
+        mwt?: T | MediaWithTextSelect<T>;
+      };
   meta?:
     | T
     | {
@@ -473,6 +540,40 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaWithText_select".
+ */
+export interface MediaWithTextSelect<T extends boolean = true> {
+  layout?: T;
+  tagline?: T;
+  headline?: T;
+  text?: T;
+  mediaType?: T;
+  image?: T;
+  video?: T;
+  externalVideoUrl?: T;
+  comparisonBefore?: T;
+  comparisonAfter?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects_select".
+ */
+export interface RedirectsSelect<T extends boolean = true> {
+  from?: T;
+  to?:
+    | T
+    | {
+        type?: T;
+        reference?: T;
+        url?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -646,6 +747,9 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  /**
+   * Add the links here that you want to display in the footer under "Navigation"
+   */
   navigation?:
     | {
         type?: ('internal' | 'external') | null;
@@ -656,6 +760,19 @@ export interface Footer {
          */
         label?: string | null;
         newTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * This is an optional primary action that appears as a button in the footer banner
+   */
+  cta?: (number | null) | Page;
+  /**
+   * Add the legal pages here, such as the Privacy Policy or Legal Notice
+   */
+  legalNavigation?:
+    | {
+        page: number | Page;
         id?: string | null;
       }[]
     | null;
@@ -759,6 +876,13 @@ export interface FooterSelect<T extends boolean = true> {
         url?: T;
         label?: T;
         newTab?: T;
+        id?: T;
+      };
+  cta?: T;
+  legalNavigation?:
+    | T
+    | {
+        page?: T;
         id?: T;
       };
   updatedAt?: T;

@@ -21,37 +21,7 @@ interface FooterProps {
 export default async function Footer({ locale }: FooterProps) {
     const footer = await getFooterConfig(locale)
     const company = await getCompanyConfig(locale)
-
-	// const config = await getConfig(locale);
-	const language = locale.language;
 	const currentYear = new Date().getFullYear();
-
-    const impressumHref = ''
-    const datenschutzHref = ''
-    const contactHref = ''
-
-	// const [
-	// 	impressumHref,
-	// 	datenschutzHref,
-	// 	contactHref,
-	// ] = await Promise.all([
-	// 	buildLocalizedHref('impressum', language),
-	// 	buildLocalizedHref('datenschutz', language),
-	// 	buildLocalizedHref('kontakt', language),
-	// ]);
-
-	const impressumTitle = t(locale, 'footer.impressum');
-	const datenschutzTitle = t(locale, 'footer.datenschutz');
-	const contactTitle = t(locale, 'footer.contact.contact_us');
-
-	// const navigation = await Promise.all(
-	// 	(config.footer_navigation ?? []).map(async (item: NavigationLink) => ({
-	// 		uid: item._uid,
-	// 		label: item.label,
-	// 		href: await resolveStoryblokLink(item.link, language),
-	// 		editable: storyblokEditable(item),
-	// 	})),
-	// );
 
 	return (
         <footer className="flex flex-col text-gray-10 border-t-4 border-solid border-primary shrink-0">
@@ -71,9 +41,13 @@ export default async function Footer({ locale }: FooterProps) {
                         />
 
                         <div className="flex flex-col">
-                            <span className="font-semibold">{company.company_name.toUpperCase()}</span>
-                            <span className="">{company.address.street} + {company.address.house_number}</span>
-                            <span className="">{company.address.postal_code} {company.address.city}</span>
+                            <span className="font-semibold">{company.company_name?.toUpperCase()}</span>
+                            <span className="">
+                                {company.address.street} {company.address.house_number}
+                            </span>
+                            <span className="">
+                                {company.address.postal_code} {company.address.city}
+                            </span>
                         </div>
 
                         <div className="flex-1 min-h-8"></div>
@@ -147,9 +121,11 @@ export default async function Footer({ locale }: FooterProps) {
 
                 {/*<span className="font-bold text-lg text-wrap text-center mb-8 lg:mb-0">Hier könnte ein Werbetext stehen</span>*/}
 
-                <Button variant="primary" href={contactHref}>
-                    {contactTitle}
-                </Button>
+                {footer.cta && (
+                    <Button variant="primary" href={footer.cta.href}>
+                        {footer.cta.label}
+                    </Button>
+                )}
             </Section>
 
             {/* Copyright */}
@@ -163,27 +139,21 @@ export default async function Footer({ locale }: FooterProps) {
                     {t(locale, 'footer.copyright', currentYear, company.company_name)}
                 </span>
 
-                {/* Social links (Facebook, Instagram etc.) */}
+                {/* Legal sites */}
                 <ul className="flex flex-row gap-2 order-1 md:order-2">
-                    <li>
-                        <Link
-                            href={impressumHref}
-                            title={impressumTitle}
-                            className="text-sm hover:underline focus-element"
-                        >
-                            {impressumTitle}
-                        </Link>
-                    </li>
-
-                    <li>
-                        <Link
-                            href={datenschutzHref}
-                            title={datenschutzTitle}
-                            className="text-sm hover:underline focus-element"
-                        >
-                            {datenschutzTitle}
-                        </Link>
-                    </li>
+                    {footer.legalNavigation.map((item) => (
+                        <li key={item.id}>
+                            <Link
+                                href={item.href}
+                                title={item.label}
+                                target={item.newTab ? '_blank' : undefined}
+                                rel={item.newTab ? 'noopener noreferrer' : undefined}
+                                className="text-sm hover:underline focus-element"
+                            >
+                                {item.label}
+                            </Link>
+                        </li>
+                    ))}
                 </ul>
             </Section>
         </footer>

@@ -1,8 +1,9 @@
 import { cache } from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { Locale, toLocaleTag } from '@/lib/locale'
+import { Locale, PayloadLocale, toLocaleTag } from '@/lib/locale'
 import { Company } from '@/payload-types'
+import { unstable_cache } from 'next/cache'
 
 export interface OpeningHoursItem {
     id?: string
@@ -51,6 +52,11 @@ export interface HeaderConfig {
 
 export interface FooterConfig {
     navigation: NavigationLink[]
+    cta: {
+        href: string
+        label: string
+    } | null
+    legalNavigation: NavigationLink[]
 }
 
 export const getCompanyConfig = cache(async (locale: Locale): Promise<CompanyConfig> => {
@@ -105,10 +111,10 @@ export const getHeaderConfig = cache(async (locale: Locale): Promise<HeaderConfi
     return {
         navigation: (header.navigation ?? [])
             .map((item: any) => {
-                const link = resolveLink(item, locale)
+                const link = resolveNavigationLink(item, locale)
                 if (!link) return null
                 const children = (item.children ?? [])
-                    .map((c: any) => resolveLink(c, locale))
+                    .map((c: any) => resolveNavigationLink(c, locale))
                     .filter(Boolean) as NavigationLink[]
                 return { ...link, children }
             })
@@ -124,14 +130,55 @@ export const getFooterConfig = cache(async (locale: Locale): Promise<FooterConfi
         depth: 1,
     })
 
+    const ctaPage = footer.cta && typeof footer.cta === 'object' ? footer.cta : null
+    const ctaHref = resolveHref(ctaPage, locale)
+
     return {
         navigation: (footer.navigation ?? [])
-            .map((item: any) => resolveLink(item, locale))
+            .map((item: any) => resolveNavigationLink(item, locale))
+            .filter(Boolean) as NavigationLink[],
+        cta: ctaHref && ctaPage ? {
+            href: ctaHref,
+            label: ctaPage.title as string
+        } : null,
+        legalNavigation: (footer.legalNavigation ?? [])
+            .map((item: any) => {
+                const page = item?.page
+                if (!page || typeof page !== 'object') return null
+                const crumbs = page.breadcrumbs ?? []
+                const path = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
+                const href = page.slug === HOME_SLUG ? `/${locale.language}` : `/${locale.language}${path}`
+                return { id: item.id, href, label: page.title, newTab: false }
+            })
             .filter(Boolean) as NavigationLink[],
     }
 })
 
-function resolveLink(item: any, locale: Locale): NavigationLink | null {
+export const getCachedRedirects = (locale: PayloadLocale) =>
+    unstable_cache(
+        async () => {
+            const payload = await getPayload({ config })
+            const { docs } = await payload.find({
+                collection: 'redirects',
+                locale,
+                limit: 0,
+                pagination: false,
+                depth: 1,
+            })
+            return docs
+        },
+        ['redirects'],
+        { tags: ['redirects'] },
+    )
+
+function resolveHref(page: any, locale: Locale): string | null {
+    if (!page || typeof page !== 'object') return null
+    const crumbs = page.breadcrumbs ?? []
+    const path = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
+    return page.slug === HOME_SLUG ? `/${locale.language}` : `/${locale.language}${path}`
+}
+
+function resolveNavigationLink(item: any, locale: Locale): NavigationLink | null {
     if (!item?.id) {
         return null
     }
@@ -153,9 +200,10 @@ function resolveLink(item: any, locale: Locale): NavigationLink | null {
     const page = item?.page
     if (!page || typeof page !== 'object') return null
 
-    const crumbs = page.breadcrumbs ?? []
-    const path = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
-    const href = page.slug === HOME_SLUG ? `/${lang}` : `/${lang}${path}`
+    const href = resolveHref(item?.page, locale)
+    if (!href) {
+        return null
+    }
 
     return { id: item.id, href, label: item.label || page.title, newTab: false, description }
 }
