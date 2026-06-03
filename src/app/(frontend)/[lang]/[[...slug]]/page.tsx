@@ -204,13 +204,16 @@ export default async function Page({ params }: PageProps) {
             {draft && <LivePreviewListener />}
             {!isHome && <Breadcrumbs locale={locale} page={page} includeSchema />}
 
-            {!isHome && (
-                <Section variant="capped" innerClassName="mt-6">
-                    <Headline as="h1" variant="h2" alignment="left" design="line">
-                        {page.title}
-                    </Headline>
-                </Section>
-            )}
+            {!isHome &&
+                (isHome ? (
+                    <h1 className="sr-only">{page.title}</h1>
+                ) : (
+                    <Section variant="capped" innerClassName="mt-6">
+                        <Headline as="h1" variant="h2" alignment="left" design="line">
+                            {page.title}
+                        </Headline>
+                    </Section>
+                ))}
 
             <PayloadBlockRenderer blocks={layout} />
         </main>
