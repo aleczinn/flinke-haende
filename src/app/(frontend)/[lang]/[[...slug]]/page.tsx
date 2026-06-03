@@ -23,6 +23,7 @@ import { LivePreviewListener } from '@/components/payload/LivePreviewListener'
 import { PayloadRedirects } from '@/components/payload/PayloadRedirects'
 import { PayloadBlockRenderer } from '@/components/payload/PayloadBlockRenderer'
 import layout from '@/app/(payload)/layout'
+import { LocaleSwitcherUpdater } from '@/components/layout/locale/LocaleSwitcherUpdater'
 
 interface PageProps {
     params: Promise<{ lang: string; slug?: string[] }>
@@ -171,7 +172,6 @@ export default async function Page({ params }: PageProps) {
     const slugPath = (slug ?? []).join('/')
     const page = await fetchPage(toLocaleTag(locale), slugPath)
 
-
     if (!page) {
         return <PayloadRedirects url={`/${lang}${slugPath ? `/${slugPath}` : ''}`} lang={lang} />
     }
@@ -180,11 +180,28 @@ export default async function Page({ params }: PageProps) {
     const isHome = page.slug === HOME_SLUG
     const { layout } = page
 
+    // Für den LocaleSwitcher: Alternates aus allLocales berechnen
+    const allLocales = isHome ? null : await fetchAllLocales(page.id)
+    const allBreadcrumbs = (allLocales?.breadcrumbs ?? {}) as unknown as Localized<{ url?: string | null }[]>
+    const allSlugs = (allLocales?.slug ?? {}) as unknown as Localized<string>
+
+    const buildLocalePath = (targetLang: string): string => {
+        const localeForLang = getDefaultForLanguage(targetLang)
+        if (!localeForLang || isHome) return `/${targetLang}`
+        const tag = toLocaleTag(localeForLang)
+        const crumbs = allBreadcrumbs?.[tag] ?? []
+        const fallbackSlug = allSlugs?.[tag] ?? page.slug
+        const url = crumbs[crumbs.length - 1]?.url ?? `/${fallbackSlug}`
+        return `/${targetLang}${url}`
+    }
+
+    const switcherAlternates = Object.fromEntries(availableLanguages.map((l) => [l, buildLocalePath(l)]))
+
     return (
         <main id="main" className="grow flex flex-col bg-gray-10 min-h-[50svh]">
+            <LocaleSwitcherUpdater alternates={switcherAlternates} />
             {draft && <LivePreviewListener />}
             {!isHome && <Breadcrumbs locale={locale} page={page} includeSchema />}
-
             <PayloadBlockRenderer blocks={layout} />
         </main>
     )

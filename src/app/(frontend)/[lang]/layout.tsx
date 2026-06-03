@@ -10,6 +10,7 @@ import Footer from '@/components/layout/Footer'
 import { Metadata, Viewport } from 'next'
 import { BASE_URL } from '@/lib/site'
 import LocalBusinessSchema from '@/components/layout/LocalBusinessSchema'
+import { LocaleSwitcherProvider } from '@/components/layout/locale/LocaleSwitcherContext'
 
 interface LangLayoutProps {
     children: ReactNode
@@ -39,13 +40,15 @@ export default async function LangLayout({ children, params }: LangLayoutProps) 
     return (
         <html lang={locale.language} className={`${jakartaSans.variable}`} data-scroll-behavior="smooth">
             <body className="font-display bg-gray-90 text-gray-90 text-pretty subpixel-antialiased flex flex-col w-full">
-                <LocalBusinessSchema locale={locale} />
-                <SkipLinks locale={locale} />
-                <ScrollToTop />
-                <BackToTop locale={locale} />
-                <Header locale={locale} />
-                {children}
-                <Footer locale={locale} />
+                <LocaleSwitcherProvider>
+                    <LocalBusinessSchema locale={locale} />
+                    <SkipLinks locale={locale} />
+                    <ScrollToTop />
+                    <BackToTop locale={locale} />
+                    <Header locale={locale} />
+                    {children}
+                    <Footer locale={locale} />
+                </LocaleSwitcherProvider>
             </body>
         </html>
     )
