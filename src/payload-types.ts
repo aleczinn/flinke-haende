@@ -282,6 +282,33 @@ export interface Page {
  * via the `definition` "MediaWithText".
  */
 export interface MediaWithText {
+  layout: 'left' | 'right';
+  tagline?: string | null;
+  headline: string;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  mediaType: 'image' | 'video' | 'externalVideo' | 'comparison';
+  image?: (number | null) | Media;
+  video?: (number | null) | Media;
+  /**
+   * YouTube, Vimeo or other embeddable URLs.
+   */
+  externalVideoUrl?: string | null;
+  comparisonBefore?: (number | null) | Media;
+  comparisonAfter?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'mwt';
@@ -519,6 +546,16 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "MediaWithText_select".
  */
 export interface MediaWithTextSelect<T extends boolean = true> {
+  layout?: T;
+  tagline?: T;
+  headline?: T;
+  text?: T;
+  mediaType?: T;
+  image?: T;
+  video?: T;
+  externalVideoUrl?: T;
+  comparisonBefore?: T;
+  comparisonAfter?: T;
   id?: T;
   blockName?: T;
 }
