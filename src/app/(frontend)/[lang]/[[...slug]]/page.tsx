@@ -216,7 +216,7 @@ export default async function Page({ params }: PageProps) {
                 ))
             }
 
-            <PayloadBlockRenderer blocks={layout} />
+            <PayloadBlockRenderer locale={locale} blocks={layout} />
         </main>
     )
 }

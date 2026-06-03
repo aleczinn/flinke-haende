@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import type { Page } from '@/payload-types'
 import { MediaWithTextBlock } from '@/blocks/MediaWithText/Component'
+import { Locale } from '@/lib/locale'
 
 const blockComponents: Record<string, React.FC<any>> = {
     media_with_text: MediaWithTextBlock,
@@ -8,7 +9,12 @@ const blockComponents: Record<string, React.FC<any>> = {
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
 
-export const PayloadBlockRenderer: React.FC<{ blocks: Page['layout'] }> = ({ blocks }) => {
+interface PayloadBlockRendererProps {
+    locale: Locale
+    blocks: Page['layout']
+}
+
+export const PayloadBlockRenderer: React.FC<PayloadBlockRendererProps> = ({ locale, blocks }) => {
     if (!blocks?.length) {
         return null
     }
@@ -26,7 +32,7 @@ export const PayloadBlockRenderer: React.FC<{ blocks: Page['layout'] }> = ({ blo
 
                 return (
                     <div key={index}>
-                        <Block {...block} backgroundColor={resolvedBackgroundColor} />
+                        <Block locale={locale} {...block} backgroundColor={resolvedBackgroundColor} />
                     </div>
                 )
             })}
