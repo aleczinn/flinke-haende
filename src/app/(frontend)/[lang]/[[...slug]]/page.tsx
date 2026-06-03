@@ -213,7 +213,8 @@ export default async function Page({ params }: PageProps) {
                             {page.title}
                         </Headline>
                     </Section>
-                ))}
+                ))
+            }
 
             <PayloadBlockRenderer blocks={layout} />
         </main>
