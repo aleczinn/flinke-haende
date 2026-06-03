@@ -6,9 +6,10 @@ import {
     OrderedListFeature,
     UnorderedListFeature,
 } from '@payloadcms/richtext-lexical'
+import { backgroundColorField } from '@/fields/background-color'
 
 export const MediaWithText: Block = {
-    slug: 'mwt',
+    slug: 'media_with_text',
     interfaceName: 'MediaWithText',
     labels: {
         singular: { de: 'Medien mit Text', en: 'Media with Text' },
@@ -131,5 +132,7 @@ export const MediaWithText: Block = {
             validate: (value: unknown, { siblingData }: any) =>
                 siblingData?.mediaType === 'comparison' && !value ? 'Bitte das Nachher-Bild auswählen.' : true,
         },
+
+        ...backgroundColorField(),
     ],
 }

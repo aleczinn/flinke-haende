@@ -309,9 +309,13 @@ export interface MediaWithText {
   externalVideoUrl?: string | null;
   comparisonBefore?: (number | null) | Media;
   comparisonAfter?: (number | null) | Media;
+  /**
+   * Choose the background color for this component
+   */
+  backgroundColor: 'automatic' | 'primary' | 'white' | 'gray';
   id?: string | null;
   blockName?: string | null;
-  blockType: 'mwt';
+  blockType: 'media_with_text';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -517,7 +521,7 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        mwt?: T | MediaWithTextSelect<T>;
+        media_with_text?: T | MediaWithTextSelect<T>;
       };
   meta?:
     | T
@@ -556,6 +560,7 @@ export interface MediaWithTextSelect<T extends boolean = true> {
   externalVideoUrl?: T;
   comparisonBefore?: T;
   comparisonAfter?: T;
+  backgroundColor?: T;
   id?: T;
   blockName?: T;
 }

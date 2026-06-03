@@ -6,6 +6,7 @@ import { css } from '@/lib/utils'
 import { Tagline } from '@/components/ui/Tagline'
 import { Headline } from '@/components/ui/Headline'
 import RichTextRenderer from '@/components/payload/RichTextRenderer'
+import { backgroundClass, backgroundColorClasses } from '@/fields/background-color'
 
 export const MediaWithTextBlock: React.FC<MediaWithText> = ({
     layout,
@@ -18,6 +19,7 @@ export const MediaWithTextBlock: React.FC<MediaWithText> = ({
     externalVideoUrl,
     comparisonBefore,
     comparisonAfter,
+    backgroundColor,
 }) => {
     const headingId = useId()
     const isMediaLeft = layout === 'left'
@@ -25,12 +27,14 @@ export const MediaWithTextBlock: React.FC<MediaWithText> = ({
     return (
         <Section
             variant="capped"
-            outerClassName="py-section"
+            outerClassName={css('py-section', backgroundClass(backgroundColor))}
             innerClassName="grid grid-cols-1 lg:grid-cols-2 gap-8"
             aria-labelledby={headline ? headingId : undefined}
         >
             <div className={css('flex flex-col justify-center', !isMediaLeft && 'lg:order-2')}>
-                {mediaType === 'image' && image && <img className="rounded-2xl" src={(image as Media).url ?? ''} alt={(image as Media).alt} />}
+                {mediaType === 'image' && image && (
+                    <img className="rounded-2xl" src={(image as Media).url ?? ''} alt={(image as Media).alt} />
+                )}
             </div>
 
             <div className={`flex flex-col justify-center`}>

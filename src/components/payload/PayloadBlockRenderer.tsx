@@ -3,7 +3,7 @@ import type { Page } from '@/payload-types'
 import { MediaWithTextBlock } from '@/blocks/MediaWithText/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
-    mwt: MediaWithTextBlock,
+    media_with_text: MediaWithTextBlock,
 }
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
@@ -21,9 +21,12 @@ export const PayloadBlockRenderer: React.FC<{ blocks: Page['layout'] }> = ({ blo
                 const Block = blockComponents[blockType]
                 if (!Block) return null
 
+                const resolvedBackgroundColor =
+                    block.backgroundColor === 'automatic' ? (index % 2 === 0 ? 'gray' : 'white') : block.backgroundColor
+
                 return (
                     <div key={index}>
-                        <Block {...block} />
+                        <Block {...block} backgroundColor={resolvedBackgroundColor} />
                     </div>
                 )
             })}
