@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import type { Page } from '@/payload-types'
-import { MediaWithTextBlock } from '@/blocks/MediaWithText/Component'
+import { MediaWithTextBlock } from '@/components/blocks/MediaWithText/Component'
 import { Locale } from '@/lib/locale'
 
 const blockComponents: Record<string, React.FC<any>> = {

@@ -8,7 +8,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { generatePreviewPath } from '@/lib/utilities/generatePreviewPath'
 import { slugField } from '@/fields/slug'
-import { MediaWithText } from '@/blocks/MediaWithText/config'
+import { MediaWithText } from '@/components/blocks/MediaWithText/config'
 
 export const Pages: CollectionConfig = {
     slug: 'pages',
