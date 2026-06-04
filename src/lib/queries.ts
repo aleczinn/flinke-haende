@@ -68,18 +68,18 @@ export const getCompanyConfig = cache(async (locale: Locale): Promise<CompanyCon
     })
 
     return {
-        company_name: c.companyName,
-        company_name_shorthand: c.companyNameShorthand || c.companyName,
-        owner: c.owner,
-        site_description: c.siteDescription,
+        company_name: c.companyName || '',
+        company_name_shorthand: c.companyNameShorthand || c.companyName || '',
+        owner: c.owner || '',
+        site_description: c.siteDescription || '',
         defaultOgImage: c.defaultOgImage,
-        telephone: c.telephone,
-        email: c.email,
+        telephone: c.telephone || '',
+        email: c.email || '',
         address: {
-            street: c.address.street,
-            house_number: c.address.houseNumber,
-            postal_code: c.address.postalCode,
-            city: c.address.city,
+            street: c.address.street || '',
+            house_number: c.address.houseNumber || '',
+            postal_code: c.address.postalCode || '',
+            city: c.address.city || '',
             country_iso: c.address.country ?? 'DE',
         },
         geo: {
