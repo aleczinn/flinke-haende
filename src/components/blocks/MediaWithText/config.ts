@@ -7,7 +7,7 @@ import {
     UnorderedListFeature,
 } from '@payloadcms/richtext-lexical'
 import { backgroundColorField } from '@/fields/background-color'
-import { buttonArrayField } from '@/fields/button'
+import { buttonGroupField } from '@/fields/button-group'
 
 export const MediaWithText: Block = {
     slug: 'media_with_text',
@@ -133,7 +133,7 @@ export const MediaWithText: Block = {
             validate: (value: unknown, { siblingData }: any) =>
                 siblingData?.mediaType === 'comparison' && !value ? 'Bitte das Nachher-Bild auswählen.' : true,
         },
-        buttonArrayField('buttons'),
+        buttonGroupField({ overrides: { maxRows: 2 } }),
         backgroundColorField(),
     ],
 }

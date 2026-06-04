@@ -250,6 +250,7 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
+  hero?: Hero[] | null;
   layout?: MediaWithText[] | null;
   meta?: {
     title?: string | null;
@@ -276,6 +277,19 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Hero".
+ */
+export interface Hero {
+  image: number | Media;
+  tagline?: string | null;
+  headline: string;
+  text: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -309,17 +323,25 @@ export interface MediaWithText {
   externalVideoUrl?: string | null;
   comparisonBefore?: (number | null) | Media;
   comparisonAfter?: (number | null) | Media;
+  /**
+   * If possible, only one primary button should be used per component.
+   */
   buttons?:
     | {
-        type?: ('internal' | 'external') | null;
-        page?: (number | null) | Page;
-        url?: string | null;
-        /**
-         * Optional for internal pages — page title is used as fallback.
-         */
-        label?: string | null;
-        variant?: ('primary' | 'secondary') | null;
-        newTab?: boolean | null;
+        button?: {
+          type?: ('reference' | 'external') | null;
+          newTab?: boolean | null;
+          reference?: (number | null) | Page;
+          url?: string | null;
+          /**
+           * (Optional) - Page title is used as fallback.
+           */
+          label?: string | null;
+          /**
+           * Define the appearance of the button.
+           */
+          variant?: string | null;
+        };
         id?: string | null;
       }[]
     | null;
@@ -532,6 +554,11 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  hero?:
+    | T
+    | {
+        hero?: T | HeroSelect<T>;
+      };
   layout?:
     | T
     | {
@@ -561,6 +588,18 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Hero_select".
+ */
+export interface HeroSelect<T extends boolean = true> {
+  image?: T;
+  tagline?: T;
+  headline?: T;
+  text?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaWithText_select".
  */
 export interface MediaWithTextSelect<T extends boolean = true> {
@@ -577,12 +616,16 @@ export interface MediaWithTextSelect<T extends boolean = true> {
   buttons?:
     | T
     | {
-        type?: T;
-        page?: T;
-        url?: T;
-        label?: T;
-        variant?: T;
-        newTab?: T;
+        button?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              variant?: T;
+            };
         id?: T;
       };
   backgroundColor?: T;

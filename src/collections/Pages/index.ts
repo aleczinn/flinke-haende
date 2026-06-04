@@ -9,6 +9,7 @@ import {
 import { generatePreviewPath } from '@/lib/utilities/generatePreviewPath'
 import { slugField } from '@/fields/slug'
 import { MediaWithText } from '@/components/blocks/MediaWithText/config'
+import { Hero } from '@/components/blocks/Hero/config'
 
 export const Pages: CollectionConfig = {
     slug: 'pages',
@@ -63,6 +64,21 @@ export const Pages: CollectionConfig = {
         {
             type: 'tabs',
             tabs: [
+                {
+                    label: {
+                        de: 'Hero',
+                        en: 'Hero',
+                    },
+                    fields: [
+                        {
+                            name: 'hero',
+                            type: 'blocks',
+                            maxRows: 1,
+                            label: 'Komponente',
+                            blocks: [Hero],
+                        },
+                    ],
+                },
                 {
                     label: {
                         de: 'Inhalt',
