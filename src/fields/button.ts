@@ -70,8 +70,8 @@ export const buttonCoreFields = (): Field[] => [
                 admin: {
                     width: '50%',
                     description: {
-                        de: '(Optional) — Seitentitel wird als Fallback verwendet.',
-                        en: '(Optional) — Page title is used as fallback.',
+                        de: 'Feldname überschreibt den hinterlegten Seitentitel bzw. ist bei externen Links erforderlich.',
+                        en: 'The field name overrides the stored page title or is required for external links.',
                     },
                 },
                 validate: (value: unknown, { siblingData }: any) =>

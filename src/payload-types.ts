@@ -297,7 +297,7 @@ export interface Hero {
         reference?: (number | null) | Page;
         url?: string | null;
         /**
-         * (Optional) — Page title is used as fallback.
+         * The field name overrides the stored page title or is required for external links.
          */
         label?: string | null;
         /**
@@ -353,7 +353,7 @@ export interface MediaWithText {
         reference?: (number | null) | Page;
         url?: string | null;
         /**
-         * (Optional) — Page title is used as fallback.
+         * The field name overrides the stored page title or is required for external links.
          */
         label?: string | null;
         /**
