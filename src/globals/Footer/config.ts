@@ -1,5 +1,6 @@
 import type { GlobalConfig } from 'payload'
 import { navigationLinkField } from '@/fields/navigation-link'
+import { revalidateFooter } from '@/hooks/revalidateGlobals'
 
 export const Footer: GlobalConfig = {
     slug: 'footer',
@@ -75,4 +76,7 @@ export const Footer: GlobalConfig = {
             ],
         },
     ],
+    hooks: {
+        afterChange: [revalidateFooter],
+    },
 }

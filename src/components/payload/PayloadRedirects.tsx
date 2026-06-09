@@ -12,7 +12,7 @@ interface Props {
 
 export const PayloadRedirects: React.FC<Props> = async ({ disableNotFound, url, lang }) => {
     const locale = toLocaleTag(getLocaleFromLang(lang) ?? DEFAULT_LOCALE)
-    const redirects = await getCachedRedirects(locale)()
+    const redirects = await getCachedRedirects(locale)
 
     const pathWithoutLang = url.replace(/^\/[a-z]{2}(\/|$)/, '/')
     const redirectItem = redirects.find((r) => r.from === pathWithoutLang)
