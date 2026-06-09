@@ -20,6 +20,11 @@ Das Projekt ist als flexibles, vollständig headless Template mit **Next.js 16**
 - 🗺️ Strukturierte Daten (JSON-LD): Unternehmensschema mit Öffnungszeiten & Geo-Koordinaten, Breadcrumbs, lokale Geschäftsinformationen
 - 🧩 Flexible Seitenkomponenten: Hero, Media with Text, Accordion, Banner, Before/After-Vergleich u. v. m.
 
+**Implementierte Admin / CMS Features**:
+- Medienverwaltung mit automatischer umwandlung in diverse Formate + AVIF
+- Weiterleitungen auf interne sowie externe Websites
+- User Management inkl. Rollen Admin und Redakteur
+
 ## Tech Stack
 
 | Bereich     | Technologie                                    |
