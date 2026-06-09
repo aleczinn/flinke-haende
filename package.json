@@ -6,6 +6,8 @@
     "type": "module",
     "scripts": {
         "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+        "analyze": "cross-env ANALYZE=true NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build --webpack",
+        "analyze-exp": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next experimental-analyze",
         "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
         "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
         "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
@@ -39,6 +41,7 @@
         "zod": "^4.4.3"
     },
     "devDependencies": {
+        "@next/bundle-analyzer": "^16.2.7",
         "@playwright/test": "1.58.2",
         "@tailwindcss/postcss": "^4.3.0",
         "@tailwindcss/typography": "^0.5.19",
