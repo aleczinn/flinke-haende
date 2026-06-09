@@ -328,20 +328,18 @@ export interface MediaWithText {
    */
   buttons?:
     | {
-        button?: {
-          type?: ('reference' | 'external') | null;
-          newTab?: boolean | null;
-          reference?: (number | null) | Page;
-          url?: string | null;
-          /**
-           * (Optional) - Page title is used as fallback.
-           */
-          label?: string | null;
-          /**
-           * Define the appearance of the button.
-           */
-          variant?: string | null;
-        };
+        type?: ('reference' | 'external') | null;
+        newTab?: boolean | null;
+        reference?: (number | null) | Page;
+        url?: string | null;
+        /**
+         * (Optional) — Page title is used as fallback.
+         */
+        label?: string | null;
+        /**
+         * Define the appearance of the button.
+         */
+        variant?: ('primary' | 'light' | 'dark') | null;
         id?: string | null;
       }[]
     | null;
@@ -616,16 +614,12 @@ export interface MediaWithTextSelect<T extends boolean = true> {
   buttons?:
     | T
     | {
-        button?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              variant?: T;
-            };
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        variant?: T;
         id?: T;
       };
   backgroundColor?: T;

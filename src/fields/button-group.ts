@@ -1,6 +1,6 @@
 import { ArrayField, Field } from 'payload'
 import deepMerge from '@/lib/utilities/deepMerge'
-import { buttonField } from '@/fields/button'
+import { buttonCoreFields } from '@/fields/button'
 
 type ButtonGroupType = (options?: { overrides?: Partial<ArrayField> }) => Field
 
@@ -25,7 +25,7 @@ export const buttonGroupField: ButtonGroupType = ({ overrides = {} } = {}) => {
                 en: 'If possible, only one primary button should be used per component.',
             },
         },
-        fields: [buttonField({})],
+        fields: buttonCoreFields()
     }
     return deepMerge(field, overrides)
 }

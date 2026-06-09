@@ -2,129 +2,101 @@ import type { Field, GroupField } from 'payload'
 import { ButtonVariant } from '@/components/ui/Button'
 import deepMerge from '@/lib/utilities/deepMerge'
 
-// Options-Array normal typisiert → kompatibel mit Payload
-// const buttonVariantOptions: { label: string; value: ButtonVariant }[] = [
-//     { label: 'Primary', value: 'primary' },
-//     { label: 'Light', value: 'light' },
-//     { label: 'Dark', value: 'dark' },
-// ]
+const buttonVariantOptions: { label: string; value: ButtonVariant }[] = [
+    { label: 'Primary', value: 'primary' },
+    { label: 'Light', value: 'light' },
+    { label: 'Dark', value: 'dark' },
+]
 
-type ButtonType = (options?: {
-    overrides?: Partial<GroupField>
-}) => Field
+type ButtonType = (options?: { overrides?: Partial<GroupField> }) => Field
 
-export const buttonField: ButtonType = ({ overrides = {} } = {}) => {
-    const typeFields: Field = {
+export const buttonCoreFields = (): Field[] => [
+    {
         type: 'row',
         fields: [
             {
                 name: 'type',
                 type: 'radio',
-                admin: {
-                    layout: 'horizontal',
-                    width: '50%',
-                },
                 defaultValue: 'reference',
+                admin: { layout: 'horizontal', width: '50%' },
                 options: [
-                    {
-                        label: { de: 'Interne Seite', en: 'Internal page' },
-                        value: 'reference',
-                    },
-                    {
-                        label: { de: 'Externer Link', en: 'External link' },
-                        value: 'external',
-                    },
+                    { label: { de: 'Interne Seite', en: 'Internal page' }, value: 'reference' },
+                    { label: { de: 'Externer Link', en: 'External link' }, value: 'external' },
                 ],
             },
             {
                 name: 'newTab',
                 type: 'checkbox',
-                admin: {
-                    style: {
-                        alignSelf: 'flex-end',
-                    },
-                    width: '50%',
-                },
-                label: {
-                    de: 'In neuem Tab öffnen',
-                    en: 'Open in new tab',
-                },
+                label: { de: 'In neuem Tab öffnen', en: 'Open in new tab' },
+                admin: { width: '50%', style: { alignSelf: 'flex-end' } },
             },
         ],
-    }
-
-    const linkTypes: Field[] = [
-        {
-            name: 'reference',
-            type: 'relationship',
-            admin: {
-                condition: (_, siblingData) => siblingData?.type === 'reference',
-            },
-            relationTo: 'pages',
-            label: {
-                de: 'Seite',
-                en: 'Page'
-            },
-            required: true,
-        },
-        {
-            name: 'url',
-            type: 'text',
-            admin: {
-                condition: (_, siblingData) => siblingData?.type === 'external',
-            },
-            label: {
-                de: 'Externe URL',
-                en: 'External URL'
-            },
-            required: true,
-        },
-    ]
-
-    const linkUrlAndName: Field = {
+    },
+    {
         type: 'row',
         fields: [
-            ...linkTypes,
+            {
+                name: 'reference',
+                type: 'relationship',
+                relationTo: 'pages',
+                label: { de: 'Seite', en: 'Page' },
+                admin: {
+                    condition: (_, sib) => sib?.type === 'reference',
+                    width: '50%',
+                },
+                validate: (value: unknown, { siblingData }: any) =>
+                    siblingData?.type === 'reference' && !value ? 'Bitte eine Seite auswählen.' : true,
+            },
+            {
+                name: 'url',
+                type: 'text',
+                label: { de: 'Externe URL', en: 'External URL' },
+                admin: {
+                    condition: (_, sib) => sib?.type === 'external',
+                    width: '50%',
+                },
+                validate: (value: unknown, { siblingData }: any) =>
+                    siblingData?.type === 'external' && !value ? 'Bitte eine URL eingeben.' : true,
+            },
             {
                 name: 'label',
                 type: 'text',
+                label: { de: 'Beschriftung', en: 'Label' },
                 admin: {
                     width: '50%',
                     description: {
-                        de: '(Optional) - Seitentitel wird als Fallback verwendet.',
-                        en: '(Optional) - Page title is used as fallback.',
+                        de: '(Optional) — Seitentitel wird als Fallback verwendet.',
+                        en: '(Optional) — Page title is used as fallback.',
                     },
-                },
-                label: {
-                    de: 'Beschriftung',
-                    en: 'Label',
                 },
             },
         ],
-    }
-
-    const appearance: Field = {
+    },
+    {
         name: 'variant',
         type: 'select',
+        defaultValue: 'primary',
+        options: buttonVariantOptions,
+        label: { de: 'Stil', en: 'Style' },
         admin: {
             width: '50%',
             description: {
-                de: 'Definiere das Aussehen deines Buttons.',
+                de: 'Definiere das Aussehen des Buttons.',
                 en: 'Define the appearance of the button.',
             },
         },
-        defaultValue: '',
-        options: [],
-    }
+    },
+]
 
-    const result: Field = {
+export const buttonField: ButtonType = ({ overrides = {} } = {}) => {
+    const field = {
         name: 'button',
         type: 'group',
         admin: {
-            hideGutter: true,
+            hideGutter: true
         },
-        fields: [typeFields, linkUrlAndName, appearance],
-    }
+        fields: buttonCoreFields(),
+    } as Field
 
-    return deepMerge(result, overrides)
+    return deepMerge(field, overrides)
 }

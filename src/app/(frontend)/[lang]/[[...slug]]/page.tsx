@@ -198,6 +198,10 @@ export default async function Page({ params }: PageProps) {
 
     const switcherAlternates = Object.fromEntries(availableLanguages.map((l) => [l, buildLocalePath(l)]))
 
+    if (page.hero) {
+        console.log(page.hero[0]);
+    }
+
     return (
         <main id="main" className="grow flex flex-col bg-gray-10 min-h-[50svh]">
             <LocaleSwitcherUpdater alternates={switcherAlternates} />

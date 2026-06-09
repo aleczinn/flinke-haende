@@ -2,8 +2,10 @@ import React, { Fragment } from 'react'
 import type { Page } from '@/payload-types'
 import { MediaWithTextBlock } from '@/components/blocks/MediaWithText/Component'
 import { Locale } from '@/lib/locale'
+import { HeroBlock } from '@/components/blocks/Hero/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
+    hero: HeroBlock,
     media_with_text: MediaWithTextBlock,
 }
 
