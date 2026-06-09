@@ -83,8 +83,6 @@ export const HeroBlock: React.FC<HeroProps> = ({
                                         ? (btn.reference as Page).title
                                         : '')
 
-                                console.log("LABEL:", label)
-
                                 if (!label) return null
 
                                 return (
