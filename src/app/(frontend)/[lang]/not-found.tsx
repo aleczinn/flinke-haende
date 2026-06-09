@@ -12,7 +12,7 @@ export default function NotFound() {
     const locale = getLocaleFromLang(lang) ?? DEFAULT_LOCALE
 
     return (
-        <main id="main" className="grow flex flex-col bg-gray-10">
+        <main id="main" className="grow flex flex-col bg-gray-10" tabIndex={-1}>
             <Section
                 variant="capped"
                 innerClassName="flex-1 flex flex-col items-center justify-center text-center py-section gap-6 text-gray-90"

@@ -203,7 +203,7 @@ export default async function Page({ params }: PageProps) {
     const showVisibleTitle = !isHome && !hero
 
     return (
-        <main id="main" className="grow flex flex-col bg-gray-10 min-h-[50svh]">
+        <main id="main" className="grow flex flex-col bg-gray-10 min-h-[50svh]" tabIndex={-1}>
             <LocaleSwitcherUpdater alternates={switcherAlternates} />
             {draft && <LivePreviewListener />}
 

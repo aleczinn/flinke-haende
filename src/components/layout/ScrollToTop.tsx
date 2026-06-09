@@ -13,7 +13,6 @@ export default function ScrollToTop() {
         // Tastatur-Fokus auf <main> verschieben, damit Tab nach Navigation oben weitergeht
         const main = document.getElementById('main');
         if (main) {
-            main.setAttribute('tabindex', '-1');
             main.focus({ preventScroll: true });
         }
     }, [pathname]);
