@@ -219,14 +219,20 @@ function resolveNavigationLink(item: any, locale: Locale): NavigationLink | null
 }
 
 export function resolveButtonHref(
-    btn: { type?: string | null; page?: (number | null) | Page; url?: string | null },
+    btn: {
+        type?: string | null;
+        page?: (number | null) | Page;
+        reference?: (number | null) | Page;
+        url?: string | null },
     locale: Locale,
 ): string | null {
     if (btn.type === 'external') {
         return btn.url ?? null
     }
 
-    const page = typeof btn.page === 'object' && btn.page !== null ? (btn.page as Page) : null
+    const p = btn.reference ?? btn.page
+
+    const page = typeof p === 'object' && p !== null ? (p as Page) : null
     if (!page) return null
 
     const crumbs = page.breadcrumbs ?? []
