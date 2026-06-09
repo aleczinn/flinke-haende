@@ -79,5 +79,10 @@
         "title": "Diese Seite existiert nicht",
         "description": "Wir konnten leider nichts finden, nachdem du suchst.",
         "backhome": "Zurück zur Startseite"
+    },
+    "error": {
+        "title": "Etwas ist schiefgelaufen",
+        "description": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.",
+        "retry": "Erneut versuchen"
     }
 }

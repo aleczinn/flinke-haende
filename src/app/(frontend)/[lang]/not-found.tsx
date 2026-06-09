@@ -15,7 +15,7 @@ export default function NotFound() {
         <main id="main" className="grow flex flex-col bg-gray-10">
             <Section
                 variant="capped"
-                innerClassName="flex-1 flex flex-col items-center justify-center text-center py-40 gap-6 text-gray-90"
+                innerClassName="flex-1 flex flex-col items-center justify-center text-center py-section gap-6 text-gray-90"
             >
                 <h1 className="uppercase text-sm">{t(locale, '404.title')}</h1>
                 <span className="font-display text-8xl md:text-9xl font-bold text-primary" aria-hidden="true">
