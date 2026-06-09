@@ -25,6 +25,7 @@ import { PayloadBlockRenderer } from '@/components/payload/PayloadBlockRenderer'
 import { LocaleSwitcherUpdater } from '@/components/layout/locale/LocaleSwitcherUpdater'
 import Section from '@/components/layout/Section'
 import { Headline } from '@/components/ui/Headline'
+import { HeroBlock } from '@/components/blocks/Hero/Component'
 
 interface PageProps {
     params: Promise<{ lang: string; slug?: string[] }>
@@ -198,24 +199,26 @@ export default async function Page({ params }: PageProps) {
 
     const switcherAlternates = Object.fromEntries(availableLanguages.map((l) => [l, buildLocalePath(l)]))
 
-    if (page.hero) {
-        console.log(page.hero[0]);
-    }
+    const hero = page.hero?.[0] ?? null
+    const showVisibleTitle = !isHome && !hero
 
     return (
         <main id="main" className="grow flex flex-col bg-gray-10 min-h-[50svh]">
             <LocaleSwitcherUpdater alternates={switcherAlternates} />
             {draft && <LivePreviewListener />}
+
+            {hero && <HeroBlock locale={locale} priority {...hero} />}
+
             {!isHome && <Breadcrumbs locale={locale} page={page} includeSchema />}
 
-            {isHome ? (
-                <h1 className="sr-only">{page.title}</h1>
-            ) : (
+            {showVisibleTitle ? (
                 <Section variant="capped" innerClassName="mt-6">
                     <Headline as="h1" variant="h2" alignment="left" design="line">
                         {page.title}
                     </Headline>
                 </Section>
+            ) : (
+                <h1 className="sr-only">{page.title}</h1>
             )}
 
             <PayloadBlockRenderer locale={locale} blocks={layout} />

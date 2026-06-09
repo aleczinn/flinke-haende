@@ -287,6 +287,26 @@ export interface Hero {
   tagline?: string | null;
   headline: string;
   text: string;
+  /**
+   * If possible, only one primary button should be used per component.
+   */
+  buttons?:
+    | {
+        type?: ('reference' | 'external') | null;
+        newTab?: boolean | null;
+        reference?: (number | null) | Page;
+        url?: string | null;
+        /**
+         * (Optional) — Page title is used as fallback.
+         */
+        label?: string | null;
+        /**
+         * Define the appearance of the button.
+         */
+        variant?: ('primary' | 'light' | 'dark') | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'hero';
@@ -593,6 +613,17 @@ export interface HeroSelect<T extends boolean = true> {
   tagline?: T;
   headline?: T;
   text?: T;
+  buttons?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        variant?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
