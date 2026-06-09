@@ -137,10 +137,13 @@ export const getFooterConfig = cache(async (locale: Locale): Promise<FooterConfi
         navigation: (footer.navigation ?? [])
             .map((item: any) => resolveNavigationLink(item, locale))
             .filter(Boolean) as NavigationLink[],
-        cta: ctaHref && ctaPage ? {
-            href: ctaHref,
-            label: ctaPage.title as string
-        } : null,
+        cta:
+            ctaHref && ctaPage
+                ? {
+                      href: ctaHref,
+                      label: ctaPage.title as string,
+                  }
+                : null,
         legalNavigation: (footer.legalNavigation ?? [])
             .map((item: any) => {
                 const page = item?.page

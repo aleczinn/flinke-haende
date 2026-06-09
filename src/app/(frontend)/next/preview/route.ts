@@ -3,6 +3,7 @@ import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { env } from '@/lib/env'
 
 export async function GET(req: Request): Promise<Response> {
     const payload = await getPayload({ config })
@@ -13,7 +14,7 @@ export async function GET(req: Request): Promise<Response> {
     const slug = searchParams.get('slug')
     const previewSecret = searchParams.get('previewSecret')
 
-    if (previewSecret !== process.env.PREVIEW_SECRET) {
+    if (previewSecret !== env.PREVIEW_SECRET) {
         return new Response('You are not allowed to payload this page', { status: 403 })
     }
 
