@@ -11,6 +11,8 @@ import { BeforeAfterImage } from '@/components/module/BeforeAfterImage'
 import { DEFAULT_LOCALE, Locale } from '@/lib/locale'
 import { Button, ButtonVariant } from '@/components/ui/Button'
 import { resolveButtonHref } from '@/lib/queries'
+import { parseButtonForField } from '@/lib/utilities/button'
+import { ButtonRenderer } from '@/components/payload/ButtonRenderer'
 
 type MediaWithTextProps = MediaWithText & {
     locale: Locale
@@ -74,38 +76,7 @@ export const MediaWithTextBlock: React.FC<MediaWithTextProps> = ({
 
                 {text && <RichTextRenderer data={text} />}
 
-                {buttons && buttons.length > 0 && (
-                    <div className="flex flex-row flex-wrap gap-4 mt-8">
-                        {buttons.map((btn) => {
-                            const href = resolveButtonHref(btn, locale)
-                            if (!href) {
-                                return null
-                            }
-
-                            const label =
-                                btn.label?.trim() ||
-                                (typeof btn.reference === 'object' && btn.reference
-                                    ? (btn.reference as Page).title
-                                    : '')
-
-                            if (!label) {
-                                return null
-                            }
-
-                            return (
-                                <Button
-                                    key={btn.id ?? href}
-                                    href={href}
-                                    variant={(btn.variant as ButtonVariant) ?? 'primary'}
-                                    hollow={false}
-                                    target={btn.newTab ? '_blank' : undefined}
-                                >
-                                    {label}
-                                </Button>
-                            )
-                        })}
-                    </div>
-                )}
+                <ButtonRenderer locale={locale} buttons={buttons} className="flex flex-row flex-wrap gap-4 mt-8" />
             </div>
         </Section>
     )

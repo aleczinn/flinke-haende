@@ -303,7 +303,7 @@ export interface Hero {
         /**
          * Define the appearance of the button.
          */
-        variant?: ('primary' | 'light' | 'dark') | null;
+        variant?: ('primary' | 'light' | 'dark' | 'primary-hollow' | 'light-hollow' | 'dark-hollow') | null;
         id?: string | null;
       }[]
     | null;
@@ -359,7 +359,7 @@ export interface MediaWithText {
         /**
          * Define the appearance of the button.
          */
-        variant?: ('primary' | 'light' | 'dark') | null;
+        variant?: ('primary' | 'light' | 'dark' | 'primary-hollow' | 'light-hollow' | 'dark-hollow') | null;
         id?: string | null;
       }[]
     | null;

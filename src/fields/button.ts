@@ -1,14 +1,29 @@
 import type { Field, GroupField } from 'payload'
-import { ButtonVariant } from '@/components/ui/Button'
 import deepMerge from '@/lib/utilities/deepMerge'
+import { Page } from '@/payload-types'
 
-const buttonVariantOptions: { label: string; value: ButtonVariant }[] = [
-    { label: 'Primary', value: 'primary' },
-    { label: 'Light', value: 'light' },
-    { label: 'Dark', value: 'dark' },
+export type FieldButtonVariant = 'primary' | 'primary-hollow' | 'light' | 'light-hollow' | 'dark' | 'dark-hollow'
+
+const buttonVariantOptions = [
+    { label: { de: 'Primär', en: 'Primary' }, value: 'primary' },
+    { label: { de: 'Hell', en: 'Light' }, value: 'light' },
+    { label: { de: 'Dunkel', en: 'Dark' }, value: 'dark' },
+    { label: { de: 'Primär (Outline)', en: 'Primary (Outline)' }, value: 'primary-hollow' },
+    { label: { de: 'Hell (Outline)', en: 'Light (Outline)' }, value: 'light-hollow' },
+    { label: { de: 'Dunkel (Outline)', en: 'Dark (Outline)' }, value: 'dark-hollow' },
 ]
 
 type ButtonType = (options?: { overrides?: Partial<GroupField> }) => Field
+
+export type ButtonGroupItem = {
+    id?: string | null
+    type?: 'reference' | 'external' | null
+    newTab?: boolean | null
+    reference?: number | Page | null
+    url?: string | null
+    label?: string | null
+    variant?: FieldButtonVariant | null
+}
 
 export const buttonCoreFields = (): Field[] => [
     {
@@ -94,7 +109,7 @@ export const buttonCoreFields = (): Field[] => [
                 en: 'Define the appearance of the button.',
             },
         },
-    },
+    }
 ]
 
 export const buttonField: ButtonType = ({ overrides = {} } = {}) => {

@@ -3,11 +3,10 @@ import { Locale } from '@/lib/locale'
 import Section from '@/components/layout/Section'
 import { Headline } from '@/components/ui/Headline'
 import { Tagline } from '@/components/ui/Tagline'
-import { Button, ButtonVariant } from '@/components/ui/Button'
 import { parseHighlights } from '@/lib/text'
-import { resolveButtonHref } from '@/lib/queries'
 import Image from 'next/image'
 import React from 'react'
+import { ButtonRenderer } from '@/components/payload/ButtonRenderer'
 
 type HeroProps = Hero & {
     locale: Locale
@@ -71,33 +70,7 @@ export const HeroBlock: React.FC<HeroProps> = ({
                         </p>
                     )}
 
-                    {buttons && buttons.length > 0 && (
-                        <div className="flex flex-row flex-wrap gap-4 mt-8">
-                            {buttons.map((btn) => {
-                                const href = resolveButtonHref(btn, locale)
-                                if (!href) return null
-
-                                const label =
-                                    btn.label?.trim() ||
-                                    (typeof btn.reference === 'object' && btn.reference
-                                        ? (btn.reference as Page).title
-                                        : '')
-
-                                if (!label) return null
-
-                                return (
-                                    <Button
-                                        key={btn.id ?? href}
-                                        href={href}
-                                        variant={(btn.variant as ButtonVariant) ?? 'primary'}
-                                        target={btn.newTab ? '_blank' : undefined}
-                                    >
-                                        {label}
-                                    </Button>
-                                )
-                            })}
-                        </div>
-                    )}
+                    <ButtonRenderer locale={locale} buttons={buttons} className="flex flex-row flex-wrap gap-4 mt-8" />
                 </div>
             </Section>
         </Section>
