@@ -54,9 +54,14 @@ export const buttonCoreFields = (): Field[] => [
                 admin: {
                     condition: (_, sib) => sib?.type === 'external',
                     width: '50%',
+                    placeholder: 'https://example.com',
                 },
-                validate: (value: unknown, { siblingData }: any) =>
-                    siblingData?.type === 'external' && !value ? 'Bitte eine URL eingeben.' : true,
+                validate: (value: unknown, { siblingData }: any) => {
+                    if (siblingData?.type !== 'external') return true
+                    if (!value) return 'Bitte eine URL eingeben.'
+                    if (!/^https?:\/\//.test(String(value))) return 'URL muss mit https:// beginnen.'
+                    return true
+                },
             },
             {
                 name: 'label',
@@ -69,6 +74,10 @@ export const buttonCoreFields = (): Field[] => [
                         en: '(Optional) — Page title is used as fallback.',
                     },
                 },
+                validate: (value: unknown, { siblingData }: any) =>
+                    siblingData?.type === 'external' && !String(value ?? '').trim()
+                        ? 'Bei externen Links ist eine Bezeichnung erforderlich.'
+                        : true,
             },
         ],
     },
