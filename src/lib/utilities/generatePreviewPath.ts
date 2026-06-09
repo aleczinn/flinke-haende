@@ -1,6 +1,7 @@
 import type { CollectionSlug, PayloadRequest } from 'payload'
 import { HOME_SLUG } from '@/lib/queries'
 import { DEFAULT_LOCALE, toLocaleTag } from '@/lib/locale'
+import { env } from '@/lib/env'
 
 interface Args {
     collection: CollectionSlug
@@ -26,7 +27,7 @@ export const generatePreviewPath = ({ collection, slug, data, req }: Args) => {
         slug,
         collection,
         path,
-        previewSecret: process.env.PREVIEW_SECRET ?? '',
+        previewSecret: env.PREVIEW_SECRET ?? '',
     })
 
     return `/next/preview?${params.toString()}`

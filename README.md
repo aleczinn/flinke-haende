@@ -1,67 +1,103 @@
-# Payload Blank Template
+# Flinke Hände
 
-This template comes configured with the bare minimum to get started on anything you need.
+[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=next.js)](https://nextjs.org)
+[![Payload CMS](https://img.shields.io/badge/Payload_CMS-3.x-000000?style=flat-square&logo=payloadcms)](https://payloadcms.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS_v4-Styled-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com)
 
-## Quick start
+Ein modernes Handwerker-Portal für den deutschsprachigen Markt — Kunden finden hier den passenden Fachbetrieb für Gewerke wie Elektro, Maler, Fliesen, Sanitär, Lüftung und mehr. Nutzer können sich über Leistungen informieren und direkt über die Plattform eine Auftragsanfrage stellen.
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+Das Projekt ist als flexibles, vollständig headless Template mit **Next.js 16** und **Payload CMS 3** umgesetzt — und lässt sich einfach für einen einzelnen Handwerksbetrieb oder ein Multi-Gewerke-Portal anpassen.
 
-## Quick Start - local setup
+## Features
 
-To spin up this template locally, follow these steps:
+- 🌍 Mehrsprachigkeit mit Regionssupport (z. B. de-DE, de-CH, de-AT)
+- ⚡ Optimiert für Core Web Vitals
+-📋 Formulare für Auftragsanfragen von Kunden
+- 🛠️ Vollständig über das Payload CMS-Admin-Panel verwaltbar
+- 🔒 Vollständige Typsicherheit durch TypeScript & automatisch generierte Typen via Payload CMS
+- 🔍 Vollständiger SEO-Support mit konfigurierbaren Meta-Feldern (Titel, Beschreibung, OG-Image)
+- 🗺️ Strukturierte Daten (JSON-LD): Unternehmensschema mit Öffnungszeiten & Geo-Koordinaten, Breadcrumbs, lokale Geschäftsinformationen
+- 🧩 Flexible Seitenkomponenten: Hero, Media with Text, Accordion, Banner, Before/After-Vergleich u. v. m.
 
-### Clone
+## Tech Stack
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+| Bereich     | Technologie                                    |
+|-------------|------------------------------------------------|
+| Framework   | Next.js 16 (App Router, Turbopack)             |
+| CMS         | Payload CMS 3.x                                |
+| Datenbank   | SQLite (Entwicklung) / Neon PostgreSQL (Prod)  |
+| Styling     | Tailwind CSS v4                                |
+| Sprache     | TypeScript                                     |
+| Deployment  | Vercel + Neon                                  |
 
-### Development
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+## Development
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+### Prerequisites
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+- Node.js 25
+- pnpm 10
 
-#### Docker (Optional)
+### Installation
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+```bash
+pnpm install
+```
 
-To do so, follow these steps:
+### Environment
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+`.env.example` nach `.env` kopieren und die Werte eintragen:
 
-## How it works
+```bash
+cp .env.example .env
+```
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+```env
+DATABASE_URL=file:./db.sqlite               # SQLite für lokale Entwicklung
+PAYLOAD_SECRET=your-secret-here             # Zufällig generierter String, welchen Payload intern zum signieren von JWT's nutzt
+PREVIEW_SECRET=your-secret-here             # Zufällig generierter String, welcher für die Live-Ansicht genutzt wird
 
-### Collections
+NEXT_PUBLIC_BASE_URL=http://localhost:3000  # Deine Base-URL der Website. Bei einer Custom-Domain nutze bitte die korrekte URL
+NEXT_PUBLIC_SITE_SHORTCUT=your-site-shorcut # Wird für cookies benutzt. Beispiel: FH 
+NEXT_PUBLIC_SCHEMA_TYPE=your-schema         # Optionaler Schema-Typ, welcher Google hilft die Seite vom Schema zu definieren
+```
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+Um secrets zu generieren nutze z. B. folgendes:
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
+```
 
-- #### Users (Authentication)
+### Usage
 
-  Users are auth-enabled collections that have access to the admin panel.
+```bash
+pnpm dev   # Start dev server with Turbopack
+```
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/3.x/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+| URL                          | Beschreibung      |
+|------------------------------|-------------------|
+| `http://localhost:3000`      | Frontend/Website  |
+| `http://localhost:3000/admin`| Payload CMS Admin |
 
-- #### Media
+## Production
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+### Build
 
-### Docker
+```bash
+pnpm build
+```
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+### Deploy to Vercel
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+Das Projekt ist für das Deployment auf **Vercel** mit einer **Neon PostgreSQL**-Datenbank ausgelegt.
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+1. Projekt auf [Vercel](https://vercel.com) anlegen und Repository verbinden
+2. Datenbank auf [Neon](https://neon.tech) oder direkt in Vercel erstellen und Connection String kopieren
+3. Umgebungsvariablen setzen
+4. Deployment — Vercel führt bei jedem Push automatisch `pnpm build` aus.
 
-## Questions
+## License
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+Dieses Repository ist ausschließlich zur Ansicht veröffentlicht.
+Eine Nutzung, Vervielfältigung oder Weiterverwendung des Codes
+ist ohne ausdrückliche Genehmigung nicht gestattet.

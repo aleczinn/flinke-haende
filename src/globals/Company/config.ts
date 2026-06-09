@@ -1,5 +1,6 @@
 import type { Field, GlobalConfig } from 'payload'
 import { urlField } from '@/fields/url-field'
+import { revalidateCompany } from '@/hooks/revalidateGlobals'
 
 const generalFields = (): Field[] => [
     {
@@ -359,4 +360,7 @@ export const Company: GlobalConfig = {
             ],
         },
     ],
+    hooks: {
+        afterChange: [revalidateCompany]
+    }
 }

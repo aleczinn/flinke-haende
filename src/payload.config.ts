@@ -17,6 +17,7 @@ import { DEFAULT_LOCALE, locales, toLocaleTag } from '@/lib/locale'
 
 import { de } from '@payloadcms/translations/languages/de'
 import { en } from '@payloadcms/translations/languages/en'
+import { serverEnv } from '@/lib/env.server'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -76,18 +77,18 @@ export default buildConfig({
                     documentToRedirect: 'Dokument zum Weiterleiten',
                     redirectType: 'Weiterleitungstyp',
                 },
-            }
+            },
         },
     },
 
     editor: lexicalEditor(),
-    secret: process.env.PAYLOAD_SECRET || '',
+    secret: serverEnv.PAYLOAD_SECRET || '',
     typescript: {
         outputFile: path.resolve(dirname, 'payload-types.ts'),
     },
     db: sqliteAdapter({
         client: {
-            url: process.env.DATABASE_URL || '',
+            url: serverEnv.DATABASE_URL || '',
         },
     }),
     sharp,

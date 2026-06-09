@@ -59,100 +59,110 @@ export interface FooterConfig {
     legalNavigation: NavigationLink[]
 }
 
-export const getCompanyConfig = cache(async (locale: Locale): Promise<CompanyConfig> => {
-    const payload = await getPayload({ config })
-    const c = await payload.findGlobal({
-        slug: 'company',
-        locale: toLocaleTag(locale),
-        depth: 1,
-    })
-
-    return {
-        company_name: c.companyName || '',
-        company_name_shorthand: c.companyNameShorthand || c.companyName || '',
-        owner: c.owner || '',
-        site_description: c.siteDescription || '',
-        defaultOgImage: c.defaultOgImage,
-        telephone: c.telephone || '',
-        email: c.email || '',
-        address: {
-            street: c.address.street || '',
-            house_number: c.address.houseNumber || '',
-            postal_code: c.address.postalCode || '',
-            city: c.address.city || '',
-            country_iso: c.address.country ?? 'DE',
-        },
-        geo: {
-            latitude: c.geo?.latitude,
-            longitude: c.geo?.longitude,
-        },
-        opening_hours: (c.openingHours ?? []).map((o) => ({
-            id: o.id ?? undefined,
-            days: o.days ?? [],
-            closed: !!o.closed,
-            open: o.open ?? undefined,
-            close: o.close ?? undefined,
-            note: o.note ?? undefined,
-        })),
-        social: c.social,
-    }
-})
-
 export const HOME_SLUG = 'home'
 
-export const getHeaderConfig = cache(async (locale: Locale): Promise<HeaderConfig> => {
-    const payload = await getPayload({ config })
-    const header = await payload.findGlobal({
-        slug: 'header',
-        locale: toLocaleTag(locale),
-        depth: 1,
-    })
-
-    return {
-        navigation: (header.navigation ?? [])
-            .map((item: any) => {
-                const link = resolveNavigationLink(item, locale)
-                if (!link) return null
-                const children = (item.children ?? [])
-                    .map((c: any) => resolveNavigationLink(c, locale))
-                    .filter(Boolean) as NavigationLink[]
-                return { ...link, children }
+export const getCompanyConfig = (locale: Locale): Promise<CompanyConfig> =>
+    unstable_cache(
+        async () => {
+            const payload = await getPayload({ config })
+            const c = await payload.findGlobal({
+                slug: 'company',
+                locale: toLocaleTag(locale),
+                depth: 1,
             })
-            .filter(Boolean) as NavigationItem[],
-    }
-})
 
-export const getFooterConfig = cache(async (locale: Locale): Promise<FooterConfig> => {
-    const payload = await getPayload({ config })
-    const footer = await payload.findGlobal({
-        slug: 'footer',
-        locale: toLocaleTag(locale),
-        depth: 1,
-    })
+            return {
+                company_name: c.companyName || '',
+                company_name_shorthand: c.companyNameShorthand || c.companyName || '',
+                owner: c.owner || '',
+                site_description: c.siteDescription || '',
+                defaultOgImage: c.defaultOgImage,
+                telephone: c.telephone || '',
+                email: c.email || '',
+                address: {
+                    street: c.address.street || '',
+                    house_number: c.address.houseNumber || '',
+                    postal_code: c.address.postalCode || '',
+                    city: c.address.city || '',
+                    country_iso: c.address.country ?? 'DE',
+                },
+                geo: {
+                    latitude: c.geo?.latitude,
+                    longitude: c.geo?.longitude,
+                },
+                opening_hours: (c.openingHours ?? []).map((o) => ({
+                    id: o.id ?? undefined,
+                    days: o.days ?? [],
+                    closed: !!o.closed,
+                    open: o.open ?? undefined,
+                    close: o.close ?? undefined,
+                    note: o.note ?? undefined,
+                })),
+                social: c.social,
+            }
+        },
+        ['company', toLocaleTag(locale)], // Cache-Key pro Locale
+        { tags: ['company'], revalidate: false }, // Nur via Tag invalidieren
+    )()
 
-    const ctaPage = footer.cta && typeof footer.cta === 'object' ? footer.cta : null
-    const ctaHref = resolveHref(ctaPage, locale)
-
-    return {
-        navigation: (footer.navigation ?? [])
-            .map((item: any) => resolveNavigationLink(item, locale))
-            .filter(Boolean) as NavigationLink[],
-        cta: ctaHref && ctaPage ? {
-            href: ctaHref,
-            label: ctaPage.title as string
-        } : null,
-        legalNavigation: (footer.legalNavigation ?? [])
-            .map((item: any) => {
-                const page = item?.page
-                if (!page || typeof page !== 'object') return null
-                const crumbs = page.breadcrumbs ?? []
-                const path = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
-                const href = page.slug === HOME_SLUG ? `/${locale.language}` : `/${locale.language}${path}`
-                return { id: item.id, href, label: page.title, newTab: false }
+export const getHeaderConfig = (locale: Locale): Promise<HeaderConfig> =>
+    unstable_cache(
+        async () => {
+            const payload = await getPayload({ config })
+            const header = await payload.findGlobal({
+                slug: 'header',
+                locale: toLocaleTag(locale),
+                depth: 1,
             })
-            .filter(Boolean) as NavigationLink[],
-    }
-})
+            return {
+                navigation: (header.navigation ?? [])
+                    .map((item: any) => {
+                        const link = resolveNavigationLink(item, locale)
+                        if (!link) return null
+                        const children = (item.children ?? [])
+                            .map((c: any) => resolveNavigationLink(c, locale))
+                            .filter(Boolean) as NavigationLink[]
+                        return { ...link, children }
+                    })
+                    .filter(Boolean) as NavigationItem[],
+            }
+        },
+        ['header', toLocaleTag(locale)],
+        { tags: ['header'], revalidate: false },
+    )()
+
+export const getFooterConfig = (locale: Locale): Promise<FooterConfig> =>
+    unstable_cache(
+        async () => {
+            const payload = await getPayload({ config })
+            const footer = await payload.findGlobal({
+                slug: 'footer',
+                locale: toLocaleTag(locale),
+                depth: 1,
+            })
+            const ctaPage = footer.cta && typeof footer.cta === 'object' ? footer.cta : null
+            const ctaHref = resolveHref(ctaPage, locale)
+
+            return {
+                navigation: (footer.navigation ?? [])
+                    .map((item: any) => resolveNavigationLink(item, locale))
+                    .filter(Boolean) as NavigationLink[],
+                cta: ctaHref && ctaPage ? { href: ctaHref, label: ctaPage.title as string } : null,
+                legalNavigation: (footer.legalNavigation ?? [])
+                    .map((item: any) => {
+                        const page = item?.page
+                        if (!page || typeof page !== 'object') return null
+                        const crumbs = page.breadcrumbs ?? []
+                        const path = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
+                        const href = page.slug === HOME_SLUG ? `/${locale.language}` : `/${locale.language}${path}`
+                        return { id: item.id, href, label: page.title, newTab: false }
+                    })
+                    .filter(Boolean) as NavigationLink[],
+            }
+        },
+        ['footer', toLocaleTag(locale)],
+        { tags: ['footer'], revalidate: false },
+    )()
 
 export const getCachedRedirects = (locale: PayloadLocale) =>
     unstable_cache(
@@ -169,7 +179,7 @@ export const getCachedRedirects = (locale: PayloadLocale) =>
         },
         ['redirects'],
         { tags: ['redirects'] },
-    )
+    )()
 
 function resolveHref(page: any, locale: Locale): string | null {
     if (!page || typeof page !== 'object') return null
