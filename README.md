@@ -71,7 +71,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
 ### Usage
 
 ```bash
-pnpm dev   # Start dev server with Turbopack
+pnpm dev # Start the dev server 
 ```
 
 | URL                          | Beschreibung      |
@@ -84,7 +84,7 @@ pnpm dev   # Start dev server with Turbopack
 ### Build
 
 ```bash
-pnpm build
+pnpm build # install all dependencies
 ```
 
 ### Deploy to Vercel
