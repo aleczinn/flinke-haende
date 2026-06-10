@@ -3,9 +3,10 @@ import { css } from '@/lib/utils'
 import Link from 'next/link'
 
 export type ButtonVariant = 'primary' | 'light' | 'dark'
+export type ButtonStyle = ButtonVariant | `${ButtonVariant}-hollow`
 
 type BaseProps = {
-    variant?: ButtonVariant
+    variant?: ButtonStyle
     fullWidth?: boolean
     iconLeft?: React.ReactNode
     iconRight?: React.ReactNode
@@ -33,7 +34,7 @@ type ButtonProps = AsButton | AsLink
 
 const baseClasses = [
     'flex flex-row justify-center items-center gap-2',
-    'w-fit px-6 py-3.5 rounded-lg font-semibold',
+    'w-fit px-8 py-3.5 rounded-lg font-semibold',
     'hover:cursor-pointer',
     'transition-colors duration-200',
     'disabled:cursor-not-allowed aria-disabled:cursor-not-allowed',
@@ -42,32 +43,15 @@ const baseClasses = [
     'focus-element',
 ].join(' ')
 
-const variantClasses: Record<ButtonVariant, string> = {
+const buttonStyleClasses: Record<ButtonStyle, string> = {
     primary: css(
-        'bg-primary text-white shadow-[var(--shadow-cta)]',
+        'bg-primary text-white', // shadow-[var(--shadow-cta)]
         'hover:bg-primary-darker',
         'active:bg-primary-darkest',
         'disabled:bg-gray-20 disabled:text-gray-40',
         'aria-disabled:bg-gray-20 aria-disabled:text-gray-40',
     ),
-    light: css(
-        'bg-white text-gray-80',
-        'hover:bg-gray-20',
-        'active:bg-gray-30',
-        'disabled:bg-gray-30 disabled:text-gray-40',
-        'aria-disabled:bg-gray-30 aria-disabled:text-gray-40',
-    ),
-    dark: css(
-        'bg-white text-gray-80',
-        'hover:bg-gray-20',
-        'active:bg-gray-30',
-        'disabled:bg-gray-30 disabled:text-gray-40',
-        'aria-disabled:bg-gray-30 aria-disabled:text-gray-40',
-    ),
-}
-
-const variantClassesHollow: Record<ButtonVariant, string> = {
-    primary: css(
+    'primary-hollow': css(
         'bg-transparent border-1 border-solid border-primary text-primary',
         'hover:border-primary-darker hover:text-primary-darker',
         'active:border-primary-darkest active:text-primary-darkest',
@@ -75,6 +59,13 @@ const variantClassesHollow: Record<ButtonVariant, string> = {
         'aria-disabled:border-gray-20 aria-disabled:text-gray-40',
     ),
     light: css(
+        'bg-white text-gray-80',
+        'hover:bg-gray-20',
+        'active:bg-gray-30',
+        'disabled:bg-gray-30 disabled:text-gray-40',
+        'aria-disabled:bg-gray-30 aria-disabled:text-gray-40',
+    ),
+    'light-hollow': css(
         'bg-transparent border-1 border-solid border-white text-white',
         'hover:bg-white/10',
         'active:bg-white/30',
@@ -82,9 +73,16 @@ const variantClassesHollow: Record<ButtonVariant, string> = {
         'aria-disabled:opacity-40',
     ),
     dark: css(
-        'bg-transparent border-1 border-solid border-white text-white',
-        'hover:bg-white/10',
-        'active:bg-white/30',
+        'bg-gray-90 text-white',
+        'hover:bg-gray-80',
+        'active:bg-gray-70',
+        'disabled:bg-gray-30 disabled:text-gray-40',
+        'aria-disabled:bg-gray-30 aria-disabled:text-gray-40',
+    ),
+    'dark-hollow': css(
+        'bg-transparent border-1 border-solid border-gray-90 text-white',
+        'hover:bg-gray-90/10',
+        'active:bg-gray-90/30',
         'disabled:opacity-40',
         'aria-disabled:opacity-40',
     ),
@@ -93,7 +91,6 @@ const variantClassesHollow: Record<ButtonVariant, string> = {
 export function Button({
     variant = 'primary',
     fullWidth = false,
-    hollow = false,
     iconLeft,
     iconRight,
     children,
@@ -101,12 +98,7 @@ export function Button({
     disabled,
     ...props
 }: ButtonProps) {
-    const classes = css(
-        baseClasses,
-        fullWidth && 'w-full',
-        hollow ? variantClassesHollow[variant] : variantClasses[variant],
-        className,
-    )
+    const classes = css(baseClasses, fullWidth && 'w-full', buttonStyleClasses[variant], className)
 
     const content = (
         <>

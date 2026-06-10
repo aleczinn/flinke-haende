@@ -1,8 +1,7 @@
 import type { Field, GroupField } from 'payload'
 import deepMerge from '@/lib/utilities/deepMerge'
 import { Page } from '@/payload-types'
-
-export type FieldButtonVariant = 'primary' | 'primary-hollow' | 'light' | 'light-hollow' | 'dark' | 'dark-hollow'
+import { ButtonStyle } from '@/components/ui/Button'
 
 const buttonVariantOptions = [
     { label: { de: 'Primär', en: 'Primary' }, value: 'primary' },
@@ -15,14 +14,14 @@ const buttonVariantOptions = [
 
 type ButtonType = (options?: { overrides?: Partial<GroupField> }) => Field
 
-export type ButtonGroupItem = {
+export type ButtonItem = {
     id?: string | null
     type?: 'reference' | 'external' | null
     newTab?: boolean | null
     reference?: number | Page | null
     url?: string | null
     label?: string | null
-    variant?: FieldButtonVariant | null
+    variant?: ButtonStyle | null
 }
 
 export const buttonCoreFields = (): Field[] => [

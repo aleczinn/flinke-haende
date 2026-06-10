@@ -1,11 +1,17 @@
-import { FieldButtonVariant } from '@/fields/button'
-import { ButtonVariant } from '@/components/ui/Button'
+import { Page } from '@/payload-types'
+import { Locale } from '@/lib/locale'
+import { HOME_SLUG } from '@/lib/queries'
+import { ButtonItem } from '@/fields/button'
 
-export function parseButtonForField(v: FieldButtonVariant | null | undefined): {
-    variant: ButtonVariant
-    hollow: boolean
-} {
-    const hollow = v?.endsWith('-hollow') ?? false
-    const variant = (hollow ? v!.replace('-hollow', '') : (v ?? 'primary')) as 'primary' | 'light' | 'dark'
-    return { variant, hollow }
+export function resolveButtonHref(btn: ButtonItem, locale: Locale): string | null {
+    if (btn.type === 'external') {
+        return btn.url ?? null
+    }
+
+    const page = typeof btn.reference === 'object' && btn.reference !== null ? (btn.reference as Page) : null
+    if (!page) return null
+
+    const crumbs = page.breadcrumbs ?? []
+    const path = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
+    return page.slug === HOME_SLUG ? `/${locale.language}` : `/${locale.language}${path}`
 }

@@ -1,14 +1,13 @@
 import { css } from '@/lib/utils'
-import { resolveButtonHref } from '@/lib/queries'
 import { Locale } from '@/lib/locale'
 import { Page } from '@/payload-types'
-import { parseButtonForField } from '@/lib/utilities/button'
-import { Button } from '@/components/ui/Button'
-import { ButtonGroupItem } from '@/fields/button'
+import { Button, ButtonStyle } from '@/components/ui/Button'
+import { ButtonItem } from '@/fields/button'
+import { resolveButtonHref } from '@/lib/utilities/button'
 
 interface ButtonRendererProps {
     locale: Locale
-    buttons: ButtonGroupItem[] | null | undefined
+    buttons: ButtonItem[] | null | undefined
     className?: string
 }
 
@@ -31,14 +30,11 @@ export function ButtonRenderer({ locale, buttons, className }: ButtonRendererPro
 
                 if (!label) return null
 
-                const { variant, hollow } = parseButtonForField(btn.variant)
-
                 return (
                     <Button
                         key={btn.id ?? href}
                         href={href}
-                        variant={variant}
-                        hollow={hollow}
+                        variant={btn.variant ?? 'primary'}
                         target={btn.newTab ? '_blank' : undefined}
                     >
                         {label}
