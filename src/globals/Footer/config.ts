@@ -27,6 +27,7 @@ export const Footer: GlobalConfig = {
                 },
             },
             admin: {
+                initCollapsed: true,
                 description: {
                     de: 'Füge hier die Links hinzu, welche im Footer unter Navigation angezeigt werden sollen',
                     en: 'Add the links here that you want to display in the footer under "Navigation"',
@@ -59,6 +60,7 @@ export const Footer: GlobalConfig = {
                 plural: { de: 'Seiten', en: 'Pages' },
             },
             admin: {
+                initCollapsed: true,
                 description: {
                     de: 'Füge hier die rechtlichen Seiten wie Datenschutz oder Impressum hinzu',
                     en: 'Add the legal pages here, such as the Privacy Policy or Legal Notice',

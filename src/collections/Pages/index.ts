@@ -10,6 +10,7 @@ import { generatePreviewPath } from '@/lib/utilities/generatePreviewPath'
 import { slugField } from '@/fields/slug'
 import { MediaWithText } from '@/components/blocks/MediaWithText/config'
 import { Hero } from '@/components/blocks/Hero/config'
+import { Accordion } from '@/components/blocks/Accordion/config'
 
 export const Pages: CollectionConfig = {
     slug: 'pages',
@@ -92,8 +93,12 @@ export const Pages: CollectionConfig = {
                             label: { de: 'Seiteninhalt', en: 'Page content' },
                             admin: {
                                 initCollapsed: true,
+                                description: {
+                                    de: 'Füge hier den Inhalt deiner Seite hinzu',
+                                    en: 'Add your page content here'
+                                }
                             },
-                            blocks: [MediaWithText],
+                            blocks: [MediaWithText, Accordion],
                         },
                     ],
                 },

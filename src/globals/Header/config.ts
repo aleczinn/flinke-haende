@@ -20,6 +20,9 @@ export const Header: GlobalConfig = {
                 singular: { de: 'Menüpunkt', en: 'Menu item' },
                 plural: { de: 'Menüpunkte', en: 'Menu items' },
             },
+            admin: {
+                initCollapsed: true,
+            },
             maxRows: 8,
             fields: [
                 ...navigationLinkField(),
@@ -39,6 +42,6 @@ export const Header: GlobalConfig = {
         },
     ],
     hooks: {
-        afterChange: [revalidateHeader]
-    }
+        afterChange: [revalidateHeader],
+    },
 }
