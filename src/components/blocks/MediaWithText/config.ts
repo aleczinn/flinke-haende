@@ -10,6 +10,7 @@ import { backgroundColorField } from '@/fields/background-color'
 import { buttonGroupField } from '@/fields/button-group'
 import { headlineField } from '@/fields/headline'
 import { taglineField } from '@/fields/tagline'
+import { richTextField } from '@/fields/richText'
 
 export const MediaWithText: Block = {
     slug: 'media_with_text',
@@ -32,21 +33,7 @@ export const MediaWithText: Block = {
         },
         taglineField(),
         headlineField(),
-        {
-            name: 'text',
-            type: 'richText',
-            localized: true,
-            label: { de: 'Text', en: 'Text' },
-            editor: lexicalEditor({
-                features: ({ defaultFeatures }) => [
-                    ...defaultFeatures,
-                    FixedToolbarFeature(),
-                    UnorderedListFeature(),
-                    OrderedListFeature(),
-                    LinkFeature(),
-                ],
-            }),
-        },
+        richTextField(),
 
         // MEDIA
         {

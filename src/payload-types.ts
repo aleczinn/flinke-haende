@@ -385,7 +385,7 @@ export interface Accordion {
   allowMultipleOpen?: boolean | null;
   items: {
     title: string;
-    text: {
+    text?: {
       root: {
         type: string;
         children: {
@@ -399,7 +399,7 @@ export interface Accordion {
         version: number;
       };
       [k: string]: unknown;
-    };
+    } | null;
     defaultOpen?: boolean | null;
     id?: string | null;
   }[];

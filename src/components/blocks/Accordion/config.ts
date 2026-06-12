@@ -9,6 +9,7 @@ import {
     OrderedListFeature,
     UnorderedListFeature,
 } from '@payloadcms/richtext-lexical'
+import { richTextField } from '@/fields/richText'
 
 const accordionItem = (): Field[] => [
     {
@@ -21,25 +22,7 @@ const accordionItem = (): Field[] => [
             en: 'Title',
         },
     },
-    {
-        name: 'text',
-        type: 'richText',
-        required: true,
-        localized: true,
-        label: {
-            de: 'Text',
-            en: 'Text',
-        },
-        editor: lexicalEditor({
-            features: ({ defaultFeatures }) => [
-                ...defaultFeatures,
-                FixedToolbarFeature(),
-                UnorderedListFeature(),
-                OrderedListFeature(),
-                LinkFeature(),
-            ],
-        }),
-    },
+    richTextField(),
     {
         name: 'defaultOpen',
         type: 'checkbox',

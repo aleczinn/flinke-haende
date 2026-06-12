@@ -1,5 +1,5 @@
 import type { Field, GlobalConfig } from 'payload'
-import { urlField } from '@/fields/url-field'
+import { url } from '@/fields/url'
 import { revalidateCompany } from '@/hooks/revalidateGlobals'
 
 const generalFields = (): Field[] => [
@@ -324,7 +324,7 @@ const socialFields = (): Field[] => [
             },
         },
         fields: [
-            urlField(
+            url(
                 'google_business',
                 {
                     de: 'Google Business Profil',
@@ -332,14 +332,14 @@ const socialFields = (): Field[] => [
                 },
                 'https://g.co/kgs/… OR https://maps.app.goo.gl/…',
             ),
-            urlField('facebook', { de: 'Facebook', en: 'Facebook' }, 'https://www.facebook.com/…'),
-            urlField('instagram', { de: 'Instagram', en: 'Instagram' }, 'https://www.instagram.com/…'),
-            urlField('twitter', { de: 'X / Twitter', en: 'X / Twitter' }, 'https://x.com/…'),
-            urlField('linkedin', { de: 'LinkedIn', en: 'LinkedIn' }, 'https://www.linkedin.com/company/…'),
-            urlField('youtube', { de: 'YouTube', en: 'YouTube' }, 'https://www.youtube.com/@…'),
-            urlField('xing', { de: 'Xing', en: 'Xing' }, 'https://www.xing.com/pages/…'),
-            urlField('pinterest', { de: 'Pinterest', en: 'Pinterest' }, 'https://de.pinterest.com/…'),
-            urlField('tiktok', { de: 'TikTok', en: 'TikTok' }, 'https://www.tiktok.com/…'),
+            url('facebook', { de: 'Facebook', en: 'Facebook' }, 'https://www.facebook.com/…'),
+            url('instagram', { de: 'Instagram', en: 'Instagram' }, 'https://www.instagram.com/…'),
+            url('twitter', { de: 'X / Twitter', en: 'X / Twitter' }, 'https://x.com/…'),
+            url('linkedin', { de: 'LinkedIn', en: 'LinkedIn' }, 'https://www.linkedin.com/company/…'),
+            url('youtube', { de: 'YouTube', en: 'YouTube' }, 'https://www.youtube.com/@…'),
+            url('xing', { de: 'Xing', en: 'Xing' }, 'https://www.xing.com/pages/…'),
+            url('pinterest', { de: 'Pinterest', en: 'Pinterest' }, 'https://de.pinterest.com/…'),
+            url('tiktok', { de: 'TikTok', en: 'TikTok' }, 'https://www.tiktok.com/…'),
         ],
     },
 ]
