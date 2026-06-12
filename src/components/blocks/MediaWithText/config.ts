@@ -46,8 +46,8 @@ export const MediaWithText: Block = {
                 { label: { de: 'Bild', en: 'Image' }, value: 'image' },
                 { label: { de: 'Lokales Video', en: 'Local video' }, value: 'video' },
                 {
-                    label: { de: 'Externes Video (z. B. YouTube)', en: 'External video (e.g. YouTube)' },
-                    value: 'externalVideo',
+                    label: { de: 'Externe Url (z. B. Bilder, YouTube)', en: 'External video (e.g. Images, YouTube)' },
+                    value: 'externalUrl',
                 },
                 { label: { de: 'Bildvergleich', en: 'Image comparison' }, value: 'comparison' },
             ],
@@ -75,19 +75,19 @@ export const MediaWithText: Block = {
                 siblingData?.mediaType === 'video' && !value ? 'Bitte ein Video auswählen.' : true,
         },
         {
-            name: 'externalVideoUrl',
+            name: 'externalUrl',
             type: 'text',
-            label: { de: 'Video-URL', en: 'Video URL' },
+            label: { de: 'Externe-URL', en: 'External URL' },
             admin: {
-                condition: (_, sib) => sib?.mediaType === 'externalVideo',
+                condition: (_, sib) => sib?.mediaType === 'externalUrl',
                 placeholder: 'https://www.youtube.com/watch?v=…',
                 description: {
-                    de: 'YouTube, Vimeo oder andere Embed-fähige URLs.',
-                    en: 'YouTube, Vimeo or other embeddable URLs.',
+                    de: 'Externe Urls für Bilder, YouTube, Vimeo oder andere Embed-fähige URLs.',
+                    en: 'External urls for images, YouTube, Vimeo or other embeddable URLs.',
                 },
             },
             validate: (value: unknown, { siblingData }: any) =>
-                siblingData?.mediaType === 'externalVideo' && !value ? 'Bitte eine Video-URL eingeben.' : true,
+                siblingData?.mediaType === 'externalUrl' && !value ? 'Bitte eine Video-URL eingeben.' : true,
         },
         {
             name: 'comparisonBefore',

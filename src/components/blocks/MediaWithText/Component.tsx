@@ -10,6 +10,7 @@ import { backgroundClass } from '@/fields/background-color'
 import { BeforeAfterImage } from '@/components/module/BeforeAfterImage'
 import { Locale } from '@/lib/locale'
 import { ButtonRenderer } from '@/components/payload/ButtonRenderer'
+import { ExternalMedia } from '@/components/module/ExternalMedia'
 
 type MediaWithTextProps = MediaWithText & {
     locale: Locale
@@ -24,7 +25,7 @@ export const MediaWithTextBlock: React.FC<MediaWithTextProps> = ({
     mediaType,
     image,
     video,
-    externalVideoUrl,
+    externalUrl,
     comparisonBefore,
     comparisonAfter,
     buttons,
@@ -60,6 +61,8 @@ export const MediaWithTextBlock: React.FC<MediaWithTextProps> = ({
                         sizes="(min-width: 1024px) 50vw, 100vw"
                     />
                 )}
+
+                {mediaType === 'externalUrl' && externalUrl && <ExternalMedia locale={locale} url={externalUrl} />}
             </div>
 
             <div className={`flex flex-col justify-center`}>

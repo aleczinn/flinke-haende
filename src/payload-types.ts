@@ -337,13 +337,13 @@ export interface MediaWithText {
     };
     [k: string]: unknown;
   } | null;
-  mediaType: 'image' | 'video' | 'externalVideo' | 'comparison';
+  mediaType: 'image' | 'video' | 'externalUrl' | 'comparison';
   image?: (number | null) | Media;
   video?: (number | null) | Media;
   /**
-   * YouTube, Vimeo or other embeddable URLs.
+   * External urls for images, YouTube, Vimeo or other embeddable URLs.
    */
-  externalVideoUrl?: string | null;
+  externalUrl?: string | null;
   comparisonBefore?: (number | null) | Media;
   comparisonAfter?: (number | null) | Media;
   /**
@@ -680,7 +680,7 @@ export interface MediaWithTextSelect<T extends boolean = true> {
   mediaType?: T;
   image?: T;
   video?: T;
-  externalVideoUrl?: T;
+  externalUrl?: T;
   comparisonBefore?: T;
   comparisonAfter?: T;
   buttons?:
