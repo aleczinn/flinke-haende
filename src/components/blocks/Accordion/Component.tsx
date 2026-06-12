@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useId, useState } from 'react'
+import React, { useId, useMemo, useState } from 'react'
 import { Locale } from '@/lib/locale'
 import { Accordion } from '@/payload-types'
 import { css } from '@/lib/utils'
@@ -25,9 +25,12 @@ export const AccordionBlock: React.FC<AccordionProps> = ({
 }) => {
     const headingId = useId()
 
-    const defaultOpen = new Set(items.filter((item) => item.defaultOpen && item.id).map((item) => item.id!))
+    const initialOpenItems = useMemo(
+        () => new Set(items.filter((item) => item.defaultOpen && item.id).map((item) => item.id!)),
+        [items],
+    )
 
-    const [openItems, setOpenItems] = useState<Set<string>>(defaultOpen)
+    const [openItems, setOpenItems] = useState<Set<string>>(initialOpenItems)
 
     function toggle(uid: string) {
         setOpenItems((prev) => {
@@ -71,16 +74,12 @@ export const AccordionBlock: React.FC<AccordionProps> = ({
                     let buttonClasses = ''
 
                     switch (backgroundColor) {
-                        case 'primary':
-                            buttonClasses = 'bg-white'
-                            break
                         case 'white':
                             buttonClasses = 'border-b-1 border-solid border-gray-20'
                             break
                         case 'gray':
                             buttonClasses = 'border-b-1 border-solid border-gray-30'
                             break
-                        case 'automatic':
                         default:
                             buttonClasses = ''
                             break
@@ -96,8 +95,8 @@ export const AccordionBlock: React.FC<AccordionProps> = ({
                                     aria-controls={panelId}
                                     onClick={() => toggle(uid)}
                                     className={css(
-                                        buttonClasses,
                                         'w-full flex justify-between items-center py-4 text-left font-bold transition-colors duration-300 hover:text-primary hover:cursor-pointer',
+                                        buttonClasses
                                     )}
                                 >
                                     <span>{item.title}</span>
@@ -118,7 +117,7 @@ export const AccordionBlock: React.FC<AccordionProps> = ({
                             >
                                 <div className="overflow-hidden">
                                     <div className="pt-6 pb-16">
-                                        <RichTextRenderer data={item.text} />
+                                        {item.text && <RichTextRenderer data={item.text} />}
                                     </div>
                                 </div>
                             </div>

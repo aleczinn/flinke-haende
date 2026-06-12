@@ -1,14 +1,43 @@
 import type { Field } from 'payload'
 
 export const backgroundColorOptions = ['automatic', 'primary', 'white', 'gray'] as const
-
 export type BackgroundColor = (typeof backgroundColorOptions)[number]
+
+const backgroundColorLabels: Record<
+    BackgroundColor,
+    {
+        de: string
+        en: string
+    }
+> = {
+    automatic: {
+        de: 'Automatisch',
+        en: 'Automatic',
+    },
+    primary: {
+        de: 'Primär',
+        en: 'Primary',
+    },
+    white: {
+        de: 'Weiß',
+        en: 'White',
+    },
+    gray: {
+        de: 'Grau',
+        en: 'Gray',
+    },
+}
 
 export const backgroundColorClasses: Record<BackgroundColor, string> = {
     automatic: '',
     primary: 'bg-primary',
     white: 'bg-white',
     gray: 'bg-gray-10',
+}
+
+type BackgroundColorFieldOptions = {
+    allowedColors?: readonly BackgroundColor[]
+    defaultValue?: BackgroundColor
 }
 
 export const backgroundClass = (color: BackgroundColor | null | undefined) => {
@@ -18,11 +47,14 @@ export const backgroundClass = (color: BackgroundColor | null | undefined) => {
     return ''
 }
 
-export const backgroundColorField = (): Field => ({
+export const backgroundColorField = ({
+    allowedColors = backgroundColorOptions,
+    defaultValue = 'automatic',
+}: BackgroundColorFieldOptions = {}): Field => ({
     name: 'backgroundColor',
     type: 'select',
     required: true,
-    defaultValue: 'automatic',
+    defaultValue,
     label: {
         de: 'Hintergrundfarbe',
         en: 'Background color',
@@ -33,34 +65,8 @@ export const backgroundColorField = (): Field => ({
             en: 'Choose the background color for this component',
         },
     },
-    options: [
-        {
-            value: 'automatic',
-            label: {
-                de: 'Automatisch',
-                en: 'Automatic',
-            },
-        },
-        {
-            value: 'primary',
-            label: {
-                de: 'Primär',
-                en: 'Primary',
-            },
-        },
-        {
-            value: 'white',
-            label: {
-                de: 'Weiß',
-                en: 'White',
-            },
-        },
-        {
-            value: 'gray',
-            label: {
-                de: 'Grau',
-                en: 'Gray',
-            },
-        }
-    ]
+    options: allowedColors.map((color) => ({
+        value: color,
+        label: backgroundColorLabels[color],
+    })),
 })

@@ -2,13 +2,6 @@ import type { Block, Field } from 'payload'
 import { backgroundColorField } from '@/fields/background-color'
 import { headlineField } from '@/fields/headline'
 import { taglineField } from '@/fields/tagline'
-import {
-    FixedToolbarFeature,
-    lexicalEditor,
-    LinkFeature,
-    OrderedListFeature,
-    UnorderedListFeature,
-} from '@payloadcms/richtext-lexical'
 import { richTextField } from '@/fields/richText'
 
 const accordionItem = (): Field[] => [
@@ -80,6 +73,8 @@ export const Accordion: Block = {
             minRows: 1,
             fields: accordionItem(),
         },
-        backgroundColorField(),
+        backgroundColorField({
+            allowedColors: ['automatic', 'white', 'gray'],
+        }),
     ],
 }

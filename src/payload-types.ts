@@ -406,7 +406,7 @@ export interface Accordion {
   /**
    * Choose the background color for this component
    */
-  backgroundColor: 'automatic' | 'primary' | 'white' | 'gray';
+  backgroundColor: 'automatic' | 'white' | 'gray';
   id?: string | null;
   blockName?: string | null;
   blockType: 'accordion';
