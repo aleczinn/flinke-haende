@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 import { buttonGroupField } from '@/fields/button-group'
+import { headlineField } from '@/fields/headline'
+import { taglineField } from '@/fields/tagline'
 
 export const Hero: Block = {
     slug: 'hero',
@@ -16,19 +18,8 @@ export const Hero: Block = {
             required: true,
             label: { de: 'Bild', en: 'Image' },
         },
-        {
-            name: 'tagline',
-            type: 'text',
-            localized: true,
-            label: { de: 'Tagline', en: 'Tagline' },
-        },
-        {
-            name: 'headline',
-            type: 'text',
-            required: true,
-            localized: true,
-            label: { de: 'Überschrift', en: 'Headline' },
-        },
+        taglineField(),
+        headlineField(),
         {
             name: 'text',
             type: 'textarea',
