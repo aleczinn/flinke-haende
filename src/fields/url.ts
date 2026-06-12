@@ -1,6 +1,6 @@
 import type { Field } from 'payload'
 
-export const urlField = (name: string, label: { de: string; en: string }, placeholder: string): Field => ({
+export const url = (name: string, label: { de: string; en: string }, placeholder: string): Field => ({
     name: name,
     type: 'text',
     label: label,
