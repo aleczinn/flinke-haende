@@ -71,6 +71,9 @@ export const Accordion: Block = {
             type: 'array',
             required: true,
             minRows: 1,
+            admin: {
+                initCollapsed: true,
+            },
             fields: accordionItem(),
         },
         backgroundColorField({
