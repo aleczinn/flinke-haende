@@ -1,11 +1,17 @@
 import type { Field } from 'payload'
 
-export const taglineField = (): Field => ({
+type TaglineFieldOptions = {
+    required?: boolean
+    localized?: boolean
+}
+
+export const taglineField = (options?: TaglineFieldOptions): Field => ({
     name: 'tagline',
     type: 'text',
-    localized: true,
+    required: options?.required ?? false,
+    localized: options?.localized ?? true,
     label: {
         de: 'Tagline',
-        en: 'Tagline'
+        en: 'Tagline',
     },
 })
