@@ -1,17 +1,17 @@
 import type { Field } from 'payload'
+import deepMerge from '@/lib/utilities/deepMerge'
 
-type TaglineFieldOptions = {
-    required?: boolean
-    localized?: boolean
-}
-
-export const taglineField = (options?: TaglineFieldOptions): Field => ({
-    name: 'tagline',
-    type: 'text',
-    required: options?.required ?? false,
-    localized: options?.localized ?? true,
-    label: {
-        de: 'Tagline',
-        en: 'Tagline',
-    },
-})
+export const taglineField = (overrides: Partial<Field> = {}): Field =>
+    deepMerge(
+        {
+            name: 'tagline',
+            type: 'text',
+            required: false,
+            localized: true,
+            label: {
+                de: 'Tagline',
+                en: 'Tagline',
+            },
+        },
+        overrides,
+    )

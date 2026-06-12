@@ -1,17 +1,17 @@
 import type { Field } from 'payload'
+import deepMerge from '@/lib/utilities/deepMerge'
 
-type HeadlineFieldOptions = {
-    required?: boolean
-    localized?: boolean
-}
-
-export const headlineField = (options?: HeadlineFieldOptions): Field => ({
-    name: 'headline',
-    type: 'text',
-    required: options?.required ?? true,
-    localized: options?.localized ?? true,
-    label: {
-        de: 'Überschrift',
-        en: 'Headline',
-    },
-})
+export const headlineField = (overrides: Partial<Field> = {}): Field =>
+    deepMerge(
+        {
+            name: 'headline',
+            type: 'text',
+            required: true,
+            localized: true,
+            label: {
+                de: 'Überschrift',
+                en: 'Headline',
+            },
+        },
+        overrides,
+    )
