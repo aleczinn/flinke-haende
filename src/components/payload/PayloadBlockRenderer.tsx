@@ -1,12 +1,14 @@
 import React, { Fragment } from 'react'
 import type { Page } from '@/payload-types'
-import { MediaWithTextBlock } from '@/components/blocks/MediaWithText/Component'
 import { Locale } from '@/lib/locale'
 import { HeroBlock } from '@/components/blocks/Hero/Component'
+import { MediaWithTextBlock } from '@/components/blocks/MediaWithText/Component'
+import { AccordionBlock } from '@/components/blocks/Accordion/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
     hero: HeroBlock,
     media_with_text: MediaWithTextBlock,
+    accordion: AccordionBlock,
 }
 
 type LayoutBlock = NonNullable<Page['layout']>[number]

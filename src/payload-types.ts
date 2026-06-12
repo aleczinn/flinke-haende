@@ -251,7 +251,10 @@ export interface Page {
   title: string;
   slug: string;
   hero?: Hero[] | null;
-  layout?: MediaWithText[] | null;
+  /**
+   * Add your page content here
+   */
+  layout?: (MediaWithText | Accordion)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -370,6 +373,43 @@ export interface MediaWithText {
   id?: string | null;
   blockName?: string | null;
   blockType: 'media_with_text';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Accordion".
+ */
+export interface Accordion {
+  layout: 'left' | 'center' | 'right';
+  tagline?: string | null;
+  headline: string;
+  allowMultipleOpen?: boolean | null;
+  items: {
+    title: string;
+    text: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    defaultOpen?: boolean | null;
+    id?: string | null;
+  }[];
+  /**
+   * Choose the background color for this component
+   */
+  backgroundColor: 'automatic' | 'primary' | 'white' | 'gray';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accordion';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -581,6 +621,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         media_with_text?: T | MediaWithTextSelect<T>;
+        accordion?: T | AccordionSelect<T>;
       };
   meta?:
     | T
@@ -651,6 +692,27 @@ export interface MediaWithTextSelect<T extends boolean = true> {
         url?: T;
         label?: T;
         variant?: T;
+        id?: T;
+      };
+  backgroundColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Accordion_select".
+ */
+export interface AccordionSelect<T extends boolean = true> {
+  layout?: T;
+  tagline?: T;
+  headline?: T;
+  allowMultipleOpen?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        defaultOpen?: T;
         id?: T;
       };
   backgroundColor?: T;
