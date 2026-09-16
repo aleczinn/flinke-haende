@@ -1,20 +1,26 @@
-import { test, expect, Page } from '@playwright/test'
+import { test, expect } from '@playwright/test'
+import { cleanupTestPage, seedTestPage, type SeededTestPage } from '../helpers/seedPage'
 
 test.describe('Frontend', () => {
-  let page: Page
+  let testPage: SeededTestPage
 
-  test.beforeAll(async ({ browser }, testInfo) => {
-    const context = await browser.newContext()
-    page = await context.newPage()
+  test.beforeAll(async () => {
+    testPage = await seedTestPage()
   })
 
-  test('can go on homepage', async ({ page }) => {
-    await page.goto('http://localhost:3000')
+  test.afterAll(async () => {
+    if (testPage) {
+      await cleanupTestPage(testPage.id)
+    }
+  })
 
-    await expect(page).toHaveTitle(/Payload Blank Template/)
+  test('renders a published CMS page', async ({ page }) => {
+    await page.goto(`/de/${testPage.slug}`)
+
+    await expect(page).toHaveTitle(new RegExp(testPage.title))
 
     const heading = page.locator('h1').first()
 
-    await expect(heading).toHaveText('Welcome to your new project.')
+    await expect(heading).toHaveText(testPage.title)
   })
 })
