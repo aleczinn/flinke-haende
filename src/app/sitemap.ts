@@ -5,7 +5,6 @@ import { BASE_URL } from '@/lib/site'
 import { availableLanguages, DEFAULT_LOCALE, getDefaultForLanguage, Localized, toLocaleTag } from '@/lib/locale'
 
 const HOME_SLUG = 'home'
-const EXCLUDED_SLUGS = new Set(['impressum', 'datenschutz'])
 
 // Stündlich neu generieren, sonst werden neue Pages bis zum nächsten Build nicht sichtbar
 export const revalidate = 3600
@@ -35,8 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         // Default-Locale-Slug als kanonischer Identifier
         const defaultSlug = slugByLocale[toLocaleTag(DEFAULT_LOCALE)]
         if (!defaultSlug) continue
-        if (EXCLUDED_SLUGS.has(defaultSlug)) continue
-        // if (doc.seo?.noIndex) continue // TODO : Re-ADD wenn seo felder vorhanden
+        if (doc.meta?.noIndex) continue
 
         const isHome = defaultSlug === HOME_SLUG
 
