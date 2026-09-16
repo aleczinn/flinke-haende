@@ -122,7 +122,7 @@ export function BeforeAfterImage({
 }: BeforeAfterImageProps) {
     const inputId = useId()
     const clampedInitial = Math.min(100, Math.max(0, initialPosition))
-    const [position, setPosition] = useState(clampedInitial)
+    const [positionState, setPositionState] = useState({ initialPosition, value: clampedInitial })
     const [isFocused, setIsFocused] = useState(false)
     const [isDragging, setIsDragging] = useState(false)
     const isPointerFocus = useRef(false)
@@ -140,10 +140,11 @@ export function BeforeAfterImage({
         }
     }, [isDragging])
 
-    // Sync bei externem initialPosition-Wechsel (z.B. Live-Preview)
-    useEffect(() => {
-        setPosition(Math.min(100, Math.max(0, initialPosition)))
-    }, [initialPosition])
+    if (positionState.initialPosition !== initialPosition) {
+        setPositionState({ initialPosition, value: clampedInitial })
+    }
+
+    const position = positionState.initialPosition === initialPosition ? positionState.value : clampedInitial
 
     if (!hasMedia) return null
 
@@ -153,7 +154,7 @@ export function BeforeAfterImage({
     const labelValue = t(locale, 'before_after.value', position, labelAfter)
 
     const handleChange = (value: number) => {
-        setPosition(value)
+        setPositionState({ initialPosition, value })
         onChange?.(value)
     }
 
