@@ -5,24 +5,27 @@ import {
 	toLocaleTag,
 	Locale,
 } from '@/lib/locale';
+import deDE from './translations/de-DE.json';
+import enUS from './translations/en-US.json';
 
 /**
- * Translations dynamisch laden – neue JSON-Dateien werden automatisch erkannt,
- * kein manueller Import nötig. Fehlende Dateien werden übersprungen.
+ * Verfügbare Übersetzungsdateien den Payload-Locale-Tags zuordnen.
+ * Für neue Locales muss hier die entsprechende JSON-Datei ergänzt werden.
  *
  * Dateinamen entsprechen dem Locale-Tag: de-DE.json, de-AT.json, en-US.json
  */
-const translationMap = new Map<string, Record<string, unknown>>();
+const translations: Record<string, Record<string, unknown>> = {
+	'de-DE': deDE,
+	'en-US': enUS,
+};
 
-for (const locale of locales) {
-	const tag = toLocaleTag(locale);
-
-	try {
-		translationMap.set(tag, require(`./translations/${tag}.json`));
-	} catch {
-		// Keine JSON für diese Locale -> Fallback greift
-	}
-}
+const translationMap = new Map(
+	locales.flatMap((locale) => {
+		const tag = toLocaleTag(locale);
+		const translation = translations[tag];
+		return translation ? [[tag, translation] as const] : [];
+	}),
+);
 
 function resolve(obj: Record<string, unknown>, key: string): string | undefined {
 	let current: unknown = obj;
