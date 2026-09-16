@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 
 export const breakpoints = {
     sm: 640,
@@ -46,16 +46,16 @@ export const breakpointBetween = (min: Breakpoint, max: Breakpoint) => {
 }
 
 export function useBreakpoint(bp: Breakpoint, direction: 'up' | 'down' = 'up'): boolean {
-    const [matches, setMatches] = useState(false);
+    const getMediaQuery = useCallback(
+        () => (direction === 'up' ? breakpointUp(bp) : breakpointDown(bp)),
+        [bp, direction],
+    );
+    const subscribe = useCallback((onStoreChange: () => void) => {
+        const mediaQuery = getMediaQuery();
+        mediaQuery.addEventListener('change', onStoreChange);
+        return () => mediaQuery.removeEventListener('change', onStoreChange);
+    }, [getMediaQuery]);
+    const getSnapshot = useCallback(() => getMediaQuery().matches, [getMediaQuery]);
 
-    useEffect(() => {
-        const mq = direction === 'up' ? breakpointUp(bp) : breakpointDown(bp);
-        setMatches(mq.matches);
-
-        const onChange = (e: MediaQueryListEvent) => setMatches(e.matches);
-        mq.addEventListener('change', onChange);
-        return () => mq.removeEventListener('change', onChange);
-    }, [bp, direction]);
-
-    return matches;
+    return useSyncExternalStore(subscribe, getSnapshot, () => false);
 }
