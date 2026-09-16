@@ -16,13 +16,18 @@ interface MobileNavigationProps {
 }
 
 export default function MobileNavigation({ locale, items }: MobileNavigationProps) {
-    const [isOpen, setIsOpen] = useState(false);
+    const pathname = usePathname();
+    const [menuState, setMenuState] = useState({ isOpen: false, pathname });
     const [headerBottom, setHeaderBottom] = useState(0);
     const [resetKey, setResetKey] = useState(0);
     const triggerRef = useRef<HTMLButtonElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
-    const pathname = usePathname();
     const panelId = useId();
+    const isOpen = menuState.pathname === pathname && menuState.isOpen;
+
+    if (menuState.pathname !== pathname && menuState.isOpen) {
+        setMenuState({ isOpen: false, pathname });
+    }
 
     const labels = {
         mainNav: t(locale, 'header.main_navigation'),
@@ -30,14 +35,16 @@ export default function MobileNavigation({ locale, items }: MobileNavigationProp
         close: t(locale, 'header.close_menu'),
     };
 
-    const close = useCallback(() => setIsOpen(false), []);
+    const close = useCallback(() => {
+        setMenuState((current) => ({ ...current, isOpen: false }));
+    }, []);
 
     const handleToggle = () => {
         // Beim Öffnen: ausgeklappte Untermenüs der Kinder zurücksetzen
         if (!isOpen) {
             setResetKey((k) => k + 1);
         }
-        setIsOpen((prev) => !prev);
+        setMenuState({ isOpen: !isOpen, pathname });
     };
 
     // Page-Scroll sperren, Panel-Inhalt darf trotzdem scrollen
@@ -126,16 +133,11 @@ export default function MobileNavigation({ locale, items }: MobileNavigationProp
     useEffect(() => {
         const mq = breakpointUp('lg');
         const onChange = (e: MediaQueryListEvent) => {
-            if (e.matches) setIsOpen(false);
+            if (e.matches) close();
         };
         mq.addEventListener('change', onChange);
         return () => mq.removeEventListener('change', onChange);
-    }, []);
-
-    // Route-Wechsel schließt (inkl. Back-Button)
-    useEffect(() => {
-        setIsOpen(false);
-    }, [pathname]);
+    }, [close]);
 
     // Header-Position für Backdrop-Position und Panel-MaxHeight messen
     useLayoutEffect(() => {
