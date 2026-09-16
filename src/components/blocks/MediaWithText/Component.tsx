@@ -11,6 +11,7 @@ import { BeforeAfterImage } from '@/components/module/BeforeAfterImage'
 import { Locale } from '@/lib/locale'
 import { ButtonRenderer } from '@/components/payload/ButtonRenderer'
 import { ExternalMedia } from '@/components/module/ExternalMedia'
+import Image from 'next/image'
 
 type MediaWithTextProps = MediaWithText & {
     locale: Locale
@@ -49,8 +50,15 @@ export const MediaWithTextBlock: React.FC<MediaWithTextProps> = ({
             aria-labelledby={headline ? headingId : undefined}
         >
             <div className={css('flex flex-col justify-center', !isMediaLeft && 'lg:order-2')}>
-                {mediaType === 'image' && imageMedia && (
-                    <img className="rounded-2xl" src={(image as Media).url ?? ''} alt={(image as Media).alt} />
+                {mediaType === 'image' && imageMedia?.url && (
+                    <Image
+                        src={imageMedia.url}
+                        alt={imageMedia.alt ?? ''}
+                        width={imageMedia.width ?? 1200}
+                        height={imageMedia.height ?? 800}
+                        sizes="(min-width: 1024px) 50vw, 100vw"
+                        className="w-full h-auto rounded-2xl"
+                    />
                 )}
 
                 {mediaType === 'comparison' && beforeMedia && afterMedia && (
