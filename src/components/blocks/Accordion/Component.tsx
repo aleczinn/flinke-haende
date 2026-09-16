@@ -53,7 +53,11 @@ export const AccordionBlock: React.FC<AccordionProps> = ({
             innerClassName=""
             aria-labelledby={headline ? headingId : undefined}
         >
-            {tagline && <Tagline alignment={layout} children={tagline} className="mb-2" />}
+            {tagline && (
+                <Tagline alignment={layout} className="mb-2">
+                    {tagline}
+                </Tagline>
+            )}
 
             {headline && (
                 <Headline id={headingId} as="h2" variant="h3" alignment={layout} design="line" className="mb-4">

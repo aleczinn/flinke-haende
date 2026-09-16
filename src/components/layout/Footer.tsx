@@ -34,11 +34,9 @@ export default async function Footer({ locale }: FooterProps) {
                 <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-x-4 lg:gap-4">
                     {/* Kontakt */}
                     <div className="flex flex-col">
-                        <Tagline
-                            alignment="left"
-                            children={t(locale, 'footer.contact.label')}
-                            className="font-bold! mb-2"
-                        />
+                        <Tagline alignment="left" className="font-bold! mb-2">
+                            {t(locale, 'footer.contact.label')}
+                        </Tagline>
 
                         <div className="flex flex-col">
                             <span className="font-semibold">{company.company_name?.toUpperCase()}</span>
@@ -73,11 +71,9 @@ export default async function Footer({ locale }: FooterProps) {
 
                     {/* Navigation */}
                     <div className="flex flex-col">
-                        <Tagline
-                            alignment="left"
-                            children={t(locale, 'footer.navigation.label')}
-                            className="font-bold! mb-2"
-                        />
+                        <Tagline alignment="left" className="font-bold! mb-2">
+                            {t(locale, 'footer.navigation.label')}
+                        </Tagline>
 
                         <ul className="flex flex-col gap-2">
                             {footer.navigation.map((item) => (
@@ -99,11 +95,9 @@ export default async function Footer({ locale }: FooterProps) {
 
                     {/* Öffnungszeiten */}
                     <div className="flex flex-col">
-                        <Tagline
-                            alignment="left"
-                            children={t(locale, 'footer.hours_of_operation.label')}
-                            className="font-bold! mb-2"
-                        />
+                        <Tagline alignment="left" className="font-bold! mb-2">
+                            {t(locale, 'footer.hours_of_operation.label')}
+                        </Tagline>
 
                         <OpeningHours locale={locale} items={company.opening_hours ?? []} />
                     </div>

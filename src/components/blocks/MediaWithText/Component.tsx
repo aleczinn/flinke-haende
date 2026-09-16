@@ -1,5 +1,5 @@
 import React, { useId } from 'react'
-import { MediaWithText, Page } from '@/payload-types'
+import { MediaWithText } from '@/payload-types'
 import type { Media } from '@/payload-types'
 import Section from '@/components/layout/Section'
 import { css } from '@/lib/utils'
@@ -66,7 +66,11 @@ export const MediaWithTextBlock: React.FC<MediaWithTextProps> = ({
             </div>
 
             <div className={`flex flex-col justify-center`}>
-                {tagline && <Tagline alignment="left" children={tagline} className="mb-2" />}
+                {tagline && (
+                    <Tagline alignment="left" className="mb-2">
+                        {tagline}
+                    </Tagline>
+                )}
 
                 {headline && (
                     <Headline id={headingId} as="h2" variant="h3" alignment="left" design="line" className="mb-4">
