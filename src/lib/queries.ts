@@ -1,8 +1,7 @@
-import { cache } from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Locale, PayloadLocale, toLocaleTag } from '@/lib/locale'
-import { Company, Page } from '@/payload-types'
+import { Company } from '@/payload-types'
 import { unstable_cache } from 'next/cache'
 
 export interface OpeningHoursItem {
@@ -164,22 +163,21 @@ export const getFooterConfig = (locale: Locale): Promise<FooterConfig> =>
         { tags: ['footer'], revalidate: false },
     )()
 
-export const getCachedRedirects = (locale: PayloadLocale) =>
-    unstable_cache(
-        async () => {
-            const payload = await getPayload({ config })
-            const { docs } = await payload.find({
-                collection: 'redirects',
-                locale,
-                limit: 0,
-                pagination: false,
-                depth: 1,
-            })
-            return docs
-        },
-        ['redirects'],
-        { tags: ['redirects'] },
-    )()
+export const getCachedRedirects = unstable_cache(
+    async (locale: PayloadLocale) => {
+        const payload = await getPayload({ config })
+        const { docs } = await payload.find({
+            collection: 'redirects',
+            locale,
+            limit: 0,
+            pagination: false,
+            depth: 1,
+        })
+        return docs
+    },
+    ['redirects'],
+    { tags: ['redirects'] },
+)
 
 function resolveHref(page: any, locale: Locale): string | null {
     if (!page || typeof page !== 'object') return null
