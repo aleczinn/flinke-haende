@@ -1,7 +1,6 @@
 import type { CollectionSlug, PayloadRequest } from 'payload'
 import { HOME_SLUG } from '@/lib/queries'
 import { DEFAULT_LOCALE, toLocaleTag } from '@/lib/locale'
-import { env } from '@/lib/env'
 
 interface Args {
     collection: CollectionSlug
@@ -13,6 +12,11 @@ interface Args {
 export const generatePreviewPath = ({ collection, slug, data, req }: Args) => {
     if (!slug) {
         return null
+    }
+
+    const previewSecret = process.env.PREVIEW_SECRET
+    if (!previewSecret) {
+        throw new Error('PREVIEW_SECRET is required to generate preview URLs')
     }
 
     const localeTag = req.locale ?? toLocaleTag(DEFAULT_LOCALE)
@@ -27,7 +31,7 @@ export const generatePreviewPath = ({ collection, slug, data, req }: Args) => {
         slug,
         collection,
         path,
-        previewSecret: env.PREVIEW_SECRET ?? '',
+        previewSecret,
     })
 
     return `/next/preview?${params.toString()}`
