@@ -74,6 +74,35 @@
         "compare": "{0} und {1} vergleichen",
         "value": "{0} % {1} sichtbar"
     },
+    "external_media": {
+        "youtube": "YouTube-Video",
+        "vimeo": "Vimeo-Video",
+        "play": "Video abspielen",
+        "allow_and_play": "Externe Medien erlauben und Video abspielen",
+        "consent_notice": "Beim Abspielen von {0} wird eine Verbindung zum Anbieter hergestellt. Dabei können personenbezogene Daten übertragen und Informationen auf deinem Gerät gespeichert werden.",
+        "invalid_url": "Diese externe Medien-URL wird nicht unterstützt."
+    },
+    "consent": {
+        "title": "Datenschutzeinstellungen",
+        "description": "Notwendige Funktionen laufen immer. Externe Medien und Statistik werden erst nach deiner freiwilligen Einwilligung geladen.",
+        "settings": "Datenschutzeinstellungen",
+        "accept_all": "Alle akzeptieren",
+        "necessary_only": "Nur notwendige",
+        "save": "Auswahl speichern",
+        "close": "Schließen",
+        "necessary": {
+            "title": "Notwendig",
+            "description": "Erforderlich für Sprache, Sicherheit und grundlegende Funktionen der Website."
+        },
+        "external_media": {
+            "title": "Externe Medien",
+            "description": "Erlaubt Inhalte von YouTube, Vimeo, Google Maps oder vergleichbaren Anbietern."
+        },
+        "statistics": {
+            "title": "Statistik",
+            "description": "Hilft uns mit Google Analytics zu verstehen, wie die Website genutzt wird."
+        }
+    },
     "back_to_top": "Zurück nach oben",
     "404": {
         "title": "Diese Seite existiert nicht",
