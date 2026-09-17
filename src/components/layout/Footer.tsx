@@ -2,7 +2,6 @@ import Section from "@/components/layout/Section";
 import { t } from "@/lib/i18n";
 import {
 	IconChevronRight,
-	IconFullLogoLight,
 	IconMail,
 	IconTelephone
 } from "@/components/icons";
@@ -13,6 +12,8 @@ import { UILink } from '@/components/ui/UILink'
 import { Locale } from '@/lib/locale';
 import { getCompanyConfig, getFooterConfig } from '@/lib/queries'
 import OpeningHours from '@/components/module/OpeningHours'
+import { BrandLogo } from '@/brand/BrandLogo'
+import { ConsentSettingsButton } from '@/components/consent/ConsentSettingsButton'
 
 interface FooterProps {
 	locale: Locale;
@@ -111,7 +112,7 @@ export default async function Footer({ locale }: FooterProps) {
                 outerClassName="bg-gray-80"
                 innerClassName="flex flex-row flex-wrap justify-between items-center py-6 gap-8"
             >
-                <IconFullLogoLight className="w-48 h-auto" />
+                <BrandLogo inverse className="w-48 h-auto" />
 
                 {/*<span className="font-bold text-lg text-wrap text-center mb-8 lg:mb-0">Hier könnte ein Werbetext stehen</span>*/}
 
@@ -135,6 +136,9 @@ export default async function Footer({ locale }: FooterProps) {
 
                 {/* Legal sites */}
                 <ul className="flex flex-row gap-2 order-1 md:order-2">
+                    <li>
+                        <ConsentSettingsButton locale={locale} />
+                    </li>
                     {footer.legalNavigation.map((item) => (
                         <li key={item.id}>
                             <Link

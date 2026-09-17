@@ -50,7 +50,7 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({ fieldToUse, descri
 
             <TextInput
                 value={value ?? ''}
-                onChange={(e: any) => setValue(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
                 path={path || 'slug'}
                 readOnly={Boolean(readOnly)}
             />

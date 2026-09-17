@@ -1,9 +1,9 @@
 import Section from '@/components/layout/Section'
 import Link from 'next/link'
 import { t } from '@/lib/i18n'
-import { IconFullLogo } from '@/components/icons'
+import { BrandLogo } from '@/brand/BrandLogo'
 import { Locale } from '@/lib/locale'
-import { getHeaderConfig } from '@/lib/queries'
+import { getCompanyConfig, getHeaderConfig } from '@/lib/queries'
 import ServiceBar from '@/components/layout/header/ServiceBar'
 import DesktopNavigation from '@/components/layout/header/DesktopNavigation'
 import { Button } from '@/components/ui/Button'
@@ -16,8 +16,8 @@ interface HeaderProps {
 
 export default async function Header({ locale }: HeaderProps) {
     const header = await getHeaderConfig(locale)
-
-    const contactHref = '';
+    const company = await getCompanyConfig(locale)
+    const contactHref = `mailto:${company.email}`
 
     return (
         <header className="sticky top-0 bg-gray-90 shadow-xl shadow-gray-90/5 z-50 shrink-0">
@@ -35,7 +35,7 @@ export default async function Header({ locale }: HeaderProps) {
                     title={t(locale, 'home')}
                     aria-label={t(locale, 'home')}
                 >
-                    <IconFullLogo className="w-40 sm:w-48 md:w-56 lg:w-60 h-auto" />
+                    <BrandLogo className="w-40 sm:w-48 md:w-56 lg:w-60 h-auto" />
                 </Link>
 
                 {/* Skip-Target. tabIndex=-1 erlaubt programmatischen Fokus

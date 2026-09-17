@@ -1,4 +1,4 @@
-import type { Hero, Media, Page } from '@/payload-types'
+import type { Hero, Media } from '@/payload-types'
 import { Locale } from '@/lib/locale'
 import Section from '@/components/layout/Section'
 import { Headline } from '@/components/ui/Headline'

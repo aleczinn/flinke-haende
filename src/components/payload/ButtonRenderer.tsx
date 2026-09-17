@@ -1,7 +1,7 @@
 import { css } from '@/lib/utils'
 import { Locale } from '@/lib/locale'
 import { Page } from '@/payload-types'
-import { Button, ButtonStyle } from '@/components/ui/Button'
+import { Button } from '@/components/ui/Button'
 import { ButtonItem } from '@/fields/button'
 import { resolveButtonHref } from '@/lib/utilities/button'
 

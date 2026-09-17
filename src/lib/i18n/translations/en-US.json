@@ -74,6 +74,35 @@
         "compare": "Compare {0} and {1}",
         "value": "{0} % {1} visible"
     },
+    "external_media": {
+        "youtube": "YouTube video",
+        "vimeo": "Vimeo video",
+        "play": "Play video",
+        "allow_and_play": "Allow external media and play video",
+        "consent_notice": "Playing this {0} connects to the provider. Personal data may be transferred and information may be stored on your device.",
+        "invalid_url": "This external media URL is not supported."
+    },
+    "consent": {
+        "title": "Privacy settings",
+        "description": "Necessary features always run. External media and statistics are loaded only after your voluntary consent.",
+        "settings": "Privacy settings",
+        "accept_all": "Accept all",
+        "necessary_only": "Necessary only",
+        "save": "Save selection",
+        "close": "Close",
+        "necessary": {
+            "title": "Necessary",
+            "description": "Required for language, security, and basic website functionality."
+        },
+        "external_media": {
+            "title": "External media",
+            "description": "Allows content from YouTube, Vimeo, Google Maps, or similar providers."
+        },
+        "statistics": {
+            "title": "Statistics",
+            "description": "Helps us understand website usage with Google Analytics."
+        }
+    },
     "back_to_top": "Back to top",
     "404": {
         "title": "Page not found",

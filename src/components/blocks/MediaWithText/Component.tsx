@@ -37,6 +37,7 @@ export const MediaWithTextBlock: React.FC<MediaWithTextProps> = ({
 
     // Payload liefert bei depth >= 1 Objekte, bei flachen Abfragen nur IDs
     const imageMedia = typeof image === 'object' && image !== null ? (image as Media) : null
+    const videoMedia = typeof video === 'object' && video !== null ? (video as Media) : null
     const beforeMedia =
         typeof comparisonBefore === 'object' && comparisonBefore !== null ? (comparisonBefore as Media) : null
     const afterMedia =
@@ -68,6 +69,18 @@ export const MediaWithTextBlock: React.FC<MediaWithTextProps> = ({
                         after={afterMedia}
                         sizes="(min-width: 1024px) 50vw, 100vw"
                     />
+                )}
+
+                {mediaType === 'video' && videoMedia?.url && (
+                    <video
+                        controls
+                        preload="metadata"
+                        className="aspect-video w-full rounded-2xl bg-black"
+                        aria-label={videoMedia.alt}
+                    >
+                        <source src={videoMedia.url} type={videoMedia.mimeType ?? undefined} />
+                        {videoMedia.alt}
+                    </video>
                 )}
 
                 {mediaType === 'externalUrl' && externalUrl && <ExternalMedia locale={locale} url={externalUrl} />}

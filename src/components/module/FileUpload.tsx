@@ -3,7 +3,7 @@
 
 import { useId, useRef, useState, DragEvent, ChangeEvent } from 'react'
 import { css } from '@/lib/utils'
-import { IconPlus, IconUpload } from '@/components/icons'
+import { IconUpload } from '@/components/icons'
 
 interface FileUploadProps {
   label: string
@@ -118,7 +118,7 @@ export function FileUpload({
       <div
         onDragOver={(e) => {
           e.preventDefault()
-          !disabled && setIsDragging(true)
+          if (!disabled) setIsDragging(true)
         }}
         onDragLeave={() => setIsDragging(false)}
         onDrop={onDrop}
@@ -135,7 +135,6 @@ export function FileUpload({
         aria-describedby={
           [description && descriptionId, error && errorId].filter(Boolean).join(' ') || undefined
         }
-        aria-invalid={error ? true : undefined}
         aria-disabled={disabled || undefined}
         className={css(
           'flex flex-col items-center justify-center gap-3 px-6 py-12',
@@ -148,6 +147,8 @@ export function FileUpload({
       >
         <input
           ref={inputRef}
+          id={fieldId}
+          aria-invalid={error ? true : undefined}
           type="file"
           name={name}
           accept={acceptAttr}

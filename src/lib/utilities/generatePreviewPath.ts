@@ -5,7 +5,7 @@ import { DEFAULT_LOCALE, toLocaleTag } from '@/lib/locale'
 interface Args {
     collection: CollectionSlug
     slug: string
-    data?: any
+    data?: { breadcrumbs?: Array<{ url?: string }> }
     req: PayloadRequest
 }
 

@@ -137,7 +137,7 @@ export function Button({
                 tabIndex={disabled ? -1 : undefined}
                 style={style}
                 className={classes}
-                {...(rest as any)}
+                {...rest}
             >
                 {content}
             </Link>

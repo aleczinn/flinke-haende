@@ -5,7 +5,7 @@ import { HeroBlock } from '@/components/blocks/Hero/Component'
 import { MediaWithTextBlock } from '@/components/blocks/MediaWithText/Component'
 import { AccordionBlock } from '@/components/blocks/Accordion/Component'
 
-const blockComponents: Record<string, React.FC<any>> = {
+const blockComponents: Record<string, React.ElementType> = {
     hero: HeroBlock,
     media_with_text: MediaWithTextBlock,
     accordion: AccordionBlock,

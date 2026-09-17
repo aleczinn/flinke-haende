@@ -1,8 +1,8 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { Locale, PayloadLocale, toLocaleTag } from '@/lib/locale'
-import { Company } from '@/payload-types'
-import { unstable_cache } from 'next/cache'
+import type { Company, Media, Page } from '@/payload-types'
+import { unstable_cache } from 'next/cache.js'
 
 export interface OpeningHoursItem {
     id?: string
@@ -18,7 +18,7 @@ export interface CompanyConfig {
     company_name_shorthand: string
     owner: string
     site_description: string
-    defaultOgImage: any
+    defaultOgImage: Media | null
     telephone: string
     email: string
     address: {
@@ -58,6 +58,16 @@ export interface FooterConfig {
     legalNavigation: NavigationLink[]
 }
 
+interface RawNavigationLink {
+    id?: string | null
+    type?: 'internal' | 'external' | null
+    page?: number | Page | null
+    url?: string | null
+    label?: string | null
+    newTab?: boolean | null
+    description?: string | null
+}
+
 export const HOME_SLUG = 'home'
 
 export const getCompanyConfig = (locale: Locale): Promise<CompanyConfig> =>
@@ -75,7 +85,7 @@ export const getCompanyConfig = (locale: Locale): Promise<CompanyConfig> =>
                 company_name_shorthand: c.companyNameShorthand || c.companyName || '',
                 owner: c.owner || '',
                 site_description: c.siteDescription || '',
-                defaultOgImage: c.defaultOgImage,
+                defaultOgImage: typeof c.defaultOgImage === 'object' ? c.defaultOgImage : null,
                 telephone: c.telephone || '',
                 email: c.email || '',
                 address: {
@@ -115,11 +125,11 @@ export const getHeaderConfig = (locale: Locale): Promise<HeaderConfig> =>
             })
             return {
                 navigation: (header.navigation ?? [])
-                    .map((item: any) => {
+                    .map((item) => {
                         const link = resolveNavigationLink(item, locale)
                         if (!link) return null
                         const children = (item.children ?? [])
-                            .map((c: any) => resolveNavigationLink(c, locale))
+                            .map((child) => resolveNavigationLink(child, locale))
                             .filter(Boolean) as NavigationLink[]
                         return { ...link, children }
                     })
@@ -144,11 +154,11 @@ export const getFooterConfig = (locale: Locale): Promise<FooterConfig> =>
 
             return {
                 navigation: (footer.navigation ?? [])
-                    .map((item: any) => resolveNavigationLink(item, locale))
+                    .map((item) => resolveNavigationLink(item, locale))
                     .filter(Boolean) as NavigationLink[],
                 cta: ctaHref && ctaPage ? { href: ctaHref, label: ctaPage.title as string } : null,
                 legalNavigation: (footer.legalNavigation ?? [])
-                    .map((item: any) => {
+                    .map((item) => {
                         const page = item?.page
                         if (!page || typeof page !== 'object') return null
                         const crumbs = page.breadcrumbs ?? []
@@ -179,14 +189,14 @@ export const getCachedRedirects = unstable_cache(
     { tags: ['redirects'] },
 )
 
-function resolveHref(page: any, locale: Locale): string | null {
+function resolveHref(page: number | Page | null | undefined, locale: Locale): string | null {
     if (!page || typeof page !== 'object') return null
     const crumbs = page.breadcrumbs ?? []
     const path = crumbs[crumbs.length - 1]?.url ?? `/${page.slug}`
     return page.slug === HOME_SLUG ? `/${locale.language}` : `/${locale.language}${path}`
 }
 
-function resolveNavigationLink(item: any, locale: Locale): NavigationLink | null {
+function resolveNavigationLink(item: RawNavigationLink, locale: Locale): NavigationLink | null {
     if (!item?.id) {
         return null
     }

@@ -6,6 +6,8 @@ import type { Page } from '@/payload-types'
 import { BASE_URL } from '@/lib/site'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { serverEnv } from '@/lib/env.server'
 
 const generateTitle: GenerateTitle<Page> = ({ doc }) => doc?.title ?? ''
 
@@ -63,5 +65,14 @@ export const plugins: Plugin[] = [
             },
         },
     }),
+    ...(serverEnv.BLOB_READ_WRITE_TOKEN
+        ? [
+              vercelBlobStorage({
+                  collections: { media: true },
+                  token: serverEnv.BLOB_READ_WRITE_TOKEN,
+                  clientUploads: true,
+              }),
+          ]
+        : []),
 ]
 
