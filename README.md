@@ -12,8 +12,8 @@ Das Projekt ist als flexibles, vollständig headless Template mit **Next.js 16**
 ## Features
 
 - 🌍 Mehrsprachigkeit mit Regionssupport (z. B. de-DE, de-CH, de-AT)
-- ⚡ Optimiert für Core Web Vitals
--📋 Formulare für Auftragsanfragen von Kunden
+- ⚡ Optimiert für Core Web Vitals 
+- 📋 Formulare für Auftragsanfragen von Kunden
 - 🛠️ Vollständig über das Payload CMS-Admin-Panel verwaltbar
 - 🔒 Vollständige Typsicherheit durch TypeScript & automatisch generierte Typen via Payload CMS
 - 🔍 Vollständiger SEO-Support mit konfigurierbaren Meta-Feldern (Titel, Beschreibung, OG-Image)
@@ -79,10 +79,10 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
 pnpm dev # Start the dev server 
 ```
 
-| URL                          | Beschreibung      |
-|------------------------------|-------------------|
-| `http://localhost:3000`      | Frontend/Website  |
-| `http://localhost:3000/admin`| Payload CMS Admin |
+| URL                           | Beschreibung      |
+|-------------------------------|-------------------|
+| `http://localhost:3000`       | Frontend/Website  |
+| `http://localhost:3000/admin` | Payload CMS Admin |
 
 ## Production
 
