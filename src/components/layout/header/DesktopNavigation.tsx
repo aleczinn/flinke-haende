@@ -140,11 +140,12 @@ function HeaderNavigationDropdown({ locale, item }: { locale: Locale; item: Navi
         }
 
         document.addEventListener('keydown', onKey)
-        containerRef.current?.addEventListener('focusout', onFocusOut)
+        const container = containerRef.current
+        container?.addEventListener('focusout', onFocusOut)
 
         return () => {
             document.removeEventListener('keydown', onKey)
-            containerRef.current?.removeEventListener('focusout', onFocusOut)
+            container?.removeEventListener('focusout', onFocusOut)
         }
     }, [isOpen])
 

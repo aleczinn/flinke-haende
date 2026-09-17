@@ -86,7 +86,7 @@ export function UILink({
   }
 
   return (
-    <Link href={href} className={classes} aria-label={ariaLabel} {...(props as any)}>
+    <Link href={href} className={classes} aria-label={ariaLabel} {...props}>
       {content}
     </Link>
   )

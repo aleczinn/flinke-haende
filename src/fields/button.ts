@@ -3,6 +3,8 @@ import deepMerge from '@/lib/utilities/deepMerge'
 import { Page } from '@/payload-types'
 import { ButtonStyle } from '@/components/ui/Button'
 
+type ButtonValidationContext = { siblingData?: { type?: string } }
+
 const buttonVariantOptions = [
     { label: { de: 'Primär', en: 'Primary' }, value: 'primary' },
     { label: { de: 'Hell', en: 'Light' }, value: 'light' },
@@ -58,8 +60,8 @@ export const buttonCoreFields = (): Field[] => [
                     condition: (_, sib) => sib?.type === 'reference',
                     width: '50%',
                 },
-                validate: (value: unknown, { siblingData }: any) =>
-                    siblingData?.type === 'reference' && !value ? 'Bitte eine Seite auswählen.' : true,
+                validate: (value: unknown, context: ButtonValidationContext) =>
+                    context.siblingData?.type === 'reference' && !value ? 'Bitte eine Seite auswählen.' : true,
             },
             {
                 name: 'url',
@@ -70,8 +72,8 @@ export const buttonCoreFields = (): Field[] => [
                     width: '50%',
                     placeholder: 'https://example.com',
                 },
-                validate: (value: unknown, { siblingData }: any) => {
-                    if (siblingData?.type !== 'external') return true
+                validate: (value: unknown, context: ButtonValidationContext) => {
+                    if (context.siblingData?.type !== 'external') return true
                     if (!value) return 'Bitte eine URL eingeben.'
                     if (!/^https?:\/\//.test(String(value))) return 'URL muss mit https:// beginnen.'
                     return true
@@ -88,8 +90,8 @@ export const buttonCoreFields = (): Field[] => [
                         en: 'The field name overrides the stored page title or is required for external links.',
                     },
                 },
-                validate: (value: unknown, { siblingData }: any) =>
-                    siblingData?.type === 'external' && !String(value ?? '').trim()
+                validate: (value: unknown, context: ButtonValidationContext) =>
+                    context.siblingData?.type === 'external' && !String(value ?? '').trim()
                         ? 'Bei externen Links ist eine Bezeichnung erforderlich.'
                         : true,
             },

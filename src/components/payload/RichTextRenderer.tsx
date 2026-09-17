@@ -34,7 +34,7 @@ const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConvert
     },
     ...LinkJSXConverter({
         internalDocToHref: ({ linkNode }) => {
-            const { value, relationTo } = linkNode.fields.doc!
+            const { value } = linkNode.fields.doc!
             if (typeof value !== 'object') throw new Error('Expected object')
             const slug = value.slug
             return `/${slug}`

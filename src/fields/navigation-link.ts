@@ -1,5 +1,7 @@
 import type { Field } from 'payload'
 
+type NavigationValidationContext = { siblingData?: { type?: string } }
+
 export const descriptionField: Field = {
     name: 'description',
     type: 'text',
@@ -33,16 +35,16 @@ export const navigationLinkField = (): Field[] => [
         relationTo: 'pages',
         label: { de: 'Seite', en: 'Page' },
         admin: { condition: (_, sib) => (sib?.type ?? 'internal') === 'internal' },
-        validate: (value: unknown, { siblingData }: any) =>
-            (siblingData?.type ?? 'internal') === 'internal' && !value ? 'Bitte eine Seite auswählen.' : true,
+        validate: (value: unknown, context: NavigationValidationContext) =>
+            (context.siblingData?.type ?? 'internal') === 'internal' && !value ? 'Bitte eine Seite auswählen.' : true,
     },
     {
         name: 'url',
         type: 'text',
         label: { de: 'URL', en: 'URL' },
         admin: { condition: (_, sib) => sib?.type === 'external', placeholder: 'https://…' },
-        validate: (value: unknown, { siblingData }: any) =>
-            siblingData?.type === 'external' && !value ? 'Bitte eine URL angeben.' : true,
+        validate: (value: unknown, context: NavigationValidationContext) =>
+            context.siblingData?.type === 'external' && !value ? 'Bitte eine URL angeben.' : true,
     },
     {
         name: 'label',
@@ -55,8 +57,8 @@ export const navigationLinkField = (): Field[] => [
                 en: 'Optional for internal pages — page title is used otherwise. Required for external links.',
             },
         },
-        validate: (value: unknown, { siblingData }: any) =>
-            siblingData?.type === 'external' && !value ? 'Bei externen Links ist eine Bezeichnung erforderlich.' : true,
+        validate: (value: unknown, context: NavigationValidationContext) =>
+            context.siblingData?.type === 'external' && !value ? 'Bei externen Links ist eine Bezeichnung erforderlich.' : true,
     },
     {
         name: 'newTab',

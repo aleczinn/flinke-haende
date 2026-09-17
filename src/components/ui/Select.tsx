@@ -64,7 +64,7 @@ export function Select<T extends string = string>({
   const listboxId = `${baseId}-listbox`
   const descriptionId = `${baseId}-description`
   const errorId = `${baseId}-error`
-  const optionId = (i: number) => `${baseId}-option-${i}`
+  const optionId = useCallback((i: number) => `${baseId}-option-${i}`, [baseId])
 
   const selectedIndex = useMemo(() => options.findIndex((o) => o.value === value), [options, value])
   const selectedOption = selectedIndex >= 0 ? options[selectedIndex] : null
@@ -134,7 +134,7 @@ export function Select<T extends string = string>({
       `#${CSS.escape(optionId(activeIndex))}`,
     )
     el?.scrollIntoView({ block: 'nearest' })
-  }, [isOpen, activeIndex])
+  }, [isOpen, activeIndex, optionId])
 
   // Type-ahead: Tastenanschläge sammeln und passende Option suchen
   const handleTypeAhead = useCallback(
@@ -333,7 +333,7 @@ export function Select<T extends string = string>({
             })}
 
             {options.length === 0 && (
-              <li role="option" aria-disabled className="px-3 py-2 text-sm text-gray-30">
+              <li role="option" aria-selected={false} aria-disabled className="px-3 py-2 text-sm text-gray-30">
                 Keine Optionen
               </li>
             )}
