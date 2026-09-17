@@ -1,108 +1,121 @@
 # Flinke Hände
 
-[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=next.js)](https://nextjs.org)
-[![Payload CMS](https://img.shields.io/badge/Payload_CMS-3.x-000000?style=flat-square&logo=payloadcms)](https://payloadcms.com)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS_v4-Styled-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com)
+Wiederverwendbares Website-Template für lokale Handwerksbetriebe. Das Projekt kombiniert Next.js 16, Payload CMS 3, TypeScript und Tailwind CSS.
 
-Ein modernes Handwerker-Portal für den deutschsprachigen Markt — Kunden finden hier den passenden Fachbetrieb für Gewerke wie Elektro, Maler, Fliesen, Sanitär, Lüftung und mehr. Nutzer können sich über Leistungen informieren und direkt über die Plattform eine Auftragsanfrage stellen.
+## Enthalten
 
-Das Projekt ist als flexibles, vollständig headless Template mit **Next.js 16** und **Payload CMS 3** umgesetzt — und lässt sich einfach für einen einzelnen Handwerksbetrieb oder ein Multi-Gewerke-Portal anpassen.
+- mehrsprachige Seiten und Navigation
+- Payload-Adminbereich mit Rollen, Entwürfen und Live Preview
+- Hero-, Medien/Text- und Accordion-Blöcke
+- lokale Bilder und Videos, Bildvergleiche sowie zustimmungspflichtige YouTube-/Vimeo-Einbettungen
+- SEO-Metadaten, Canonicals, OG-Bilder, Sitemap, robots.txt und LocalBusiness-JSON-LD
+- zentral generierte Browser-, Apple- und Manifest-Icons
+- optionale, vor Einwilligung vollständig blockierte Google-Analytics-Integration
+- SQLite für lokale Entwicklung sowie optional PostgreSQL und Vercel Blob für Produktion
 
-## Features
+Ein Kontakt- oder Auftragsformular ist bewusst noch nicht Bestandteil des Templates. Mailversand, Spam-Schutz, Dateiuploads und Aufbewahrungsfristen sollen dafür separat geplant werden.
 
-- 🌍 Mehrsprachigkeit mit Regionssupport (z. B. de-DE, de-CH, de-AT)
-- ⚡ Optimiert für Core Web Vitals 
-- 📋 Formulare für Auftragsanfragen von Kunden
-- 🛠️ Vollständig über das Payload CMS-Admin-Panel verwaltbar
-- 🔒 Vollständige Typsicherheit durch TypeScript & automatisch generierte Typen via Payload CMS
-- 🔍 Vollständiger SEO-Support mit konfigurierbaren Meta-Feldern (Titel, Beschreibung, OG-Image)
-- 🗺️ Strukturierte Daten (JSON-LD): Unternehmensschema mit Öffnungszeiten & Geo-Koordinaten, Breadcrumbs, lokale Geschäftsinformationen
-- 🧩 Flexible Seitenkomponenten: Hero, Media with Text, Accordion, Banner, Before/After-Vergleich u. v. m.
+## Lokale Entwicklung
 
-**Implementierte Admin / CMS Features**:
-- Medienverwaltung mit automatischer umwandlung in diverse Formate + AVIF
-- Weiterleitungen auf interne sowie externe Websites
-- User Management inkl. Rollen Admin und Redakteur
-
-## Tech Stack
-
-| Bereich     | Technologie                                    |
-|-------------|------------------------------------------------|
-| Framework   | Next.js 16 (App Router, Turbopack)             |
-| CMS         | Payload CMS 3.x                                |
-| Datenbank   | SQLite (Entwicklung) / Neon PostgreSQL (Prod)  |
-| Styling     | Tailwind CSS v4                                |
-| Sprache     | TypeScript                                     |
-| Deployment  | Vercel + Neon                                  |
-
-
-## Development
-
-### Prerequisites
-
-- Node.js 25
-- pnpm 10
-
-### Installation
+Voraussetzungen: Node.js 22 oder neuer und pnpm 10.
 
 ```bash
 pnpm install
-```
-
-### Environment
-
-`.env.example` nach `.env` kopieren und die Werte eintragen:
-
-```bash
 cp .env.example .env
+pnpm dev
 ```
+
+Wichtige lokale Variablen:
 
 ```env
-DATABASE_URL=file:./db.sqlite               # SQLite für lokale Entwicklung
-PAYLOAD_SECRET=your-secret-here             # Zufällig generierter String, welchen Payload intern zum signieren von JWT's nutzt
-PREVIEW_SECRET=your-secret-here             # Zufällig generierter String, welcher für die Live-Ansicht genutzt wird
-
-NEXT_PUBLIC_BASE_URL=http://localhost:3000  # Deine Base-URL der Website. Bei einer Custom-Domain nutze bitte die korrekte URL
-NEXT_PUBLIC_SITE_SHORTCUT=your-site-shorcut # Wird für cookies benutzt. Beispiel: FH 
-NEXT_PUBLIC_SCHEMA_TYPE=your-schema         # Optionaler Schema-Typ, welcher Google hilft die Seite vom Schema zu definieren
+DATABASE_ADAPTER=sqlite
+DATABASE_URL=file:./database.db
+PAYLOAD_SECRET=<zufälliger geheimer Wert>
+PREVIEW_SECRET=<zufälliger geheimer Wert>
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_SHORTCUT=FH
+NEXT_PUBLIC_SCHEMA_TYPE=LocalBusiness
 ```
 
-Um secrets zu generieren nutze z. B. folgendes:
+Secrets können beispielsweise so erzeugt werden:
+
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
 ```
 
-### Usage
+Frontend: `http://localhost:3000`
+Payload: `http://localhost:3000/admin`
+
+## Branding und Icons
+
+Die zentrale Konfiguration liegt in `src/brand/brand.json`. Das quadratische Master-Icon liegt in `src/app/icon.svg`; Header- und Footer-Logo werden zentral über `src/brand/BrandLogo.tsx` ausgewählt. Das Standard-OG-Bild liegt in `public/og-default.jpg` und kann im CMS überschrieben werden.
+
+Nach einem Austausch des Master-Icons erzeugt dieser Befehl alle technischen Varianten:
 
 ```bash
-pnpm dev # Start the dev server 
+pnpm brand:generate
 ```
 
-| URL                           | Beschreibung      |
-|-------------------------------|-------------------|
-| `http://localhost:3000`       | Frontend/Website  |
-| `http://localhost:3000/admin` | Payload CMS Admin |
+Erstellt werden ein Mehrgrößen-Favicon, das Apple-Touch-Icon sowie normale und maskierbare Manifest-Icons in 192 und 512 Pixeln. Der Produktions-Build führt die Generierung automatisch aus.
 
-## Production
+## Datenschutz und externe Dienste
 
-### Build
+- Ohne konfigurierte Statistik erscheint kein globales Banner.
+- YouTube und Vimeo zeigen zunächst einen lokalen Platzhalter. Vor Zustimmung werden weder Iframes noch externe Vorschaubilder angefordert.
+- Die Auswahl wird für 180 Tage in einem notwendigen First-Party-Cookie gespeichert und kann im Footer geändert werden.
+- Ein normaler externer Link zu Google Maps oder zum Google-Unternehmensprofil lädt auf der Website noch keinen Google-Inhalt. Eingebettete Maps oder Review-Widgets müssen über den vorhandenen `ConsentGate` geschützt werden.
+- Rechtstexte bleiben kundenspezifisch und müssen die tatsächlich aktivierten Anbieter, Zwecke, Rechtsgrundlagen und Speicherdauern beschreiben.
+
+Google Analytics ist standardmäßig deaktiviert. Erst eine gesetzte Mess-ID aktiviert die Statistik-Auswahl:
+
+```env
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+Das Google-Script wird erst nach Statistik-Einwilligung geladen. Search Console benötigt kein Besucher-Tracking: Domain per DNS bestätigen und anschließend `/sitemap.xml` einreichen.
+
+## Deployment auf Vercel
+
+Für eine neue leere Produktionsinstanz kann PostgreSQL, beispielsweise Neon, verwendet werden:
+
+```env
+DATABASE_ADAPTER=postgres
+DATABASE_URL=<postgres-connection-url>
+BLOB_READ_WRITE_TOKEN=<vercel-blob-token>
+```
+
+`DATABASE_ADAPTER` wählt den Payload-Treiber; nur die URL zu ändern reicht nicht aus. Auch eine leere PostgreSQL-Datenbank benötigt einmalig das Payload-Schema. Vor dem ersten Deployment mit der Produktionskonfiguration eine initiale Migration erzeugen und einchecken:
 
 ```bash
-pnpm build # install all dependencies
+pnpm payload migrate:create initial-schema
 ```
 
-### Deploy to Vercel
+Für Deployments werden ausstehende Migrationen vor dem Build ausgeführt:
 
-Das Projekt ist für das Deployment auf **Vercel** mit einer **Neon PostgreSQL**-Datenbank ausgelegt.
+```bash
+pnpm payload migrate && pnpm build
+```
 
-1. Projekt auf [Vercel](https://vercel.com) anlegen und Repository verbinden
-2. Datenbank auf [Neon](https://neon.tech) oder direkt in Vercel erstellen und Connection String kopieren
-3. Umgebungsvariablen setzen
-4. Deployment — Vercel führt bei jedem Push automatisch `pnpm build` aus.
+Lokale Inhalte aus SQLite werden dabei nicht übertragen. Vercel Blob ist notwendig, weil Uploads im Laufzeit-Dateisystem von Vercel nicht dauerhaft gespeichert werden.
 
-## License
+## Qualitätssicherung
 
-Dieses Repository ist ausschließlich zur Ansicht veröffentlicht.
-Eine Nutzung, Vervielfältigung oder Weiterverwendung des Codes
-ist ohne ausdrückliche Genehmigung nicht gestattet.
+```bash
+pnpm lint
+pnpm test:int
+pnpm test:e2e
+pnpm build
+```
+
+Vor Übergabe an einen Kunden außerdem prüfen:
+
+- Unternehmens-, Kontakt- und Öffnungszeiten im CMS
+- Impressum und Datenschutzerklärung
+- Domain, Canonicals, Sitemap und Search Console
+- Logo, Icon, Theme-Farben und OG-Fallback
+- tatsächlich verwendete Drittanbieter und Consent-Texte
+- Tastaturbedienung, Mobilansicht und zentrale Kontaktwege
+
+## Lizenz
+
+Dieses Repository ist ausschließlich zur Ansicht veröffentlicht. Nutzung, Vervielfältigung oder Weiterverwendung sind ohne ausdrückliche Genehmigung nicht gestattet.
